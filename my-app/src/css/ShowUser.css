@@ -1,0 +1,133 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #eef2ff, #f8fafc);
+}
+
+.userTableContainer {
+  width: 95%;
+  max-width: 1400px;
+  margin: 40px auto;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 15px 40px rgba(15, 23, 42, 0.12);
+  overflow: hidden;
+  padding: 25px;
+}
+
+.tableHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  padding: 0 10px;
+}
+
+.recordCount {
+  font-size: 18px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.recordCount span {
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  color: white;
+  padding: 6px 14px;
+  border-radius: 999px;
+  margin-left: 10px;
+  font-size: 15px;
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
+}
+
+.tableWrapper {
+  overflow-x: auto;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 1100px;
+}
+
+thead {
+  background: linear-gradient(135deg, #1e293b, #334155);
+  color: white;
+}
+
+thead th {
+  padding: 18px 16px;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+tbody tr {
+  transition: all 0.25s ease;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+tbody tr:nth-child(even) {
+  background: #f8fafc;
+}
+
+tbody tr:hover {
+  background: #e0f2fe;
+  transform: scale(1.003);
+}
+
+tbody td {
+  padding: 16px;
+  font-size: 14px;
+  color: #334155;
+  vertical-align: middle;
+}
+
+tbody td:first-child {
+  font-weight: 700;
+  color: #2563eb;
+}
+
+tbody td img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 2px solid #e2e8f0;
+}
+
+::-webkit-scrollbar {
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #e2e8f0;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  border-radius: 10px;
+}
+
+@media (max-width: 768px) {
+  .userTableContainer {
+    width: 98%;
+    padding: 15px;
+    margin: 20px auto;
+  }
+
+  .recordCount {
+    font-size: 15px;
+  }
+
+  thead th,
+  tbody td {
+    padding: 12px;
+    font-size: 13px;
+  }
+}
