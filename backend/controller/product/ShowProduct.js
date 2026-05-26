@@ -9,10 +9,7 @@ try{
             message: ("PRODUCT DTATA NOT FOUND")
         });
     }
-    res.status(200).json({
-        message:("PRODUCT DATA FOUND"),
-        data : data
-    });
+    res.status(200).json(data);
 }
 catch(error){
     res.status(500).json({

@@ -1,117 +1,102 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import toast from "react-hot-toast";  //IMPORT Toaster IN INDEX.JS   
-import { useNavigate } from "react-router-dom";
-import { useParams,useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { useNavigate, useParams } from "react-router-dom";
+import "./css/UserForm.css";
 
-export default function EditUser(){
+export default function EditUser() {
+  const values = {
+    name: "",
+    email: "",
+    phone: "",
+    profileImage: "",
+    address: "",
+    birthdate: "",
+    gender: "",
+  };
 
-    const values = {
-        name : "",
-        email : "",
-        password : "",
-        phone : "",
-        profileImage : "",
-        address : "",
-        birthdate : ""
-    };
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [data, setdata] = useState(values);
 
-    const[data,setdata] = useState(values);
-     
-    const{id} = useParams();
-    const navigate = useNavigate();
-    
-   useEffect(() => {
+  useEffect(() => {
     const getdata = async () => {
-        try {
-            const response = await axios.get(
-                `http://localhost:5000/user/showuserbyid/${id}`
-            );
-            setdata(response.data);  
-        } catch (error) {
-            console.log(error);      
-        }
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/user/showuserbyid/${id}`
+        );
+
+        setdata(response.data);
+      } catch (error) {
+        console.log(error);
+      }
     };
+
     getdata();
-    }, [id]);
+  }, [id]);
 
-    const handleChange = (e)=>{
-        const{name,value} = e.target;
-        setdata({...data,[name]:value});
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setdata({ ...data, [name]: value });
+  };
+
+  const SubmitForm = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.put(
+        `http://localhost:8000/user/updateuser/${id}`,
+        data
+      );
+
+      toast.success(response.data.msg);
+    } catch (error) {
+      console.log(error);
+      toast.error("Update failed");
     }
+  };
 
-    const SubmitForm= async(e)=>{
-        e.preventDefault();
-        await axios.put("http://localhost:5000/user/updateuser",data)
-        .then((response)=>{toast.success(response.data.msg)})
-        navigate("/")
-        .catch((error)=>{
-            console.log(error);
-        })
-    }
-
-    return (
+  return (
     <div className="form-container">
-      <h2>Create User</h2>
+      <h2>Edit User</h2>
 
       <form onSubmit={SubmitForm}>
-        <input
-          type="text"
-          name="name"
-          placeholder="Enter Name"
-          value={data.name}
-          onChange={handleChange}
-        />
+        <input type="text" name="name" value={data.name} onChange={handleChange} />
+        <input type="email" name="email" value={data.email} onChange={handleChange} />
+        <input type="text" name="phone" value={data.phone} onChange={handleChange} />
+        <input type="text" name="profileImage" value={data.profileImage} onChange={handleChange} />
+        <input type="text" name="address" value={data.address} onChange={handleChange} />
+        <input type="date" name="birthdate" value={data.birthdate} onChange={handleChange} />
 
-        <input
-          type="email"
-          name="email"
-          placeholder="Enter Email"
-          value={data.email}
-          onChange={handleChange}
-        />
+        <div className="radio-group">
+          <label>Gender:</label>
 
-        <input
-          type="password"
-          name="password"
-          placeholder="Enter Password"
-          value={data.password}
-          onChange={handleChange}
-        />
+          <label>
+            <input type="radio" name="gender" value="Male"
+              checked={data.gender === "Male"}
+              onChange={handleChange}
+            />
+            Male
+          </label>
 
-        <input
-          type="text"
-          name="phone"
-          placeholder="Enter Phone"
-          value={data.phone}
-          onChange={handleChange}
-        />
+          <label>
+            <input type="radio" name="gender" value="Female"
+              checked={data.gender === "Female"}
+              onChange={handleChange}
+            />
+            Female
+          </label>
 
-        <input
-          type="text"
-          name="profileImage"
-          placeholder="Profile Image URL"
-          value={data.profileImage}
-          onChange={handleChange}
-        />
+          <label>
+            <input type="radio" name="gender" value="Other"
+              checked={data.gender === "Other"}
+              onChange={handleChange}
+            />
+            Other
+          </label>
+        </div>
 
-        <input
-          type="text"
-          name="role"
-          placeholder="Enter Role"
-          value={data.address}
-          onChange={handleChange}
-        />
-
-        <input
-          type="date"
-          name="isVerified"
-          placeholder="Is Verified"
-          value={data.birthdate}
-          onChange={handleChange}
-        />
-
-        <button type="submit">Update User</button>
+        <button type="submit" onClick={()=>navigate('/')}>Update User</button>
       </form>
     </div>
   );

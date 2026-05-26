@@ -11,10 +11,7 @@ export const UpdateProduct = async (req, res) => {
             });
         }
 
-        res.status(200).json({
-            message: "PRODUCT UPDATED",
-            data: updateProduct
-        });
+        res.status(200).json(updateProduct);
 
     } catch (error) {
         res.status(500).json({

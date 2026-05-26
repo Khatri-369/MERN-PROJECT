@@ -4,12 +4,12 @@ import toast from "react-hot-toast";  //IMPORT Toaster IN INDEX.JS
 import "./css/ShowUser.css";
 
 export default function SearchUser(){
-    const[search,setsearch] = usestate("");
-    const[data,setdata] = useState([]);
+    const[search,setsearch] = useState("");
+    const[dataa,setdata] = useState([]);
 
     useEffect(()=>{
         const getdata = async()=>{
-            const value = await axios.get("http://localhost:5000/user/showuser");
+            const value = await axios.get("http://localhost:8000/user/showuser");
             setdata(value.data);
         }
         getdata();
@@ -17,7 +17,7 @@ export default function SearchUser(){
 
     const click = async()=>{
         try{
-        const value = await axios.get(`http://localhost:5000/user/showuserbysearch/search=${search}`)
+        const value = await axios.get(`http://localhost:8000/user/showuserbysearch?search=${search}`)
         setdata(value.data);
     }
     catch(error){
@@ -30,7 +30,7 @@ export default function SearchUser(){
   <div className="userTableContainer">
     <div className="tableHeader">
       <div className="recordCount">
-        Total Records: <span>{data.length}</span>
+        Total Records: <span>{dataa.length}</span>
       </div>
     </div>
 
@@ -47,7 +47,6 @@ export default function SearchUser(){
           <tr>
             <th>S.No.</th>
             <th>Name</th>
-            <th>Username</th>
             <th>Email</th>
             <th>phone</th>
             <th>image</th>
@@ -60,7 +59,7 @@ export default function SearchUser(){
 
         <tbody>
          {
-            data.map((user,index)=>{
+            dataa.map((user,index)=>{
             return(
                 <tr key={user._id}>
                    <td>{index+1}</td>

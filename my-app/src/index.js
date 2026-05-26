@@ -1,37 +1,114 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { Toaster } from "react-hot-toast";
+
 import Menu from './Menu';
+
+// USER
 import CreateUser from "./CreateUser";
-import AdminPanel from './AdminPanel';
+import ManageUser from './ManageUser';
+import EditUser from './EditUser';
+import SearchUser from './SearchUser';
 import ShowUser from './ShowUser';
 
-import { Route,RouterProvider,createBrowserRouter } from 'react-router-dom';
-import Manageuser from './Manageuser';
+// PRODUCT
+import CreateProduct from './CreateProduct';
+import ManageProduct from './ManageProduct';
+import EditProduct from './EditProduct';
+import ShowProduct from './ShowProduct';
+import SearchProduct from './SearchProduct';
+
+// ADMIN
+import CreateAdmin from './CreateAdmin';
+import ManageAdmin from './ManageAdmin';
+import EditAdmin from './EditAdmin';
+import ShowAdmin from './ShowAdmin';
+import SearchAdmin from './SearchAdmin';
 
 const route = createBrowserRouter([
   {
-    path:"/manageuser",
-    element:<Manageuser/>,
-  },
-  {
-    path:"/edituser/:id",
-    element:<EditUser/>
-  },
-  {
-    path:"/",
-    element:<CreateUser/>
+    path: "/",
+    element: <Menu />,
+    children: [
+      
+      // ================= USER ROUTES =================
+      {
+        path: "createuser",
+        element: <CreateUser />
+      },
+      {
+        path: "manageuser",
+        element: <ManageUser />
+      },
+      {
+        path: "showuser",
+        element: <ShowUser />
+      },
+      {
+        path: "edituser/:id",
+        element: <EditUser />
+      },
+      {
+        path: "searchuser",
+        element: <SearchUser />
+      },
+
+      // ================= PRODUCT ROUTES =================
+      {
+        path: "createproduct",
+        element: <CreateProduct />
+      },
+      {
+        path: "manageproduct",
+        element: <ManageProduct />
+      },
+      {
+        path: "editproduct/:id",
+        element: <EditProduct />
+      },
+      {
+        path: "showproduct",
+        element: <ShowProduct />
+      },
+      {
+        path: "searchproduct",
+        element: <SearchProduct />
+      },
+
+      // ================= ADMIN ROUTES =================
+      {
+        path: "createadmin",
+        element: <CreateAdmin />
+      },
+      {
+        path: "manageadmin",
+        element: <ManageAdmin />
+      },
+      {
+        path: "showadmin",
+        element: <ShowAdmin />
+      },
+      {
+        path: "editadmin/:id",
+        element: <EditAdmin />
+      },
+      {
+        path: "searchadmin",
+        element: <SearchAdmin />
+      }
+    ]
   }
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
 root.render(
-  <React.StrictMode>  
-    <RouterProvider router={route}></RouterProvider>
+  <React.StrictMode>
+    <RouterProvider router={route} />
+    <Toaster position="top-right" reverseOrder={false} />
   </React.StrictMode>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();

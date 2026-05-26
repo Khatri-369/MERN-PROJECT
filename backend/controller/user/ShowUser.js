@@ -9,10 +9,7 @@ try{
             message: ("USER DTATA NOT FOUND")
         });
     }
-    res.status(200).json({
-        message:("USER DATA FOUND"),
-        data : data
-    });
+    res.status(200).json(data);
 }
 catch(error){
     res.status(500).json({

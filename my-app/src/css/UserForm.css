@@ -1,10 +1,12 @@
 body {
   background: #f4f7fb;
   font-family: Arial, sans-serif;
+  overflow: hidden;   /* removes page scrollbar */
+  margin: 0;
 }
 
-.form-container {
 
+.form-container {
   max-width: 900px;
   width: 100%;
   margin-left: 150px;
@@ -14,6 +16,9 @@ body {
   background: white;
   border-radius: 15px;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+
+  max-height: 100vh;   /* keeps form inside screen */
+  overflow-y: auto;    /* scroll inside form if content is large */
 }
 
 .form-container h2 {

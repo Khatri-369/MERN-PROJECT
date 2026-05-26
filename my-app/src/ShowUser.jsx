@@ -8,7 +8,7 @@ export default function ShowUser(){
     
     useEffect(()=>{
         const retrive = async()=>{
-            const user = await axios.get("http://localhost:5000/user/showuser");
+            const user = await axios.get("http://localhost:8000/user/showuser");
             setdata(user.data);
         }
         retrive();

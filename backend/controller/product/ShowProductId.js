@@ -11,10 +11,7 @@ export const ShowProductId = async (req, res) => {
             });
         }
 
-        res.status(200).json({
-            message: "PRODUCT FOUND",
-            data: Products
-        });
+        res.status(200).json(Products);
 
     } catch (error) {
         res.status(500).json({

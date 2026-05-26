@@ -5,26 +5,25 @@ import { useNavigate } from "react-router-dom";
 import "./css/UserForm.css";
 
 export default function Manageuser(){
-      const [data,setdata] = useState([]);
+      const [dataa,setdata] = useState([]);
       const navigate = useNavigate();
     
     useEffect(()=>{
         const retrive = async()=>{
-            const user = await axios.get("http://localhost:5000/user/showuser");
+            const user = await axios.get("http://localhost:8000/user/showuser");
             setdata(user.data);
         }
         retrive();
     },[]);
 
     const deleteuser = async(cid)=>{
-        await axios.delete(`http://localhost:5000/user/deleteuser/${cid}`).then((response)=>{
+        await axios.delete(`http://localhost:8000/user/deleteuser/${cid}`).then((response)=>{
             setdata((prevuser)=>prevuser.filter((user)=>user._id!==cid))
             toast.success(response.data.msg,{position:'top-right'});
         }).catch((error)=>{
             console.log(error);
         })
     }
-
 
      return(
         <div className='userTable'>
@@ -40,17 +39,16 @@ export default function Manageuser(){
                                 textTransform: "uppercase"
                             }}
                         >
-                            Show All Food Items
+                            Manage All Users
                         </h1>
                     </center>  
                         
-                    <h3 style={{color:'green'}}>Total Records: {data.length}</h3>
+                    <h3 style={{color:'green'}}>Total Records: {dataa.length}</h3>
                     <table border={1} cellPadding={10} cellSpacing={0}>
                         <thead>
                             <tr>
                                 <th>S.No.</th>
                                 <th>Name</th>
-                                 <th>Username</th>
                                  <th>Email</th>
                                  <th>phone</th>
                                  <th>image</th>
@@ -63,7 +61,7 @@ export default function Manageuser(){
                         </thead>
                         <tbody>
                             {
-                                data.map((val,index)=>{
+                                dataa.map((val,index)=>{
                                     return(
                                         <tr key={val._id}>
                                         <td>{index+1}</td>

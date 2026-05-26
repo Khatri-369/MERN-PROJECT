@@ -21,7 +21,7 @@ const userschema  = new mongoose.Schema({
         type: String,
         required : true
     },
-    addresses:{
+    address:{
         type: String,
         required : true
     },
@@ -33,9 +33,9 @@ const userschema  = new mongoose.Schema({
         type:String,
         required: true
     },
-    cdate:{
-        type:String,
-        required: true
+   cdate: {
+        type: Date,
+        default: Date.now
     }
 });
 

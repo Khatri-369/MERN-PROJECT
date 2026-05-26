@@ -1,39 +1,45 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "./css/UserForm.css";
-import toast from "react-hot-toast";  //IMPORT Toaster IN INDEX.JS    
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
-export default function CreateUser(){
-const formData = { //SEE FIELDS IN THE FORM
-    name : "",
-    email : "",
-    password : "",
-    phone : "",
-    profileImage : "",
-    address : "",
-    birthdate : ""
-}
+export default function CreateUser() {
+  const navigate = useNavigate();
+  const formData = {
+    name: "",
+    email: "",
+    password: "",
+    phone: "",
+    profileImage: "",
+    address: "",
+    birthdate: "",
+    gender: "",
+  };
 
-const[data,setdata] = useState(formData);
+  const [data, setdata] = useState(formData);
 
-const handleChange = (e)=>{
-    const{name,value} = e.target;
-    setdata({...data,[name]:value});
-}
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setdata({ ...data, [name]: value });
+  };
 
-const handleSubmit = async(e)=>{
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    try{
-        const data = await axios.post("http://localhost:5000/user/createuser");  //SEE THE CORRECT API CALL
-        toast.success("USER CREATED SUCCESSFULLY");
-    }
-    catch(error){
-        console.log(error);
-    }
-}
 
-return (
+    try {
+      await axios.post("http://localhost:8000/user/createuser", data);
+      toast.success("USER CREATED SUCCESSFULLY");
+      setdata(formData);
+    } catch (error) {
+      console.log(error);
+      toast.error("FAILED TO CREATE USER");
+    }
+  };
+
+  return (
     <div className="form-container">
+      <button onClick={()=>navigate("/")}>BACK</button>
       <h2>Create User</h2>
 
       <form onSubmit={handleSubmit}>
@@ -41,7 +47,7 @@ return (
           type="text"
           name="name"
           placeholder="Enter Name"
-          value={formData.name}
+          value={data.name}
           onChange={handleChange}
         />
 
@@ -49,7 +55,7 @@ return (
           type="email"
           name="email"
           placeholder="Enter Email"
-          value={formData.email}
+          value={data.email}
           onChange={handleChange}
         />
 
@@ -57,7 +63,7 @@ return (
           type="password"
           name="password"
           placeholder="Enter Password"
-          value={formData.password}
+          value={data.password}
           onChange={handleChange}
         />
 
@@ -65,7 +71,7 @@ return (
           type="text"
           name="phone"
           placeholder="Enter Phone"
-          value={formData.phone}
+          value={data.phone}
           onChange={handleChange}
         />
 
@@ -73,25 +79,61 @@ return (
           type="text"
           name="profileImage"
           placeholder="Profile Image URL"
-          value={formData.profileImage}
+          value={data.profileImage}
           onChange={handleChange}
         />
 
         <input
           type="text"
-          name="role"
-          placeholder="Enter Role"
-          value={formData.address}
+          name="address"
+          placeholder="Enter Address"
+          value={data.address}
           onChange={handleChange}
         />
 
         <input
           type="date"
-          name="isVerified"
-          placeholder="Is Verified"
-          value={formData.birthdate}
+          name="birthdate"
+          value={data.birthdate}
           onChange={handleChange}
         />
+
+        <div className="radio-group">
+          <label>Gender:</label>
+
+          <label>
+            <input
+              type="radio"
+              name="gender"
+              value="Male"
+              checked={data.gender === "Male"}
+              onChange={handleChange}
+            />
+            Male
+          </label>
+
+          <label>
+            <input
+              type="radio"
+              name="gender"
+              value="Female"
+              checked={data.gender === "Female"}
+              onChange={handleChange}
+            />
+            Female
+          </label>
+
+          <label>
+            <input
+              type="radio"
+              name="gender"
+              value="Other"
+              checked={data.gender === "Other"}
+              onChange={handleChange}
+            />
+            Other
+          </label>
+        </div>
 
         <button type="submit">Create User</button>
       </form>

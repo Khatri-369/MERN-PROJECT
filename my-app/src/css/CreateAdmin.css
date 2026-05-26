@@ -1,0 +1,69 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f7fb;
+}
+
+.create-admin-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.create-admin-card {
+  width: 450px;
+  background: white;
+  padding: 30px;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+.create-admin-card h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #1e293b;
+}
+
+.create-admin-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.create-admin-card input,
+.create-admin-card textarea,
+.create-admin-card select {
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  font-size: 15px;
+  outline: none;
+}
+
+.create-admin-card textarea {
+  resize: none;
+  height: 80px;
+}
+
+.create-admin-card input:focus,
+.create-admin-card textarea:focus,
+.create-admin-card select:focus {
+  border-color: #2563eb;
+}
+
+.create-admin-card button {
+  padding: 14px;
+  border: none;
+  background: #2563eb;
+  color: white;
+  font-size: 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.create-admin-card button:hover {
+  background: #1d4ed8;
+}

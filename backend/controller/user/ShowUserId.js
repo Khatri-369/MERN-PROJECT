@@ -12,10 +12,7 @@ export const ShowUserId = async (req, res) => {
             });
         }
 
-        res.status(200).json({
-            message: "USER FOUND",
-            data: user
-        });
+        res.status(200).json(user);
 
     } catch (error) {
         res.status(500).json({
