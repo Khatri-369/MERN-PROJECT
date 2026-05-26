@@ -16,10 +16,7 @@ export const UpdateCart = async (req, res) => {
             });
         }
 
-        res.status(200).json({
-            message: "CART UPDATED",
-            data: updateCart
-        });
+        res.status(200).json(updateCart);
 
     } catch (error) {
         res.status(500).json({

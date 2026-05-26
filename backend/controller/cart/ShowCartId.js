@@ -11,10 +11,7 @@ export const ShowCartId = async (req, res) => {
             });
         }
 
-        res.status(200).json({
-            message: "CART FOUND",
-            data: cart
-        });
+        res.status(200).json(cart);
 
     } catch (error) {
         res.status(500).json({

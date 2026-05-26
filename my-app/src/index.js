@@ -27,12 +27,20 @@ import EditAdmin from './EditAdmin';
 import ShowAdmin from './ShowAdmin';
 import SearchAdmin from './SearchAdmin';
 
+// CART
+import CreateCart from './CreateCart';
+import ShowCart from './ShowCart';
+import EditCart from './EditCart';
+import CartDetail from './CartDetail';
+import ManageCart from "./ManageCart";
+import SearchCart from "./SearchCart";
+
 const route = createBrowserRouter([
   {
     path: "/",
     element: <Menu />,
     children: [
-      
+
       // ================= USER ROUTES =================
       {
         path: "createuser",
@@ -97,6 +105,32 @@ const route = createBrowserRouter([
       {
         path: "searchadmin",
         element: <SearchAdmin />
+      },
+
+      // ================= CART ROUTES =================
+      {
+        path: "createcart",
+        element: <CreateCart />
+      },
+      {
+        path: "showcart",
+        element: <ShowCart />
+      },
+      {
+        path: "editcart/:id",
+        element: <EditCart />
+      },
+      {
+        path: "cartdetail/:id",
+        element: <CartDetail />
+      },
+       {
+        path: "managecart",
+        element: <ManageCart />
+      },
+      {
+        path: "searchcart",
+        element: <SearchCart />
       }
     ]
   }

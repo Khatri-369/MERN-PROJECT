@@ -40,8 +40,9 @@ export default function Menu() {
                 Create Admin
               </button>
 
-              <button>Category</button>
-              <button>Order</button>
+              <button onClick={() => navigate("/createcart")}>
+                Create Cart
+              </button>
             </div>
           )}
         </div>
@@ -67,6 +68,10 @@ export default function Menu() {
 
               <button onClick={() => navigate("/manageadmin")}>
                 Manage Admins
+              </button>
+
+              <button onClick={() => navigate("/managecart")}>
+                Manage Cart
               </button>
             </div>
           )}
@@ -94,6 +99,10 @@ export default function Menu() {
               <button onClick={() => navigate("/showadmin")}>
                 Show Admins
               </button>
+
+              <button onClick={() => navigate("/showcart")}>
+                Show Cart
+              </button>
             </div>
           )}
         </div>
@@ -119,6 +128,10 @@ export default function Menu() {
 
               <button onClick={() => navigate("/searchadmin")}>
                 Search Admin
+              </button>
+
+              <button onClick={() => navigate("/searchcart")}>
+                Search Cart
               </button>
             </div>
           )}

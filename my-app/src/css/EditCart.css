@@ -1,0 +1,54 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #fef3c7, #f8fafc);
+}
+
+.editcart-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.editcart-form {
+  width: 420px;
+  background: white;
+  padding: 35px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.editcart-form h2 {
+  text-align: center;
+  color: #1e293b;
+}
+
+.editcart-form input {
+  padding: 14px;
+  border: 2px solid #fde68a;
+  border-radius: 12px;
+  font-size: 16px;
+  outline: none;
+}
+
+.editcart-form input:focus {
+  border-color: #f59e0b;
+}
+
+.editcart-form button {
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  background: #f59e0b;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.editcart-form button:hover {
+  background: #d97706;
+}

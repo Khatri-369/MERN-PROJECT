@@ -10,10 +10,7 @@ export const ShowCart = async (req, res) => {
             });
         }
 
-        res.status(200).json({
-            message: "CART DATA FOUND",
-            data: data
-        });
+        res.status(200).json(data);
 
     } catch (error) {
         res.status(500).json({
