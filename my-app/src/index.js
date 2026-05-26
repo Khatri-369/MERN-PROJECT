@@ -15,6 +15,10 @@ const route = createBrowserRouter([
     element:<Manageuser/>,
   },
   {
+    path:"/edituser/:id",
+    element:<EditUser/>
+  },
+  {
     path:"/",
     element:<CreateUser/>
   }
