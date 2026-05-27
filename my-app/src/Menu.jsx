@@ -43,6 +43,14 @@ export default function Menu() {
               <button onClick={() => navigate("/createcart")}>
                 Create Cart
               </button>
+
+              <button onClick={() => navigate("/createvendor")}>
+                Create Vendor
+              </button>
+
+              <button onClick={() => navigate("/createorder")}>
+                Create Order
+              </button>
             </div>
           )}
         </div>
@@ -72,6 +80,14 @@ export default function Menu() {
 
               <button onClick={() => navigate("/managecart")}>
                 Manage Cart
+              </button>
+
+              <button onClick={() => navigate("/managevendor")}>
+                Manage Vendor
+              </button>
+
+              <button onClick={() => navigate("/manageorder")}>
+                Manage Orders
               </button>
             </div>
           )}
@@ -103,6 +119,14 @@ export default function Menu() {
               <button onClick={() => navigate("/showcart")}>
                 Show Cart
               </button>
+
+              <button onClick={() => navigate("/showvendor")}>
+                Show Vendors
+              </button>
+
+              <button onClick={() => navigate("/showorder")}>
+                Show Orders
+              </button>
             </div>
           )}
         </div>
@@ -132,6 +156,14 @@ export default function Menu() {
 
               <button onClick={() => navigate("/searchcart")}>
                 Search Cart
+              </button>
+
+              <button onClick={() => navigate("/searchvendor")}>
+                Search Vendor
+              </button>
+
+              <button onClick={() => navigate("/searchorder")}>
+                Search Order
               </button>
             </div>
           )}

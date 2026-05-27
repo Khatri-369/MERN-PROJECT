@@ -7,6 +7,8 @@ import userroute from "./routes/UserRoutes.js";
 import productroute from "./routes/ProductRoutes.js";
 import cartroute from "./routes/CartRoutes.js";
 import adminroute from "./routes/AdminRoute.js";
+import vendorroute from "./routes/VendorRoute.js";
+import orderroute from "./routes/OrderRoute.js";
 
 dotenv.config();
 
@@ -28,11 +30,12 @@ app.get("/", (req, res) => {
     res.send("SERVER IS RUNNING...");
 });
 
-
-app.use("/user",userroute);  
-app.use("/product",productroute); 
-app.use("/cart",cartroute);
-app.use("/admin",adminroute);
+app.use("/user", userroute);  
+app.use("/product", productroute); 
+app.use("/cart", cartroute);
+app.use("/admin", adminroute);
+app.use("/vendor", vendorroute);
+app.use("/order", orderroute);
 
 app.listen(PORT, () => {
     console.log(`SERVER IS RUNNING ON PORT ${PORT}`);

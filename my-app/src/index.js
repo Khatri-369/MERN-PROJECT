@@ -35,6 +35,20 @@ import CartDetail from './CartDetail';
 import ManageCart from "./ManageCart";
 import SearchCart from "./SearchCart";
 
+// VENDOR
+import CreateVendor from './CreateVendor';
+import ShowVendor from './ShowVendor';
+import ManageVendor from './ManageVendor';
+import UpdateVendor from './UpdateVendor';
+import SearchVendor from './SearchVendor';
+
+// ORDER
+import CreateOrder from './CreateOrder';
+import ShowOrder from './ShowOrder';
+import ManageOrder from './ManageOrder';
+import UpdateOrder from './UpdateOrder';
+import SearchOrder from './SearchOrder';
+
 const route = createBrowserRouter([
   {
     path: "/",
@@ -131,6 +145,50 @@ const route = createBrowserRouter([
       {
         path: "searchcart",
         element: <SearchCart />
+      },
+
+      // ================= VENDOR ROUTES =================
+      {
+        path: "createvendor",
+        element: <CreateVendor />
+      },
+      {
+        path: "showvendor",
+        element: <ShowVendor />
+      },
+      {
+        path: "managevendor",
+        element: <ManageVendor />
+      },
+      {
+        path: "updatevendor/:id",
+        element: <UpdateVendor />
+      },
+      {
+        path: "searchvendor",
+        element: <SearchVendor />
+      },
+
+      // ================= ORDER ROUTES =================
+      {
+        path: "createorder",
+        element: <CreateOrder />
+      },
+      {
+        path: "showorder",
+        element: <ShowOrder />
+      },
+      {
+        path: "manageorder",
+        element: <ManageOrder />
+      },
+      {
+        path: "updateorder/:id",
+        element: <UpdateOrder />
+      },
+      {
+        path: "searchorder",
+        element: <SearchOrder />
       }
     ]
   }

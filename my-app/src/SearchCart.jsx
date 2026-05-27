@@ -18,7 +18,6 @@ export default function SearchCart() {
         toast.error("FAILED TO LOAD CARTS");
       }
     };
-
     getCarts();
   }, []);
 
@@ -73,9 +72,21 @@ export default function SearchCart() {
             {cart.map((item) => (
               <tr key={item._id}>
                 <td>{item.user}</td>
-                <td>{item.items[0].product}</td>
-                <td>{item.items[0].quantity}</td>
-                <td>₹{item.items[0].price}</td>
+                 <td>
+              {item.items.map((prod) => (
+                <div key={prod.product}>{prod.product}</div>
+              ))}
+            </td>
+              <td>
+              {item.items.map((prod) => (
+                <div key={prod.product}>{prod.quantity}</div>
+              ))}
+            </td>
+             <td>
+              {item.items.map((prod) => (
+                <div key={prod.product}>₹{prod.price}</div>
+              ))}
+            </td>
                 <td>₹{item.totalprice}</td>
 
                 <td>
