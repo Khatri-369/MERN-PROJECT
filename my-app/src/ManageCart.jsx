@@ -12,8 +12,7 @@ export default function ManageCart() {
       const response = await axios.get("http://localhost:8000/cart/showcart");
       setCart(response.data);
     } catch (error) {
-      toast.error("Failed to fetch cart");
-      console.log(error);
+      toast.error("Failed to fetch carts");
     }
   };
 
@@ -22,67 +21,84 @@ export default function ManageCart() {
   }, []);
 
   const deleteCart = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this cart?")) return;
+
     try {
       await axios.delete(`http://localhost:8000/cart/deletecart/${id}`);
       toast.success("Cart Deleted Successfully");
       fetchCart();
     } catch (error) {
       toast.error("Delete Failed");
-      console.log(error);
     }
   };
 
   return (
-    <div className="managecart-container">
-      <h1>Manage Cart</h1>
+    <div className="manage-cart-container">
+      <div className="manage-cart-header">
+        <h2>Manage Cart</h2>
 
-      <table>
+        <Link to="/createcart">
+          <button>Add Cart</button>
+        </Link>
+      </div>
+
+      <table className="cart-table">
         <thead>
           <tr>
-            <th>User</th>
-            <th>Product</th>
-            <th>Quantity</th>
-            <th>Price</th>
-            <th>Total Price</th>
-            <th>Action</th>
+            <th>PRODUCT ID</th>
+            <th>USER ID</th>
+            <th>QUANTITY</th>
+            <th>STATUS</th>
+            <th>CREATED DATE</th>
+            <th>ACTION</th>
           </tr>
         </thead>
 
         <tbody>
-          {cart.map((item) => (
-            <tr key={item._id}>
-              <td>{item.user}</td>
-              <td>
-              {item.items.map((prod) => (
-                <div key={prod.product}>{prod.product}</div>
-              ))}
-            </td>
-              <td>
-              {item.items.map((prod) => (
-                <div key={prod.product}>{prod.quantity}</div>
-              ))}
-            </td>
-             <td>
-              {item.items.map((prod) => (
-                <div key={prod.product}>₹{prod.price}</div>
-              ))}
-            </td>
-              <td>₹{item.totalprice}</td>
+          {cart.length > 0 ? (
+            cart.map((c) => (
+              <tr key={c._id}>
+                <td>{c.product_id}</td>
+                <td>{c.user_id}</td>
+                <td>{c.quantity}</td>
 
-              <td>
-                <Link to={`/editcart/${item._id}`}>
-                  <button className="edit-btn">Edit</button>
-                </Link>
+                <td>
+                  <span
+                    className={
+                      c.cart_status === 1
+                        ? "status-active"
+                        : "status-inactive"
+                    }
+                  >
+                    {c.cart_status === 1 ? "Active" : "Inactive"}
+                  </span>
+                </td>
 
-                <button
-                  className="delete-btn"
-                  onClick={() => deleteCart(item._id)}
-                >
-                  Delete
-                </button>
-              </td>
+                <td>{new Date(c.cdate).toLocaleDateString()}</td>
+
+                <td className="action-buttons">
+                  <Link to="/showcart">
+                    <button className="view-btn">View</button>
+                  </Link>
+
+                  <Link to={`/editcart/${c._id}`}>
+                    <button className="edit-btn">Edit</button>
+                  </Link>
+
+                  <button
+                    className="delete-btn"
+                    onClick={() => deleteCart(c._id)}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="6">No Cart Found</td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
     </div>

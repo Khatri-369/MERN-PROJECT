@@ -1,88 +1,108 @@
-import React, { useState,useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import toast from "react-hot-toast";  //IMPORT Toaster IN INDEX.JS   
-import { useNavigate } from "react-router-dom";
-import "./css/UserForm.css";
+import "./css/ManageUser.css";
+import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
 
-export default function Manageuser(){
-      const [dataa,setdata] = useState([]);
-      const navigate = useNavigate();
-    
-    useEffect(()=>{
-        const retrive = async()=>{
-            const user = await axios.get("http://localhost:8000/user/showuser");
-            setdata(user.data);
-        }
-        retrive();
-    },[]);
+export default function ManageUser() {
+  const [user, setUser] = useState([]);
 
-    const deleteuser = async(cid)=>{
-        await axios.delete(`http://localhost:8000/user/deleteuser/${cid}`).then((response)=>{
-            setdata((prevuser)=>prevuser.filter((user)=>user._id!==cid))
-            toast.success(response.data.msg,{position:'top-right'});
-        }).catch((error)=>{
-            console.log(error);
-        })
+  const fetchUser = async () => {
+    try {
+      const response = await axios.get("http://localhost:8000/user/showuser");
+      setUser(response.data);
+    } catch (error) {
+      toast.error("Failed to fetch users");
     }
+  };
 
-     return(
-        <div className='userTable'>
-                  <center>
-                        <h1
-                            style={{
-                                background: "linear-gradient(90deg, #ff6a00, #ee0979)",
-                                WebkitBackgroundClip: "text",
-                                WebkitTextFillColor: "transparent",
-                                fontSize: "40px",
-                                fontWeight: "bold",
-                                letterSpacing: "2px",
-                                textTransform: "uppercase"
-                            }}
-                        >
-                            Manage All Users
-                        </h1>
-                    </center>  
-                        
-                    <h3 style={{color:'green'}}>Total Records: {dataa.length}</h3>
-                    <table border={1} cellPadding={10} cellSpacing={0}>
-                        <thead>
-                            <tr>
-                                <th>S.No.</th>
-                                <th>Name</th>
-                                 <th>Email</th>
-                                 <th>phone</th>
-                                 <th>image</th>
-                                 <th>address</th>
-                                 <th>birthdate</th>
-                                 <th>gender</th>
-                                 <th>create Date</th>
-                                <th>EDITS</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                dataa.map((val,index)=>{
-                                    return(
-                                        <tr key={val._id}>
-                                        <td>{index+1}</td>
-                                        <td>{val.name}</td>
-                                        <td>{val.email}</td>
-                                        <td>{val.phone}</td>
-                                        <td>{val.profileImage}</td>
-                                        <td>{val.address}</td>
-                                        <td>{val.birthdate}</td>
-                                        <td>{val.gender}</td>
-                                        <td>{val.cdate}</td>
-                                        <td>
-                                            <td><button onClick={()=>deleteuser(val._id)}>DELETE</button></td>
-                                            <td><button onClick={()=>navigate(`/edituser/${val._id}`)}>Edit</button></td>
-                                        </td>
-                                        </tr>
-                                    );
-                                })  
-                            }
-                        </tbody>
-                    </table>
-        </div>
-    );
+  useEffect(() => {
+    fetchUser();
+  }, []);
+
+  const deleteUser = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this user?")) return;
+
+    try {
+      await axios.delete(`http://localhost:8000/user/deleteuser/${id}`);
+      toast.success("User Deleted Successfully");
+      fetchUser();
+    } catch (error) {
+      toast.error("Delete Failed");
+    }
+  };
+
+  return (
+    <div className="manage-user-container">
+      <div className="manage-user-header">
+        <h2>Manage Users</h2>
+      </div>
+
+      <table className="user-table">
+        <thead>
+          <tr>
+            <th>FULL NAME</th>
+            <th>USERNAME</th>
+            <th>EMAIL</th>
+            <th>MOBILE</th>
+            <th>CITY</th>
+            <th>STATE</th>
+            <th>PIN CODE</th>
+            <th>STATUS</th>
+            <th>CREATED DATE</th>
+            <th>ACTION</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {user.length > 0 ? (
+            user.map((u) => (
+              <tr key={u._id}>
+                <td>{u.first_name} {u.last_name}</td>
+                <td>{u.user_name}</td>
+                <td>{u.email_id}</td>
+                <td>{u.mobile_no}</td>
+                <td>{u.city}</td>
+                <td>{u.state}</td>
+                <td>{u.pin_code}</td>
+
+                <td>
+                  <span
+                    className={
+                      u.status === 1 ? "status-active" : "status-inactive"
+                    }
+                  >
+                    {u.status === 1 ? "Active" : "Inactive"}
+                  </span>
+                </td>
+
+                <td>{new Date(u.cdate).toLocaleDateString()}</td>
+
+                <td className="action-buttons">
+                  <Link to="/showuser">
+                    <button className="view-btn">View</button>
+                  </Link>
+
+                  <Link to={`/edituser/${u._id}`}>
+                    <button className="edit-btn">Edit</button>
+                  </Link>
+
+                  <button
+                    className="delete-btn"
+                    onClick={() => deleteUser(u._id)}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="10">No Users Found</td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+    </div>
+  );
 }

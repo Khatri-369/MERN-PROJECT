@@ -1,94 +1,86 @@
 import React, { useState } from "react";
 import axios from "axios";
-import "./css/CreateCart.css";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import "./css/CreateCart.css";
 
 export default function CreateCart() {
-  const navigate = useNavigate();
-
   const [cart, setCart] = useState({
-    user: "",
-    product: "",
+    product_id: "",
+    user_id: "",
     quantity: "",
-    price: "",
+    cart_status: 1
   });
 
   const inputHandler = (e) => {
+    const { name, value } = e.target;
+
     setCart({
       ...cart,
-      [e.target.name]: e.target.value,
+      [name]: value
     });
   };
 
   const submitForm = async (e) => {
     e.preventDefault();
 
-    const totalprice = Number(cart.quantity) * Number(cart.price);
-
-    const cartData = {
-      user: cart.user,
-      items: [
-        {
-          product: cart.product,
-          quantity: cart.quantity,
-          price: cart.price,
-        },
-      ],
-      totalprice,
-    };
-
     try {
-      await axios.post("http://localhost:8000/cart/createcart", cartData);
+      await axios.post("http://localhost:8000/cart/createcart", cart);
 
-      toast.success("Cart Added Successfully");
-      navigate("/showcart");
+      toast.success("Cart Created Successfully");
+
+      setCart({
+        product_id: "",
+        user_id: "",
+        quantity: "",
+        cart_status: 1
+      });
+
     } catch (error) {
-      toast.error("Failed to Add Cart");
+      toast.error("Create Failed");
       console.log(error);
     }
   };
 
   return (
-    <div className="createcart-container">
-      <form className="createcart-form" onSubmit={submitForm}>
+    <div className="cart-form-container">
+      <form className="cart-form" onSubmit={submitForm}>
         <h2>Create Cart</h2>
 
         <input
           type="text"
-          name="user"
-          placeholder="Enter User Name"
-          value={cart.user}
+          name="product_id"
+          placeholder="Product ID"
+          value={cart.product_id}
           onChange={inputHandler}
           required
         />
 
         <input
           type="text"
-          name="product"
-          placeholder="Enter Product Name"
-          value={cart.product}
+          name="user_id"
+          placeholder="User ID"
+          value={cart.user_id}
           onChange={inputHandler}
           required
         />
 
         <input
-          type="number"
+          type="text"
           name="quantity"
-          placeholder="Enter Quantity"
+          placeholder="Quantity"
           value={cart.quantity}
           onChange={inputHandler}
           required
         />
 
-        <input
-          type="number"
-          name="price"
-          placeholder="Enter Price"
-          value={cart.price}
+        <select
+          name="cart_status"
+          value={cart.cart_status}
           onChange={inputHandler}
-          required
-        />
+        >
+          <option value={1}>Active</option>
+          <option value={0}>Inactive</option>
+        </select>
 
         <button type="submit">Create Cart</button>
       </form>

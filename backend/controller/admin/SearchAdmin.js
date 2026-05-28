@@ -1,21 +1,20 @@
 import Admin from "../../model/AdminModel.js";
 
-export const SearchAdmin = async (req, res) => {
+export const searchAdmin = async (req, res) => {
     try {
         const text = req.query.search;
 
         const admins = await Admin.find({
-            name: { $regex: text, $options: "i" }
+            fullname: new RegExp(text, "i")
         });
 
-        if (admins.length === 0) {
+        if (!admins.length) {
             return res.status(404).json({
                 message: "ADMIN NOT FOUND"
             });
         }
 
         res.status(200).json(admins);
-
     } catch (error) {
         res.status(500).json({
             error: error.message

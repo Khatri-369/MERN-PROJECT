@@ -1,67 +1,90 @@
-import React, { useState,useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import toast from "react-hot-toast";  //IMPORT Toaster IN INDEX.JS   
+import toast from "react-hot-toast";
 import "./css/ShowUser.css";
+import { useNavigate } from "react-router-dom";
 
-export default function ShowUser(){
-    const [data,setdata] = useState([]);
-    
-    useEffect(()=>{
-        const retrive = async()=>{
-            const user = await axios.get("http://localhost:8000/user/showuser");
-            setdata(user.data);
-        }
-        retrive();
-    },[]);
+export default function ShowUser() {
+  const [user, setUser] = useState([]);
+  const navigate = useNavigate();
 
-    return(
-       <>
-  <div className="userTableContainer">
-    <div className="tableHeader">
-      <div className="recordCount">
-        Total Records: <span>{data.length}</span>
+  const fetchUser = async () => {
+    try {
+      const response = await axios.get("http://localhost:8000/user/showuser");
+      setUser(response.data);
+    } catch (error) {
+      toast.error("Failed to fetch users");
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
+
+  return (
+    <div className="show-user-container">
+      <div className="show-user-header">
+      <h2 style={{ textAlign: "center", marginBottom: "30px" }}>
+  Show Users
+</h2>
+    </div>
+    <div>
+        <button
+          className="back-btn"
+          onClick={() => navigate("/manageuser")}
+        >
+          Back
+        </button>
+      </div>
+
+      <div className="user-grid">
+        {user.length > 0 ? (
+          user.map((u) => (
+            <div className="user-card" key={u._id}>
+              <h3>
+                {u.first_name} {u.last_name}
+              </h3>
+
+              <p>
+                <strong>Username:</strong> {u.user_name}
+              </p>
+
+              <p>
+                <strong>Email:</strong> {u.email_id}
+              </p>
+
+              <p>
+                <strong>Mobile:</strong> {u.mobile_no}
+              </p>
+
+              <p>
+                <strong>City:</strong> {u.city}
+              </p>
+
+              <p>
+                <strong>State:</strong> {u.state}
+              </p>
+
+              <p>
+                <strong>Pin Code:</strong> {u.pin_code}
+              </p>
+
+              <p>
+                <strong>Status:</strong>{" "}
+                {u.status === 1 ? "Active" : "Inactive"}
+              </p>
+
+              <p>
+                <strong>Created:</strong>{" "}
+                {new Date(u.cdate).toLocaleDateString()}
+              </p>
+            </div>
+          ))
+        ) : (
+          <p>No Users Found</p>
+        )}
       </div>
     </div>
-
-    <div className="tableWrapper">
-      <table>
-        <thead>
-          <tr>
-            <th>S.No.</th>
-            <th>Name</th>
-            <th>Username</th>
-            <th>Email</th>
-            <th>phone</th>
-            <th>image</th>
-            <th>address</th>
-            <th>birthdate</th>
-            <th>gender</th>
-            <th>create Date</th>
-          </tr>
-        </thead>
-
-        <tbody>
-         {
-            data.map((user,index)=>{
-            return(
-                <tr key={user._id}>
-                   <td>{index+1}</td>
-                   <td>{user.name}</td>
-                   <td>{user.email}</td>
-                   <td>{user.phone}</td>
-                   <td>{user.profileImage}</td>
-                   <td>{user.address}</td>
-                   <td>{user.birthdate}</td>
-                   <td>{user.gender}</td>
-                   <td>{user.cdate}</td>
-                </tr>
-            );
-            })
-         }
-        </tbody>
-      </table>
-    </div>
-  </div>
-</>
-    )
+  );
 }

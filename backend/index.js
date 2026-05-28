@@ -9,6 +9,7 @@ import cartroute from "./routes/CartRoutes.js";
 import adminroute from "./routes/AdminRoute.js";
 import vendorroute from "./routes/VendorRoute.js";
 import orderroute from "./routes/OrderRoute.js";
+import categoryroute from "./routes/CategoryRoute.js";
 
 dotenv.config();
 
@@ -36,6 +37,7 @@ app.use("/cart", cartroute);
 app.use("/admin", adminroute);
 app.use("/vendor", vendorroute);
 app.use("/order", orderroute);
+app.use("/category", categoryroute);
 
 app.listen(PORT, () => {
     console.log(`SERVER IS RUNNING ON PORT ${PORT}`);

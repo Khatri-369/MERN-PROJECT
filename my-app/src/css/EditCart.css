@@ -1,54 +1,47 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: linear-gradient(135deg, #fef3c7, #f8fafc);
+  background: #f5f7fb;
 }
 
-.editcart-container {
-  min-height: 100vh;
+.edit-cart-container {
   display: flex;
   justify-content: center;
   align-items: center;
+  min-height: 100vh;
 }
 
-.editcart-form {
-  width: 420px;
+.edit-cart-form {
+  width: 450px;
   background: white;
   padding: 35px;
   border-radius: 20px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   gap: 18px;
 }
 
-.editcart-form h2 {
+.edit-cart-form h2 {
   text-align: center;
   color: #1e293b;
 }
 
-.editcart-form input {
+.edit-cart-form input,
+.edit-cart-form select {
   padding: 14px;
-  border: 2px solid #fde68a;
+  border: 1px solid #d1d5db;
   border-radius: 12px;
-  font-size: 16px;
+  font-size: 15px;
   outline: none;
 }
 
-.editcart-form input:focus {
-  border-color: #f59e0b;
-}
-
-.editcart-form button {
+.edit-cart-form button {
   padding: 14px;
   border: none;
   border-radius: 12px;
-  background: #f59e0b;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
   color: white;
   font-size: 16px;
   cursor: pointer;
-}
-
-.editcart-form button:hover {
-  background: #d97706;
 }

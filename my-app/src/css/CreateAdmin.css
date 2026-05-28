@@ -1,69 +1,61 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: #f4f7fb;
+  background: #f5f7fb;
 }
 
-.create-admin-container {
-  min-height: 100vh;
+.admin-form-container {
   display: flex;
   justify-content: center;
   align-items: center;
+  min-height: 100vh;
   padding: 20px;
 }
 
-.create-admin-card {
+.admin-form {
   width: 450px;
   background: white;
-  padding: 30px;
-  border-radius: 18px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
-}
-
-.create-admin-card h2 {
-  text-align: center;
-  margin-bottom: 20px;
-  color: #1e293b;
-}
-
-.create-admin-card form {
+  padding: 35px;
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.1);
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 18px;
 }
 
-.create-admin-card input,
-.create-admin-card textarea,
-.create-admin-card select {
-  padding: 12px;
+.admin-form h2 {
+  text-align: center;
+  color: #1e293b;
+  margin-bottom: 10px;
+}
+
+.admin-form input,
+.admin-form select {
+  padding: 14px;
   border: 1px solid #d1d5db;
-  border-radius: 10px;
+  border-radius: 12px;
   font-size: 15px;
   outline: none;
+  transition: 0.3s;
 }
 
-.create-admin-card textarea {
-  resize: none;
-  height: 80px;
-}
-
-.create-admin-card input:focus,
-.create-admin-card textarea:focus,
-.create-admin-card select:focus {
+.admin-form input:focus,
+.admin-form select:focus {
   border-color: #2563eb;
+  box-shadow: 0 0 6px rgba(37,99,235,0.2);
 }
 
-.create-admin-card button {
+.admin-form button {
   padding: 14px;
   border: none;
-  background: #2563eb;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
   color: white;
   font-size: 16px;
-  border-radius: 10px;
   cursor: pointer;
   transition: 0.3s;
 }
 
-.create-admin-card button:hover {
-  background: #1d4ed8;
+.admin-form button:hover {
+  transform: translateY(-2px);
 }

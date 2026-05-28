@@ -1,10 +1,8 @@
-import mongoose from "mongoose";
 import User from "../../model/UserModel.js";
 
-export const ShowUserId = async (req, res) => {
+export const showUserId = async (req, res) => {
     try {
-        const id = req.params.id;
-        const user = await User.findById(id);
+        const user = await User.findById(req.params.id);
 
         if (!user) {
             return res.status(404).json({

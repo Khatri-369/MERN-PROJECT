@@ -1,54 +1,104 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f5f7fb;
+}
+
 .manage-admin-container {
   padding: 30px;
 }
 
-.manage-admin-container h2 {
-  text-align: center;
+.manage-admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 25px;
 }
 
-table {
+.manage-admin-header h2 {
+  color: #1e293b;
+}
+
+.manage-admin-header button {
+  padding: 12px 20px;
+  border: none;
+  background: #2563eb;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.admin-table {
   width: 100%;
-  background: white;
   border-collapse: collapse;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-  border-radius: 14px;
+  background: white;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+  border-radius: 15px;
   overflow: hidden;
 }
 
-th, td {
-  padding: 14px;
-  text-align: center;
-  border-bottom: 1px solid #e2e8f0;
-}
-
-th {
-  background: #2563eb;
+.admin-table th {
+  background: #1e293b;
   color: white;
+  padding: 15px;
 }
 
-td img {
-  width: 60px;
-  height: 60px;
-  object-fit: cover;
+.admin-table td {
+  padding: 15px;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
+
+.admin-table img {
+  width: 55px;
+  height: 55px;
   border-radius: 50%;
+  object-fit: cover;
+}
+
+.status-active {
+  background: #dcfce7;
+  color: #15803d;
+  padding: 8px 12px;
+  border-radius: 20px;
+}
+
+.status-inactive {
+  background: #fee2e2;
+  color: #dc2626;
+  padding: 8px 12px;
+  border-radius: 20px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.view-btn {
+  background: #10b981;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
 }
 
 .edit-btn {
   background: #f59e0b;
+  color: white;
   border: none;
   padding: 8px 14px;
-  color: white;
   border-radius: 8px;
   cursor: pointer;
-  margin-right: 8px;
 }
 
 .delete-btn {
   background: #ef4444;
+  color: white;
   border: none;
   padding: 8px 14px;
-  color: white;
   border-radius: 8px;
   cursor: pointer;
 }

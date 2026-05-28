@@ -1,6 +1,6 @@
 import Admin from "../../model/AdminModel.js";
 
-export const ShowAdminId = async (req, res) => {
+export const showAdminById = async (req, res) => {
     try {
         const admin = await Admin.findById(req.params.id);
 
@@ -11,7 +11,6 @@ export const ShowAdminId = async (req, res) => {
         }
 
         res.status(200).json(admin);
-
     } catch (error) {
         res.status(500).json({
             error: error.message

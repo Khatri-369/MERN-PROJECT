@@ -1,19 +1,20 @@
 import Product from "../../model/ProductModel.js";
 
-export const ShowProductBySearch = async (req, res) => {
+export const ShowProductSearch = async (req, res) => {
     try {
         const text = req.query.search;
-        const Productt = await Product.find({
-            name : new RegExp(text,"i")
+
+        const product = await Product.find({
+            productname: new RegExp(text, "i")
         });
 
-        if (Productt.length==0) {
+        if (!product.length) {
             return res.status(404).json({
                 message: "PRODUCT NOT FOUND"
             });
         }
 
-        res.status(200).json(Productt);
+        res.status(200).json(product);
 
     } catch (error) {
         res.status(500).json({

@@ -1,0 +1,85 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f5f7fb;
+}
+
+.manage-category-container {
+  padding: 30px;
+}
+
+.manage-category-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.manage-category-header h2 {
+  color: #1e293b;
+  font-size: 28px;
+}
+
+.manage-category-header button {
+  padding: 12px 20px;
+  border: none;
+  background: #2563eb;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.category-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.category-table th {
+  background: #1e293b;
+  color: white;
+  padding: 15px;
+  text-align: center;
+}
+
+.category-table td {
+  padding: 15px;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.action-buttons a {
+  text-decoration: none;
+}
+
+.view-btn,
+.edit-btn,
+.delete-btn {
+  min-width: 75px;
+  height: 38px;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+}
+
+.view-btn {
+  background: #10b981;
+}
+
+.edit-btn {
+  background: #f59e0b;
+}
+
+.delete-btn {
+  background: #ef4444;
+}

@@ -2,11 +2,7 @@ import Order from "../../model/OrderModel.js";
 
 export const updateOrder = async (req, res) => {
   try {
-    const order = await Order.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
+    const order = await Order.findByIdAndUpdate(req.params.id,req.body,{ new: true });
 
     if (!order) {
       return res.status(404).json({

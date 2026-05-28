@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./css/ShowCart.css";
 import toast from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function ShowCart() {
   const [cart, setCart] = useState([]);
+  const navigate = useNavigate();
 
   const fetchCart = async () => {
     try {
@@ -22,51 +23,51 @@ export default function ShowCart() {
   }, []);
 
   return (
-    <div className="showcart-container">
-      <h1>Show Cart</h1>
+    <div className="show-cart-container">
+      <div className="show-cart-header">
+        <h2>Show Cart</h2>
 
-      <table>
-        <thead>
-          <tr>
-            <th>User</th>
-            <th>Product</th>
-            <th>Quantity</th>
-            <th>Price</th>
-            <th>Total Price</th>
-            <th>Action</th>
-          </tr>
-        </thead>
+        <button
+          className="back-btn"
+          onClick={() => navigate("/managecart")}
+        >
+          Back
+        </button>
+      </div>
 
-        <tbody>
-          {cart.map((item) => (
-            <tr key={item._id}>
-              <td>{item.user}</td>
-            <td>
-              {item.items.map((prod) => (
-                <div key={prod.product}>{prod.product}</div>
-              ))}
-            </td>
-              <td>
-              {item.items.map((prod) => (
-                <div key={prod.product}>{prod.quantity}</div>
-              ))}
-            </td>
-             <td>
-              {item.items.map((prod) => (
-                <div key={prod.product}>₹{prod.price}</div>
-              ))}
-            </td>
-              <td>₹{item.totalprice}</td>
+      <div className="cart-grid">
+        {cart.length > 0 ? (
+          cart.map((c) => (
+            <div className="cart-card" key={c._id}>
+              <h3>Cart Details</h3>
 
-              <td>
-                <Link to={`/cartdetail/${item._id}`}>
-                  <button className="view-btn">View</button>
-                </Link>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+              <p>
+                <strong>Product ID:</strong> {c.product_id}
+              </p>
+
+              <p>
+                <strong>User ID:</strong> {c.user_id}
+              </p>
+
+              <p>
+                <strong>Quantity:</strong> {c.quantity}
+              </p>
+
+              <p>
+                <strong>Status:</strong>{" "}
+                {c.cart_status === 1 ? "Active" : "Inactive"}
+              </p>
+
+              <p>
+                <strong>Created:</strong>{" "}
+                {new Date(c.cdate).toLocaleDateString()}
+              </p>
+            </div>
+          ))
+        ) : (
+          <p>No Cart Found</p>
+        )}
+      </div>
     </div>
   );
 }

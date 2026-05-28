@@ -41,19 +41,22 @@ export default function ShowOrder() {
           </tr>
         </thead>
 
-        <tbody>
-          {orders.map((item) => (
-            <tr key={item._id}>
+    <tbody>
+        {orders.map((item) =>
+          item.items.map((productItem, index) => (
+            <tr key={`${item._id}-${index}`}>
               <td>{item.user}</td>
-              <td>{item.items[0].product}</td>
-              <td>{item.items[0].quantity}</td>
-              <td>₹{item.items[0].price}</td>
-              <td>₹{item.totalprice}</td>
+              <td>{productItem.product}</td>
+              <td>{productItem.quantity}</td>
+              <td>₹{productItem.price}</td>
+              <td>₹{productItem.price * productItem.quantity}</td>
               <td>{item.deliveryaddress}</td>
               <td>{item.orderstatus}</td>
             </tr>
-          ))}
-        </tbody>
+          ))
+        )}
+    </tbody>
+    
       </table>
     </div>
   );

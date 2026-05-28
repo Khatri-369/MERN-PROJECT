@@ -2,58 +2,87 @@ import React, { useState,useEffect } from "react";
 import axios from "axios";
 import "./css/SearchProduct.css";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 export default function SearchProduct() {
-  const [searchh, setSearch] = useState("");
-  const [products, setProducts] = useState([]);
+  const [search, setSearch] = useState("");
+  const [product, setProduct] = useState([]);
+  const navigate = useNavigate();
 
-    useEffect(()=>{
-        const getdata = async()=>{
-            const value = await axios.get("http://localhost:8000/product/showproduct");
-            setProducts(value.data);
-        }
-        getdata();
+  
+  useEffect(()=>{
+          const getdata = async()=>{
+              const value = await axios.get("http://localhost:8000/product/showproduct");
+              setProduct(value.data);
+          }
+          getdata();
     },[]);
 
   const searchProduct = async () => {
+    if (!search.trim()) {
+      toast.error("Enter product name");
+      return;
+    }
+
     try {
-      const res = await axios.get(
-        `http://localhost:8000/product/searchproduct?search=${searchh}`
+      const response = await axios.get(
+        `http://localhost:8000/product/searchproduct?search=${search}`
       );
 
-      setProducts(res.data);
+      setProduct(response.data);
+
     } catch (error) {
-  console.log(error.response?.data || error.message);
-  toast.error("PRODUCT NOT FOUND");
-}
+      toast.error("Product Not Found");
+      setProduct([]);
+      console.log(error);
+    }
   };
 
   return (
     <div className="search-product-container">
-      <h2>Search Product</h2>
+      <div className="search-product-header">
+        <h2>Search Product</h2>
+
+        <button
+          className="back-btn"
+          onClick={() => navigate("/manageproduct")}
+        >
+          Back
+        </button>
+      </div>
 
       <div className="search-box">
         <input
           type="text"
-          placeholder="Enter product name..."
-          value={searchh}
+          placeholder="Search by product name"
+          value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
 
         <button onClick={searchProduct}>Search</button>
       </div>
 
-      <div className="product-grid">
-        {products.map((item) => (
-          <div className="product-card" key={item._id}>
-            <img src={item.images[0]} alt={item.name} />
+      <div className="search-results">
+        {product.length > 0 ? (
+          product.map((p) => (
+            <div className="search-card" key={p._id}>
+              <img src={p.productphoto} alt="product" />
 
-            <h3>{item.name}</h3>
-            <p>{item.brand}</p>
-            <p>₹{item.price}</p>
-            <p>{item.seller}</p>
-          </div>
-        ))}
+              <h3>{p.productname}</h3>
+
+              <p><strong>Model No:</strong> {p.modelnumber}</p>
+              <p><strong>Year:</strong> {p.modelyear}</p>
+              <p><strong>Brand:</strong> {p.brandname}</p>
+              <p><strong>Category:</strong> {p.categoryname}</p>
+              <p><strong>Color:</strong> {p.color}</p>
+              <p><strong>Weight:</strong> {p.weight}</p>
+              <p><strong>Included:</strong> {p.includedcomponent}</p>
+              <p><strong>Warranty:</strong> {p.warranty}</p>
+            </div>
+          ))
+        ) : (
+          <p>No Result</p>
+        )}
       </div>
     </div>
   );

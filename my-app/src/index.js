@@ -41,6 +41,7 @@ import ShowVendor from './ShowVendor';
 import ManageVendor from './ManageVendor';
 import UpdateVendor from './UpdateVendor';
 import SearchVendor from './SearchVendor';
+import ShowVendorById from './ShowVendorById';
 
 // ORDER
 import CreateOrder from './CreateOrder';
@@ -48,6 +49,13 @@ import ShowOrder from './ShowOrder';
 import ManageOrder from './ManageOrder';
 import UpdateOrder from './UpdateOrder';
 import SearchOrder from './SearchOrder';
+
+// CATEGORY
+import CreateCategory from './CreateCategory';
+import ManageCategory from './ManageCategory';
+import EditCategory from './EditCategory';
+import ShowCategory from './ShowCategory';
+import SearchCategory from './SearchCategory';
 
 const route = createBrowserRouter([
   {
@@ -168,6 +176,10 @@ const route = createBrowserRouter([
         path: "searchvendor",
         element: <SearchVendor />
       },
+      {
+        path:"showvendorbyid/:id",
+        element:<ShowVendorById/>
+      },
 
       // ================= ORDER ROUTES =================
       {
@@ -189,7 +201,29 @@ const route = createBrowserRouter([
       {
         path: "searchorder",
         element: <SearchOrder />
-      }
+      },
+
+      // ================= CATEGORY ROUTES =================
+      {
+        path: "createcategory",
+        element: <CreateCategory />
+      },
+      {
+        path: "managecategory",
+        element: <ManageCategory />
+      },
+      {
+        path: "showcategory",
+        element: <ShowCategory />
+      },
+      {
+        path: "editcategory/:id",
+        element: <EditCategory />
+      },
+      {
+        path: "searchcategory",
+        element: <SearchCategory />
+      },
     ]
   }
 ]);

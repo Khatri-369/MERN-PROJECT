@@ -5,109 +5,99 @@ import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 
 export default function EditCart() {
-  const navigate = useNavigate();
-  const { id } = useParams();
-
   const [cart, setCart] = useState({
-    user: "",
-    product: "",
+    product_id: "",
+    user_id: "",
     quantity: "",
-    price: "",
+    cart_status: 1
   });
 
-  const inputHandler = (e) => {
-    setCart({
-      ...cart,
-      [e.target.name]: e.target.value,
-    });
-  };
+  const { id } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchSingleCart = async () => {
+    const fetchCart = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/cart/showcartbyid/${id}`
+          `http://localhost:8000/cart/showcart/${id}`
         );
 
-        setCart({
-          user: response.data.user,
-          product: response.data.items[0].product,
-          quantity: response.data.items[0].quantity,
-          price: response.data.items[0].price,
-        });
+        setCart(response.data);
+
       } catch (error) {
-        toast.error("Failed to fetch cart");
+        toast.error("Failed To Fetch Cart");
       }
     };
-    fetchSingleCart();
+
+    fetchCart();
   }, [id]);
+
+  const inputHandler = (e) => {
+    const { name, value } = e.target;
+
+    setCart({
+      ...cart,
+      [name]: value
+    });
+  };
 
   const submitForm = async (e) => {
     e.preventDefault();
 
-    const totalprice = Number(cart.quantity) * Number(cart.price);
-
-    const updatedCart = {
-      user: cart.user,
-      items: [
-        {
-          product: cart.product,
-          quantity: cart.quantity,
-          price: cart.price,
-        },
-      ],
-      totalprice,
-    };
-
     try {
       await axios.put(
         `http://localhost:8000/cart/updatecart/${id}`,
-        updatedCart
+        cart
       );
 
       toast.success("Cart Updated Successfully");
-      navigate("/showcart");
+      navigate("/managecart");
+
     } catch (error) {
       toast.error("Update Failed");
     }
   };
 
   return (
-    <div className="editcart-container">
-      <form className="editcart-form" onSubmit={submitForm}>
+    <div className="edit-cart-container">
+      <form className="edit-cart-form" onSubmit={submitForm}>
         <h2>Edit Cart</h2>
 
         <input
           type="text"
-          name="user"
-          value={cart.user}
+          name="product_id"
+          value={cart.product_id}
           onChange={inputHandler}
+          placeholder="Product ID"
           required
         />
 
         <input
           type="text"
-          name="product"
-          value={cart.product}
+          name="user_id"
+          value={cart.user_id}
           onChange={inputHandler}
+          placeholder="User ID"
           required
         />
 
         <input
-          type="number"
+          type="text"
           name="quantity"
           value={cart.quantity}
           onChange={inputHandler}
+          placeholder="Quantity"
           required
         />
 
-        <input
-          type="number"
-          name="price"
-          value={cart.price}
+        <select
+          name="cart_status"
+          value={cart.cart_status}
           onChange={inputHandler}
-          required
-        />
+        >
+          <option value={1}>Active</option>
+          <option value={0}>Inactive</option>
+        </select>
 
         <button type="submit">Update Cart</button>
       </form>

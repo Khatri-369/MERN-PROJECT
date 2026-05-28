@@ -1,46 +1,45 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import "./css/EditAdmin.css";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
-import "./css/CreateAdmin.css";
 
 export default function EditAdmin() {
+  const [admin, setAdmin] = useState({
+    fullname: "",
+    username: "",
+    password: "",
+    emailid: "",
+    mobileno: "",
+    photo: "",
+    status: 1
+  });
+
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [admin, setAdmin] = useState({
-    name: "",
-    email: "",
-    password: "",
-    phone: "",
-    profileImage: "",
-    address: "",
-    birthdate: "",
-    gender: "",
-    role: ""
-  });
-
   const inputHandler = (e) => {
-    setAdmin({ ...admin, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setAdmin({ ...admin, [name]: value });
   };
 
   useEffect(() => {
-    const getSingleAdmin = async () => {
+    const fetchAdmin = async () => {
       try {
-        const res = await axios.get(
-          `http://localhost:8000/admin/showadminid/${id}`
+        const response = await axios.get(
+          `http://localhost:8000/admin/showadmin/${id}`
         );
-
-        setAdmin(res.data);
+        setAdmin(response.data);
       } catch (error) {
-        toast.error("FAILED TO LOAD ADMIN");
+        toast.error("Failed To Fetch Admin");
+        console.log(error);
       }
     };
 
-    getSingleAdmin();
+    fetchAdmin();
   }, [id]);
 
-  const updateAdmin = async (e) => {
+  const submitForm = async (e) => {
     e.preventDefault();
 
     try {
@@ -49,89 +48,85 @@ export default function EditAdmin() {
         admin
       );
 
-      toast.success("ADMIN UPDATED");
+      toast.success("Admin Updated Successfully");
       navigate("/manageadmin");
 
     } catch (error) {
-      toast.error("UPDATE FAILED");
+      toast.error("Update Failed");
+      console.log(error);
     }
   };
 
   return (
-    <div className="create-admin-container">
-      <div className="create-admin-card">
+    <div className="edit-admin-container">
+      <form className="edit-admin-form" onSubmit={submitForm}>
         <h2>Edit Admin</h2>
 
-        <form onSubmit={updateAdmin}>
-          <input
-            type="text"
-            name="name"
-            value={admin.name}
-            onChange={inputHandler}
-          />
+        <input
+          type="text"
+          name="fullname"
+          value={admin.fullname}
+          onChange={inputHandler}
+          placeholder="Full Name"
+          required
+        />
 
-          <input
-            type="email"
-            name="email"
-            value={admin.email}
-            onChange={inputHandler}
-          />
+        <input
+          type="text"
+          name="username"
+          value={admin.username}
+          onChange={inputHandler}
+          placeholder="Username"
+          required
+        />
 
-          <input
-            type="password"
-            name="password"
-            value={admin.password}
-            onChange={inputHandler}
-          />
+        <input
+          type="password"
+          name="password"
+          value={admin.password}
+          onChange={inputHandler}
+          placeholder="Password"
+          required
+        />
 
-          <input
-            type="text"
-            name="phone"
-            value={admin.phone}
-            onChange={inputHandler}
-          />
+        <input
+          type="email"
+          name="emailid"
+          value={admin.emailid}
+          onChange={inputHandler}
+          placeholder="Email"
+          required
+        />
 
-          <input
-            type="text"
-            name="profileImage"
-            value={admin.profileImage}
-            onChange={inputHandler}
-          />
+        <input
+          type="text"
+          name="mobileno"
+          value={admin.mobileno}
+          onChange={inputHandler}
+          placeholder="Mobile Number"
+          required
+        />
 
-          <textarea
-            name="address"
-            value={admin.address}
-            onChange={inputHandler}
-          />
+        <input
+          type="text"
+          name="photo"
+          value={admin.photo}
+          onChange={inputHandler}
+          placeholder="Photo URL"
+          required
+        />
 
-          <input
-            type="date"
-            name="birthdate"
-            value={admin.birthdate?.split("T")[0]}
-            onChange={inputHandler}
-          />
+        <select
+          name="status"
+          value={admin.status}
+          onChange={inputHandler}
+        >
+          <option value={1}>Active</option>
+          <option value={0}>Inactive</option>
+        </select>
 
-          <select
-            name="gender"
-            value={admin.gender}
-            onChange={inputHandler}
-          >
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-          </select>
-
-          <select
-            name="role"
-            value={admin.role}
-            onChange={inputHandler}
-          >
-            <option value="admin">Admin</option>
-            <option value="superadmin">Super Admin</option>
-          </select>
-
-          <button type="submit">Update Admin</button>
-        </form>
-      </div>
+        <button type="submit">Update Admin</button>
+      </form>
     </div>
   );
 }

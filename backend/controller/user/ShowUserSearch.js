@@ -1,14 +1,14 @@
-import mongoose from "mongoose";
 import User from "../../model/UserModel.js";
 
-export const ShowBySearch = async (req, res) => {
+export const showUserSearch = async (req, res) => {
     try {
         const text = req.query.search;
+
         const user = await User.find({
-            name : new RegExp(text,"i")
+            first_name: new RegExp(text, "i")
         });
 
-        if (user.length==0) {
+        if (!user.length) {
             return res.status(404).json({
                 message: "USER NOT FOUND"
             });

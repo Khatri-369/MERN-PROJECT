@@ -1,65 +1,123 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: #f8fafc;
+  background: #f5f7fb;
 }
 
-.managecart-container {
-  padding: 40px;
+.manage-cart-container {
+  padding: 30px;
 }
 
-.managecart-container h1 {
-  text-align: center;
-  margin-bottom: 30px;
+.manage-cart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.manage-cart-header h2 {
   color: #1e293b;
+  font-size: 28px;
 }
 
-table {
+.manage-cart-header button {
+  padding: 12px 20px;
+  border: none;
+  background: #2563eb;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: 0.3s;
+}
+
+.manage-cart-header button:hover {
+  background: #1d4ed8;
+}
+
+.cart-table {
   width: 100%;
   border-collapse: collapse;
   background: white;
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
-  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+  border-radius: 15px;
   overflow: hidden;
 }
 
-thead {
-  background: #2563eb;
+.cart-table th {
+  background: #1e293b;
   color: white;
-}
-
-th,
-td {
-  padding: 16px;
+  padding: 15px;
+  font-size: 14px;
   text-align: center;
-  border-bottom: 1px solid #e5e7eb;
 }
 
-tr:hover {
-  background: #f1f5f9;
+.cart-table td {
+  padding: 15px;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+}
+
+.status-active {
+  background: #dcfce7;
+  color: #15803d;
+  padding: 8px 12px;
+  border-radius: 20px;
+  font-weight: bold;
+}
+
+.status-inactive {
+  background: #fee2e2;
+  color: #dc2626;
+  padding: 8px 12px;
+  border-radius: 20px;
+  font-weight: bold;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.action-buttons a {
+  text-decoration: none;
+}
+
+.view-btn,
+.edit-btn,
+.delete-btn {
+  min-width: 75px;
+  height: 38px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.view-btn {
+  background: #10b981;
+}
+
+.view-btn:hover {
+  background: #059669;
 }
 
 .edit-btn {
-  padding: 8px 14px;
-  border: none;
-  border-radius: 8px;
   background: #f59e0b;
-  color: white;
-  cursor: pointer;
-  margin-right: 8px;
-}
-
-.delete-btn {
-  padding: 8px 14px;
-  border: none;
-  border-radius: 8px;
-  background: #ef4444;
-  color: white;
-  cursor: pointer;
 }
 
 .edit-btn:hover {
   background: #d97706;
+}
+
+.delete-btn {
+  background: #ef4444;
 }
 
 .delete-btn:hover {

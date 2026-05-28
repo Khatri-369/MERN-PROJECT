@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import axios from "axios";
 import "./css/ShowOrder.css";
 import toast from "react-hot-toast";
@@ -6,6 +6,14 @@ import toast from "react-hot-toast";
 export default function SearchOrder() {
   const [search, setSearch] = useState("");
   const [orders, setOrders] = useState([]);
+
+  useEffect(()=>{
+          const getdata = async()=>{
+              const value = await axios.get("http://localhost:8000/order/showorder");
+              setOrders(value.data);
+          }
+          getdata();
+    },[]);
 
   const searchOrder = async () => {
     try {

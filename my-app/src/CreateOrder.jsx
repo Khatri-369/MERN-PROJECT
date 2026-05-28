@@ -46,7 +46,6 @@ export default function CreateOrder() {
       );
 
       toast.success("ORDER CREATED SUCCESSFULLY");
-      navigate("/showorder");
 
     } catch (error) {
       console.log(error);

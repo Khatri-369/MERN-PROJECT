@@ -1,13 +1,18 @@
 import Admin from "../../model/AdminModel.js";
 
-export const DeleteAdmin = async (req, res) => {
+export const deleteAdmin = async (req, res) => {
     try {
-        await Admin.findByIdAndDelete(req.params.id);
+        const admin = await Admin.findByIdAndDelete(req.params.id);
+
+        if (!admin) {
+            return res.status(404).json({
+                message: "ADMIN NOT FOUND"
+            });
+        }
 
         res.status(200).json({
             message: "ADMIN DELETED SUCCESSFULLY"
         });
-
     } catch (error) {
         res.status(500).json({
             error: error.message

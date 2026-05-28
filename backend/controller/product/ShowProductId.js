@@ -2,16 +2,15 @@ import Product from "../../model/ProductModel.js";
 
 export const ShowProductId = async (req, res) => {
     try {
-        const id = req.params.id;
-        const Products = await Product.findById(id);
+        const product = await Product.findById(req.params.id);
 
-        if (!Products) {
+        if (!product) {
             return res.status(404).json({
                 message: "PRODUCT NOT FOUND"
             });
         }
 
-        res.status(200).json(Products);
+        res.status(200).json(product);
 
     } catch (error) {
         res.status(500).json({

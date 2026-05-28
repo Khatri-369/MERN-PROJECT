@@ -1,103 +1,62 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
-import "./css/UserForm.css";
+import "./css/EditUser.css";
 
 export default function EditUser() {
-  const values = {
-    name: "",
-    email: "",
-    phone: "",
-    profileImage: "",
-    address: "",
-    birthdate: "",
-    gender: "",
-  };
+  const [user, setUser] = useState({
+    first_name: "",
+    last_name: "",
+    user_name: "",
+    password: "",
+    email_id: "",
+    mobile_no: "",
+    city: "",
+    state: "",
+    pin_code: "",
+    status: 1
+  });
 
   const { id } = useParams();
   const navigate = useNavigate();
-  const [data, setdata] = useState(values);
 
   useEffect(() => {
-    const getdata = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:8000/user/showuserbyid/${id}`
-        );
-
-        setdata(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    getdata();
+    axios.get(`http://localhost:8000/user/showuser/${id}`)
+      .then((res) => setUser(res.data));
   }, [id]);
 
-  const handleChange = (e) => {
+  const inputHandler = (e) => {
     const { name, value } = e.target;
-    setdata({ ...data, [name]: value });
+    setUser({ ...user, [name]: value });
   };
 
-  const SubmitForm = async (e) => {
+  const submitForm = async (e) => {
     e.preventDefault();
 
-    try {
-      const response = await axios.put(
-        `http://localhost:8000/user/updateuser/${id}`,
-        data
-      );
-
-      toast.success(response.data.msg);
-    } catch (error) {
-      console.log(error);
-      toast.error("Update failed");
-    }
+    await axios.put(`http://localhost:8000/user/updateuser/${id}`, user);
+    toast.success("Updated");
+    navigate("/manageuser");
   };
 
   return (
-    <div className="form-container">
-      <h2>Edit User</h2>
+    <form onSubmit={submitForm}>
+      <input name="first_name" value={user.first_name} onChange={inputHandler} />
+      <input name="last_name" value={user.last_name} onChange={inputHandler} />
+      <input name="user_name" value={user.user_name} onChange={inputHandler} />
+      <input name="password" value={user.password} onChange={inputHandler} />
+      <input name="email_id" value={user.email_id} onChange={inputHandler} />
+      <input name="mobile_no" value={user.mobile_no} onChange={inputHandler} />
+      <input name="city" value={user.city} onChange={inputHandler} />
+      <input name="state" value={user.state} onChange={inputHandler} />
+      <input name="pin_code" value={user.pin_code} onChange={inputHandler} />
 
-      <form onSubmit={SubmitForm}>
-        <input type="text" name="name" value={data.name} onChange={handleChange} />
-        <input type="email" name="email" value={data.email} onChange={handleChange} />
-        <input type="text" name="phone" value={data.phone} onChange={handleChange} />
-        <input type="text" name="profileImage" value={data.profileImage} onChange={handleChange} />
-        <input type="text" name="address" value={data.address} onChange={handleChange} />
-        <input type="date" name="birthdate" value={data.birthdate} onChange={handleChange} />
+      <select name="status" value={user.status} onChange={inputHandler}>
+        <option value={1}>Active</option>
+        <option value={0}>Inactive</option>
+      </select>
 
-        <div className="radio-group">
-          <label>Gender:</label>
-
-          <label>
-            <input type="radio" name="gender" value="Male"
-              checked={data.gender === "Male"}
-              onChange={handleChange}
-            />
-            Male
-          </label>
-
-          <label>
-            <input type="radio" name="gender" value="Female"
-              checked={data.gender === "Female"}
-              onChange={handleChange}
-            />
-            Female
-          </label>
-
-          <label>
-            <input type="radio" name="gender" value="Other"
-              checked={data.gender === "Other"}
-              onChange={handleChange}
-            />
-            Other
-          </label>
-        </div>
-
-        <button type="submit" onClick={()=>navigate('/')}>Update User</button>
-      </form>
-    </div>
+      <button>Update User</button>
+    </form>
   );
 }

@@ -3,16 +3,16 @@ import { CreateProduct } from "../controller/product/CreateProduct.js";
 import { DeleteProduct } from "../controller/product/DeleteProduct.js";
 import { ShowProduct } from "../controller/product/ShowProduct.js";
 import { ShowProductId } from "../controller/product/ShowProductId.js";
-import { ShowProductBySearch } from "../controller/product/ShowProductSearch.js";
+import { ShowProductSearch } from "../controller/product/ShowProductSearch.js";
 import { UpdateProduct } from "../controller/product/UpdateProduct.js";
 
-const router = express.Router();
+const route = express.Router();
 
-router.post("/createproduct",CreateProduct);
-router.get("/showproduct", ShowProduct);
-router.get("/showproductbyid/:id",ShowProductId);
-router.get("/searchproduct",ShowProductBySearch);
-router.put("/updateproduct/:id",UpdateProduct);
-router.delete("/deleteproduct/:id",DeleteProduct);
+route.post("/createproduct", CreateProduct);
+route.get("/showproduct", ShowProduct);
+route.get("/showproduct/:id", ShowProductId);
+route.put("/updateproduct/:id", UpdateProduct);
+route.delete("/deleteproduct/:id", DeleteProduct);
+route.get("/searchproduct", ShowProductSearch);
 
-export default router;
+export default route;

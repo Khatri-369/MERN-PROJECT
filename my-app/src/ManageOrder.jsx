@@ -55,29 +55,32 @@ export default function ManageOrder() {
           </tr>
         </thead>
 
-        <tbody>
-          {orders.map((item) => (
-            <tr key={item._id}>
-              <td>{item.user}</td>
-              <td>{item.items[0].product}</td>
-              <td>₹{item.totalprice}</td>
-              <td>{item.orderstatus}</td>
+      <tbody>
+  {orders.map((item) =>
+    item.items.map((productItem, index) => (
+      <tr key={`${item._id}-${index}`}>
+        <td>{item.user}</td>
+        <td>{productItem.product}</td>
+        <td>₹{productItem.price * productItem.quantity}</td>
+        <td>{item.orderstatus}</td>
 
-              <td>
-                <Link to={`/updateorder/${item._id}`}>
-                  <button className="edit-btn">Edit</button>
-                </Link>
+        <td>
+          <Link to={`/updateorder/${item._id}`}>
+            <button className="edit-btn">Edit</button>
+          </Link>
 
-                <button
-                  className="delete-btn"
-                  onClick={() => deleteOrder(item._id)}
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
+          <button
+            className="delete-btn"
+            onClick={() => deleteOrder(item._id)}
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+    ))
+  )}
+    </tbody>
+
       </table>
     </div>
   );

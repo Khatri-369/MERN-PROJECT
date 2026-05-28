@@ -1,11 +1,11 @@
 import Cart from "../../model/CartModel.js";
 
-export const ShowCartBySearch = async (req, res) => {
+export const ShowCartSearch = async (req, res) => {
     try {
         const text = req.query.search;
 
         const cart = await Cart.find({
-            user: new RegExp(text, "i")
+            user_id: new RegExp(text, "i")
         });
 
         if (cart.length == 0) {

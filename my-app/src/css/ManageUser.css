@@ -1,0 +1,85 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f5f7fb;
+}
+
+table {
+  width: 95%;
+  margin: 30px auto;
+  border-collapse: collapse;
+  background: white;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+thead {
+  background: #1e293b;
+}
+
+thead th {
+  color: white;
+  padding: 16px;
+  font-size: 14px;
+  text-align: center;
+}
+
+tbody td {
+  padding: 15px;
+  text-align: center;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 14px;
+  color: #334155;
+}
+
+tbody tr:hover {
+  background: #f8fafc;
+}
+
+td a {
+  display: inline-block;
+  text-decoration: none;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 8px;
+  margin-right: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+
+td button {
+  border: none;
+  background: #ef4444;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+td button:hover {
+  background: #dc2626;
+}
+
+@media (max-width: 1024px) {
+  table {
+    font-size: 12px;
+  }
+
+  thead th,
+  tbody td {
+    padding: 10px;
+  }
+
+  td a,
+  td button {
+    display: block;
+    margin: 5px auto;
+    width: 80px;
+  }
+}

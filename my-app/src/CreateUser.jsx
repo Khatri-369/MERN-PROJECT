@@ -1,139 +1,151 @@
 import React, { useState } from "react";
 import axios from "axios";
-import "./css/UserForm.css";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import "./css/CreateUser.css";
 
 export default function CreateUser() {
-  const navigate = useNavigate();
-  const formData = {
-    name: "",
-    email: "",
+  const [user, setUser] = useState({
+    first_name: "",
+    last_name: "",
+    user_name: "",
     password: "",
-    phone: "",
-    profileImage: "",
-    address: "",
-    birthdate: "",
-    gender: "",
-  };
+    email_id: "",
+    mobile_no: "",
+    city: "",
+    state: "",
+    pin_code: "",
+    status: 1
+  });
 
-  const [data, setdata] = useState(formData);
-
-  const handleChange = (e) => {
+  const inputHandler = (e) => {
     const { name, value } = e.target;
-    setdata({ ...data, [name]: value });
+    setUser({
+      ...user,
+      [name]: value
+    });
   };
 
-  const handleSubmit = async (e) => {
+  const submitForm = async (e) => {
     e.preventDefault();
 
     try {
-      await axios.post("http://localhost:8000/user/createuser", data);
-      toast.success("USER CREATED SUCCESSFULLY");
-      setdata(formData);
+      await axios.post("http://localhost:8000/user/createuser", user);
+
+      toast.success("User Created Successfully");
+
+      setUser({
+        first_name: "",
+        last_name: "",
+        user_name: "",
+        password: "",
+        email_id: "",
+        mobile_no: "",
+        city: "",
+        state: "",
+        pin_code: "",
+        status: 1
+      });
+
     } catch (error) {
+      toast.error("Failed To Create User");
       console.log(error);
-      toast.error("FAILED TO CREATE USER");
     }
   };
 
   return (
-    <div className="form-container">
-      <button onClick={()=>navigate("/")}>BACK</button>
-      <h2>Create User</h2>
+    <div className="user-form-container">
+      <form className="user-form" onSubmit={submitForm}>
+        <h2>Create User</h2>
 
-      <form onSubmit={handleSubmit}>
         <input
           type="text"
-          name="name"
-          placeholder="Enter Name"
-          value={data.name}
-          onChange={handleChange}
+          name="first_name"
+          placeholder="First Name"
+          value={user.first_name}
+          onChange={inputHandler}
+          required
         />
 
         <input
-          type="email"
-          name="email"
-          placeholder="Enter Email"
-          value={data.email}
-          onChange={handleChange}
+          type="text"
+          name="last_name"
+          placeholder="Last Name"
+          value={user.last_name}
+          onChange={inputHandler}
+          required
+        />
+
+        <input
+          type="text"
+          name="user_name"
+          placeholder="Username"
+          value={user.user_name}
+          onChange={inputHandler}
+          required
         />
 
         <input
           type="password"
           name="password"
-          placeholder="Enter Password"
-          value={data.password}
-          onChange={handleChange}
+          placeholder="Password"
+          value={user.password}
+          onChange={inputHandler}
+          required
+        />
+
+        <input
+          type="email"
+          name="email_id"
+          placeholder="Email"
+          value={user.email_id}
+          onChange={inputHandler}
+          required
         />
 
         <input
           type="text"
-          name="phone"
-          placeholder="Enter Phone"
-          value={data.phone}
-          onChange={handleChange}
+          name="mobile_no"
+          placeholder="Mobile Number"
+          value={user.mobile_no}
+          onChange={inputHandler}
+          required
         />
 
         <input
           type="text"
-          name="profileImage"
-          placeholder="Profile Image URL"
-          value={data.profileImage}
-          onChange={handleChange}
+          name="city"
+          placeholder="City"
+          value={user.city}
+          onChange={inputHandler}
+          required
         />
 
         <input
           type="text"
-          name="address"
-          placeholder="Enter Address"
-          value={data.address}
-          onChange={handleChange}
+          name="state"
+          placeholder="State"
+          value={user.state}
+          onChange={inputHandler}
+          required
         />
 
         <input
-          type="date"
-          name="birthdate"
-          value={data.birthdate}
-          onChange={handleChange}
+          type="text"
+          name="pin_code"
+          placeholder="Pin Code"
+          value={user.pin_code}
+          onChange={inputHandler}
+          required
         />
 
-        <div className="radio-group">
-          <label>Gender:</label>
-
-          <label>
-            <input
-              type="radio"
-              name="gender"
-              value="Male"
-              checked={data.gender === "Male"}
-              onChange={handleChange}
-            />
-            Male
-          </label>
-
-          <label>
-            <input
-              type="radio"
-              name="gender"
-              value="Female"
-              checked={data.gender === "Female"}
-              onChange={handleChange}
-            />
-            Female
-          </label>
-
-          <label>
-            <input
-              type="radio"
-              name="gender"
-              value="Other"
-              checked={data.gender === "Other"}
-              onChange={handleChange}
-            />
-            Other
-          </label>
-        </div>
+        <select
+          name="status"
+          value={user.status}
+          onChange={inputHandler}
+        >
+          <option value={1}>Active</option>
+          <option value={0}>Inactive</option>
+        </select>
 
         <button type="submit">Create User</button>
       </form>

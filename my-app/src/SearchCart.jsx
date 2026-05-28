@@ -2,37 +2,34 @@ import React, { useState,useEffect } from "react";
 import axios from "axios";
 import "./css/SearchCart.css";
 import toast from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function SearchCart() {
   const [search, setSearch] = useState("");
   const [cart, setCart] = useState([]);
+  const navigate = useNavigate();
 
-   useEffect(() => {
-    const getCarts = async () => {
-      try {
-        const res = await axios.get("http://localhost:8000/cart/showcart");
-        setCart(res.data);
-      } catch (error) {
-        console.log(error.response?.data || error.message);
-        toast.error("FAILED TO LOAD CARTS");
-      }
-    };
-    getCarts();
-  }, []);
+   useEffect(()=>{
+          const getdata = async()=>{
+              const value = await axios.get("http://localhost:8000/cart/showcart");
+              setCart(value.data);
+          }
+          getdata();
+    },[]);
 
   const searchCart = async () => {
     if (!search.trim()) {
-      toast.error("Enter user name");
+      toast.error("Enter user ID");
       return;
     }
 
     try {
       const response = await axios.get(
-        `http://localhost:8000/cart/showcartbysearch?search=${search}`
+        `http://localhost:8000/cart/searchcart?search=${search}`
       );
 
       setCart(response.data);
+
     } catch (error) {
       toast.error("Cart Not Found");
       setCart([]);
@@ -41,13 +38,22 @@ export default function SearchCart() {
   };
 
   return (
-    <div className="searchcart-container">
-      <h1>Search Cart</h1>
+    <div className="search-cart-container">
+      <div className="search-cart-header">
+        <h2>Search Cart</h2>
+
+        <button
+          className="back-btn"
+          onClick={() => navigate("/managecart")}
+        >
+          Back
+        </button>
+      </div>
 
       <div className="search-box">
         <input
           type="text"
-          placeholder="Search by user name"
+          placeholder="Search by User ID"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
@@ -55,50 +61,31 @@ export default function SearchCart() {
         <button onClick={searchCart}>Search</button>
       </div>
 
-      {cart.length > 0 && (
-        <table>
-          <thead>
-            <tr>
-              <th>User</th>
-              <th>Product</th>
-              <th>Quantity</th>
-              <th>Price</th>
-              <th>Total Price</th>
-              <th>Action</th>
-            </tr>
-          </thead>
+      <div className="search-results">
+        {cart.length > 0 ? (
+          cart.map((c) => (
+            <div className="search-card" key={c._id}>
+              <h3>Cart Details</h3>
 
-          <tbody>
-            {cart.map((item) => (
-              <tr key={item._id}>
-                <td>{item.user}</td>
-                 <td>
-              {item.items.map((prod) => (
-                <div key={prod.product}>{prod.product}</div>
-              ))}
-            </td>
-              <td>
-              {item.items.map((prod) => (
-                <div key={prod.product}>{prod.quantity}</div>
-              ))}
-            </td>
-             <td>
-              {item.items.map((prod) => (
-                <div key={prod.product}>₹{prod.price}</div>
-              ))}
-            </td>
-                <td>₹{item.totalprice}</td>
+              <p><strong>Product ID:</strong> {c.product_id}</p>
+              <p><strong>User ID:</strong> {c.user_id}</p>
+              <p><strong>Quantity:</strong> {c.quantity}</p>
 
-                <td>
-                  <Link to={`/cartdetail/${item._id}`}>
-                    <button className="view-btn">View</button>
-                  </Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+              <p>
+                <strong>Status:</strong>{" "}
+                {c.cart_status === 1 ? "Active" : "Inactive"}
+              </p>
+
+              <p>
+                <strong>Created:</strong>{" "}
+                {new Date(c.cdate).toLocaleDateString()}
+              </p>
+            </div>
+          ))
+        ) : (
+          <p>No Result</p>
+        )}
+      </div>
     </div>
   );
 }

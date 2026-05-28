@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./css/Menu.css";
 import { FaChevronDown } from "react-icons/fa";
 import { Outlet, useNavigate } from "react-router-dom";
+import "./css/Footer.css";
 
 export default function Menu() {
   const [openMenu, setOpenMenu] = useState("");
@@ -12,6 +13,7 @@ export default function Menu() {
   };
 
   return (
+    <>
     <div className="admin-layout">
       {/* SIDEBAR */}
       <div className="sidebar">
@@ -42,6 +44,10 @@ export default function Menu() {
 
               <button onClick={() => navigate("/createcart")}>
                 Create Cart
+              </button>
+
+              <button onClick={() => navigate("/createcategory")}>
+                Create Category
               </button>
 
               <button onClick={() => navigate("/createvendor")}>
@@ -82,6 +88,10 @@ export default function Menu() {
                 Manage Cart
               </button>
 
+              <button onClick={() => navigate("/managecategory")}>
+                Manage Categories
+              </button>
+
               <button onClick={() => navigate("/managevendor")}>
                 Manage Vendor
               </button>
@@ -118,6 +128,10 @@ export default function Menu() {
 
               <button onClick={() => navigate("/showcart")}>
                 Show Cart
+              </button>
+
+              <button onClick={() => navigate("/showcategory")}>
+                Show Categories
               </button>
 
               <button onClick={() => navigate("/showvendor")}>
@@ -158,6 +172,10 @@ export default function Menu() {
                 Search Cart
               </button>
 
+              <button onClick={() => navigate("/searchcategory")}>
+                Search Category
+              </button>
+
               <button onClick={() => navigate("/searchvendor")}>
                 Search Vendor
               </button>
@@ -175,5 +193,13 @@ export default function Menu() {
         <Outlet />
       </div>
     </div>
+
+<footer className="footer">
+  <div className="footer-bottom">
+    <h2>AMAZON</h2>
+    <p>© 2026 All Rights Reserved | Designed by Khatri Om Kumar</p>
+  </div>
+</footer>
+    </>
   );
 }

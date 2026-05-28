@@ -2,48 +2,73 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./css/ShowAdmin.css";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 export default function ShowAdmin() {
   const [admins, setAdmins] = useState([]);
+  const navigate = useNavigate();
+
+  const fetchAdmins = async () => {
+    try {
+      const response = await axios.get("http://localhost:8000/admin/showadmin");
+      setAdmins(response.data);
+    } catch (error) {
+      toast.error("Failed to fetch admins");
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
-    const getAdmins = async () => {
-      try {
-        const res = await axios.get("http://localhost:8000/admin/showadmin");
-        setAdmins(res.data);
-      } catch (error) {
-        console.log(error.response?.data || error.message);
-        toast.error("FAILED TO LOAD ADMINS");
-      }
-    };
-
-    getAdmins();
+    fetchAdmins();
   }, []);
 
   return (
     <div className="show-admin-container">
-      <h2>All Admins</h2>
-
+      <div>
+         <h2>Show Admins</h2>
+      </div>
       <div className="admin-grid">
-        {admins.map((item) => (
-          <div className="admin-card" key={item._id}>
-            <img
-              src={item.profileImage}
-              alt={item.name}
-            />
+        {admins.length > 0 ? (
+          admins.map((admin) => (
+            <div className="admin-card" key={admin._id}>
+              <img src={admin.photo} alt="admin" />
 
-            <h3>{item.name}</h3>
-            <p><strong>Email:</strong> {item.email}</p>
-            <p><strong>Phone:</strong> {item.phone}</p>
-            <p><strong>Gender:</strong> {item.gender}</p>
-            <p><strong>Role:</strong> {item.role}</p>
-            <p><strong>Address:</strong> {item.address}</p>
-            <p>
-              <strong>Birthdate:</strong>{" "}
-              {new Date(item.birthdate).toLocaleDateString()}
-            </p>
-          </div>
-        ))}
+              <h3>{admin.fullname}</h3>
+
+              <p>
+                <strong>Username:</strong> {admin.username}
+              </p>
+
+              <p>
+                <strong>Email:</strong> {admin.emailid}
+              </p>
+
+              <p>
+                <strong>Mobile:</strong> {admin.mobileno}
+              </p>
+
+              <p>
+                <strong>Status:</strong>{" "}
+                {admin.status === 1 ? "Active" : "Inactive"}
+              </p>
+
+              <p>
+                <strong>Created:</strong>{" "}
+                {new Date(admin.cdate).toLocaleDateString()}
+              </p>
+            </div>
+          ))
+        ) : (
+          <p>No Admin Found</p>
+        )}
+      </div>
+       <div className="show-admin-header">
+        <button
+          className="back-btn"
+          onClick={() => navigate("/manageadmin")}
+        >
+          Back
+        </button>
       </div>
     </div>
   );

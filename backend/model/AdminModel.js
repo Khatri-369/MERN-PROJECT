@@ -1,43 +1,43 @@
 import mongoose from "mongoose";
 
 const adminSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true
+    adminid: {
+        type: Number
     },
-    email: {
+    fullname: {
         type: String,
         required: true,
-        unique: true
+        maxlength: 50
+    },
+    username: {
+        type: String,
+        required: true,
+        unique: true,
+        maxlength: 50
     },
     password: {
         type: String,
-        required: true
+        required: true,
+        maxlength: 50
     },
-    phone: {
+    emailid: {
+        type: String,
+        required: true,
+        unique: true,
+        maxlength: 50
+    },
+    mobileno: {
         type: String,
         required: true
     },
-    profileImage: {
+    photo: {
         type: String,
-        required: true
+        required: true,
+        maxlength: 250
     },
-    address: {
-        type: String,
-        required: true
-    },
-    birthdate: {
-        type: Date,
-        required: true
-    },
-    gender: {
-        type: String,
-        required: true
-    },
-    role: {
-        type: String,
-        enum: ["admin", "superadmin"],
-        default: "admin"
+    status: {
+        type: Number,
+        default: 1
     },
     cdate: {
         type: Date,

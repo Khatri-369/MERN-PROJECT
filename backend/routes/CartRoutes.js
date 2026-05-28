@@ -3,16 +3,15 @@ import { CreateCart } from "../controller/cart/CreateCart.js";
 import { DeleteCart } from "../controller/cart/DeleteCart.js";
 import { ShowCart } from "../controller/cart/ShowCart.js";
 import { ShowCartId } from "../controller/cart/ShowCartId.js";
-import { ShowCartBySearch } from "../controller/cart/ShowCartSearch.js";
+import { ShowCartSearch } from "../controller/cart/ShowCartSearch.js";
 import { UpdateCart } from "../controller/cart/UpdateCart.js";
+const route = express.Router();
 
-const router = express.Router();
+route.post("/createcart", CreateCart);
+route.get("/showcart", ShowCart);
+route.get("/showcart/:id", ShowCartId);
+route.put("/updatecart/:id", UpdateCart);
+route.delete("/deletecart/:id", DeleteCart);
+route.get("/searchcart", ShowCartSearch);
 
-router.post("/createcart", CreateCart);
-router.get("/showcart", ShowCart);
-router.get("/showcartbyid/:id", ShowCartId);
-router.get("/showcartbysearch", ShowCartBySearch);
-router.put("/updatecart/:id", UpdateCart);
-router.delete("/deletecart/:id", DeleteCart);
-
-export default router;
+export default route;

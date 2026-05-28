@@ -1,84 +1,76 @@
 import React, { useState,useEffect } from "react";
 import axios from "axios";
-import toast from "react-hot-toast";  //IMPORT Toaster IN INDEX.JS   
-import "./css/ShowUser.css";
+import "./css/SearchUser.css";
+import toast from "react-hot-toast";
 
-export default function SearchUser(){
-    const[search,setsearch] = useState("");
-    const[dataa,setdata] = useState([]);
+export default function SearchUser() {
+  const [search, setSearch] = useState("");
+  const [user, setUser] = useState([]);
 
-    useEffect(()=>{
-        const getdata = async()=>{
-            const value = await axios.get("http://localhost:8000/user/showuser");
-            setdata(value.data);
-        }
-        getdata();
-    },[]);
+  useEffect(()=>{
+          const getdata = async()=>{
+              const value = await axios.get("http://localhost:8000/user/showuser");
+              setUser(value.data);
+          }
+          getdata();
+      },[]);
 
-    const click = async()=>{
-        try{
-        const value = await axios.get(`http://localhost:8000/user/showuserbysearch?search=${search}`)
-        setdata(value.data);
-    }
-    catch(error){
-        console.log(error);
-    }
+  const searchUser = async () => {
+    if (!search.trim()) {
+      toast.error("Enter user first name");
+      return;
     }
 
-    return(
-       <>
-  <div className="userTableContainer">
-    <div className="tableHeader">
-      <div className="recordCount">
-        Total Records: <span>{dataa.length}</span>
+    try {
+      const response = await axios.get(
+        `http://localhost:8000/user/searchuser?search=${search}`
+      );
+
+      setUser(response.data);
+
+    } catch (error) {
+      toast.error("User not found");
+      setUser([]);
+    }
+  };
+
+  return (
+    <div className="search-user-container">
+      <h2>Search User</h2>
+
+      <div className="search-box">
+        <input
+          type="text"
+          placeholder="Enter user first name..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+
+        <button onClick={searchUser}>Search</button>
+      </div>
+
+      <div className="search-results">
+        {user.length > 0 ? (
+          user.map((u) => (
+            <div className="search-card" key={u._id}>
+              <h3>{u.first_name} {u.last_name}</h3>
+
+              <p><strong>Username:</strong> {u.user_name}</p>
+              <p><strong>Email:</strong> {u.email_id}</p>
+              <p><strong>Mobile:</strong> {u.mobile_no}</p>
+              <p><strong>City:</strong> {u.city}</p>
+              <p><strong>State:</strong> {u.state}</p>
+              <p><strong>Pin Code:</strong> {u.pin_code}</p>
+              <p>
+                <strong>Status:</strong>{" "}
+                {u.status === 1 ? "Active" : "Inactive"}
+              </p>
+            </div>
+          ))
+        ) : (
+          <p>No Result</p>
+        )}
       </div>
     </div>
-
-    <div className = "searchContainer">
-      <input type = "text" placeholder="Search USERS..." onChange={(e) => {
-        setsearch(e.target.value);
-      }} />
-      <input type="submit" onClick={click}/>
-    </div>
-
-    <div className="tableWrapper">
-      <table>
-        <thead>
-          <tr>
-            <th>S.No.</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>phone</th>
-            <th>image</th>
-            <th>address</th>
-            <th>birthdate</th>
-            <th>gender</th>
-            <th>create Date</th>
-          </tr>
-        </thead>
-
-        <tbody>
-         {
-            dataa.map((user,index)=>{
-            return(
-                <tr key={user._id}>
-                   <td>{index+1}</td>
-                   <td>{user.name}</td>
-                   <td>{user.email}</td>
-                   <td>{user.phone}</td>
-                   <td>{user.profileImage}</td>
-                   <td>{user.address}</td>
-                   <td>{user.birthdate}</td>
-                   <td>{user.gender}</td>
-                   <td>{user.cdate}</td>
-                </tr>
-            );
-            })
-         }
-        </tbody>
-      </table>
-    </div>
-  </div>
-</>
-    )
+  );
 }

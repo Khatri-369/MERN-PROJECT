@@ -1,7 +1,7 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: #f8fafc;
+  background: #f5f7fb;
 }
 
 .search-admin-container {
@@ -10,20 +10,20 @@ body {
 
 .search-admin-container h2 {
   text-align: center;
-  margin-bottom: 25px;
   color: #1e293b;
+  margin-bottom: 30px;
 }
 
 .search-box {
   display: flex;
   justify-content: center;
-  gap: 12px;
-  margin-bottom: 30px;
+  gap: 15px;
+  margin-bottom: 35px;
 }
 
 .search-box input {
-  width: 350px;
-  padding: 12px;
+  width: 400px;
+  padding: 14px;
   border: 1px solid #cbd5e1;
   border-radius: 10px;
   font-size: 15px;
@@ -35,52 +35,42 @@ body {
 }
 
 .search-box button {
-  padding: 12px 20px;
-  border: none;
+  padding: 14px 24px;
   background: #2563eb;
   color: white;
+  border: none;
   border-radius: 10px;
   cursor: pointer;
-  font-size: 15px;
 }
 
-.search-box button:hover {
-  background: #1d4ed8;
-}
-
-.admin-grid {
+.search-results {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 22px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
 }
 
-.admin-card {
+.search-card {
   background: white;
-  padding: 18px;
   border-radius: 18px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  padding: 25px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
   text-align: center;
-  transition: 0.3s;
 }
 
-.admin-card:hover {
-  transform: translateY(-5px);
-}
-
-.admin-card img {
-  width: 100%;
-  height: 220px;
+.search-card img {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
   object-fit: cover;
-  border-radius: 14px;
-  margin-bottom: 14px;
+  margin-bottom: 15px;
+  border: 4px solid #2563eb;
 }
 
-.admin-card h3 {
-  color: #2563eb;
-  margin-bottom: 10px;
+.search-card h3 {
+  color: #1e293b;
 }
 
-.admin-card p {
-  margin: 5px 0;
+.search-card p {
+  margin: 8px 0;
   color: #475569;
 }

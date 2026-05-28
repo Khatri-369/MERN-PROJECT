@@ -2,17 +2,16 @@ import Product from "../../model/ProductModel.js";
 
 export const DeleteProduct = async (req, res) => {
     try {
-        const id = req.params.id;
-        const deleteproduct = await User.findByIdAndDelete(id);
+        const product = await Product.findByIdAndDelete(req.params.id);
 
-        if (!deleteuser) {
+        if (!product) {
             return res.status(404).json({
                 message: "PRODUCT NOT FOUND"
             });
         }
 
         res.status(200).json({
-            message: "PRODUCT DELETED"
+            message: "PRODUCT DELETED SUCCESSFULLY"
         });
 
     } catch (error) {
