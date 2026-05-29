@@ -1,0 +1,21 @@
+/* UserLayout Outer Structure Styles */
+.user-layout-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--amazon-bg, #eaeded);
+}
+
+.amazon-main-content {
+  flex: 1;
+  width: 100%;
+  max-width: 1450px;
+  margin: 0 auto;
+  padding: 25px 20px;
+  box-sizing: border-box;
+}
+
+/* Make sure inner child containers look premium */
+.amazon-main-content > div {
+  transition: all 0.3s ease;
+}

@@ -14,7 +14,7 @@ export default function CreateUser() {
     city: "",
     state: "",
     pin_code: "",
-    status: 1
+    status: 1,
   });
 
   const inputHandler = (e) => {
@@ -47,7 +47,7 @@ export default function CreateUser() {
       });
 
     } catch (error) {
-      toast.error("Failed To Create User");
+      toast.error(error.response?.data?.error || "Failed To Create User");
       console.log(error);
     }
   };

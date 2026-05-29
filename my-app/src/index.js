@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { Toaster } from "react-hot-toast";
+import "./css/index.css";
 
 import Menu from './Menu';
 
@@ -57,10 +58,24 @@ import EditCategory from './EditCategory';
 import ShowCategory from './ShowCategory';
 import SearchCategory from './SearchCategory';
 
+//STATUS PAGES
+import StatusUser from './StatusUser';
+import StatusAdmin from './StatusAdmin';
+
+//USER LOGIN & SIGNUP PAGES
+import UserLogin from './UserLogin';
+import SignUpUser from './SignUpUser';
+import ForgotPassword from './ForgotPassword';
+import ResetPassword from './ResetPassword';
+import VerifyOTP from './VerifyOTP';
+
+//USER PANEL
+import UserLayout from './layouts/Userlayout';
+
 const route = createBrowserRouter([
   {
     path: "/",
-    element: <Menu />,
+    element: <UserLayout />,
     children: [
 
       // ================= USER ROUTES =================
@@ -224,8 +239,43 @@ const route = createBrowserRouter([
         path: "searchcategory",
         element: <SearchCategory />
       },
+
+        // ================= STATUS PAGES =================
+      {
+        path: "statususer",
+        element: <StatusUser />
+      },
+      {
+        path: "statusadmin",
+        element: <StatusAdmin />
+      },
     ]
-  }
+  },
+      // ================= SIGNUP PAGES =================
+      {
+        path: "signupuser",
+        element: <SignUpUser />
+      },
+      {
+        path: "loginuser",
+        element: <UserLogin />
+      },
+      {
+        path: "forgotpassword",
+        element: <ForgotPassword />
+      },
+      {//IMPORT KARVU
+        path: "verifyotp",
+        element: <VerifyOTP />
+      },
+      {
+        path: "forgotpassword",
+        element: <ForgotPassword />
+      },
+      {
+        path: "resetpassword",
+        element: <ResetPassword />
+      },
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

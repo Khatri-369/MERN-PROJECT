@@ -185,7 +185,29 @@ export default function Menu() {
               </button>
             </div>
           )}
-        </div>
+          </div>
+          {/* SEARCH */}
+          <div className="menu-item">
+             <button onClick={() => toggleMenu("status")} className="menu-btn">
+            <span>STATUS</span>
+            <FaChevronDown
+              className={`arrow ${openMenu === "status" ? "rotate" : ""}`}
+            />
+          </button>
+
+          {openMenu === "status" && (
+            <div className="submenu">
+              <button onClick={() => navigate("/statususer")}>
+                User
+              </button>
+
+              <button onClick={() => navigate("/statusadmin")}>
+                Admin
+              </button>
+
+            </div>
+          )}
+          </div>
       </div>
 
       {/* CONTENT */}

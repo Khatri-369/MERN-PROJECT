@@ -55,6 +55,14 @@ const userschema = new mongoose.Schema({
         required: true
     },
 
+    otp: {
+    type: Number
+    },
+
+    otpExpire: {
+    type: Date
+    },
+
     status: {
         type: Number,
         default: 1

@@ -1,13 +1,38 @@
+:root {
+  --amazon-navy: #131921;
+  --amazon-light-navy: #232f3e;
+  --amazon-orange: #febd69;
+  --amazon-orange-hover: #f3a847;
+  --amazon-bg: #eaeded;
+  --amazon-link: #007185;
+  --amazon-link-hover: #c40000;
+  --text-dark: #0f1111;
+  --text-light: #ffffff;
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: "Amazon Ember", Arial, sans-serif;
+  background-color: var(--amazon-bg);
+  color: var(--text-dark);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  color: var(--amazon-link);
+}
+
+a:hover {
+  text-decoration: underline;
+  color: var(--amazon-link-hover);
 }

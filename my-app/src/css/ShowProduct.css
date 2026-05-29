@@ -1,66 +1,96 @@
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f5f7fb;
-}
-
 .show-product-container {
-  padding: 30px;
+  padding: 20px;
+  background-color: var(--amazon-bg);
+  min-height: 100vh;
 }
 
 .show-product-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
+  background-color: white;
+  padding: 15px 20px;
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 
 .show-product-header h2 {
-  color: #1e293b;
+  color: var(--text-dark);
+  font-size: 24px;
+  margin: 0;
+  font-weight: 700;
 }
 
 .back-btn {
-  padding: 12px 20px;
-  border: none;
-  background: #2563eb;
-  color: white;
-  border-radius: 10px;
+  padding: 8px 15px;
+  border: 1px solid #d5d9d9;
+  background: white;
+  color: var(--text-dark);
+  border-radius: 8px;
   cursor: pointer;
+  box-shadow: 0 2px 5px rgba(213,217,217,0.5);
+  font-weight: 400;
+}
+
+.back-btn:hover {
+  background-color: #f7fafa;
 }
 
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 25px;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
 }
 
 .product-card {
   background: white;
-  border-radius: 18px;
-  padding: 25px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-  transition: 0.3s;
-  text-align: center;
+  border: 1px solid #e7e7e7;
+  border-radius: 4px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.2s;
+  text-align: left;
 }
 
 .product-card:hover {
-  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 .product-card img {
-  width: 150px;
-  height: 150px;
-  object-fit: cover;
-  border-radius: 12px;
-  margin-bottom: 15px;
+  width: 100%;
+  height: 200px;
+  object-fit: contain;
+  margin-bottom: 10px;
+  background-color: #f8f8f8;
+  padding: 10px;
 }
 
 .product-card h3 {
-  color: #1e293b;
-  margin-bottom: 15px;
+  color: var(--amazon-link);
+  margin: 0 0 10px 0;
+  font-size: 16px;
+  font-weight: 500;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.product-card h3:hover {
+  color: var(--amazon-link-hover);
+  text-decoration: underline;
 }
 
 .product-card p {
-  margin: 8px 0;
-  color: #475569;
+  margin: 4px 0;
+  color: #565959;
+  font-size: 13px;
 }
+
+.product-card strong {
+  color: #0f1111;
+  font-weight: 700;
+}

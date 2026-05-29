@@ -1,0 +1,135 @@
+/* Amazon Footer Styling */
+.footer {
+  width: 100%;
+  margin-top: auto;
+  font-family: "Amazon Ember", Arial, sans-serif;
+  color: white;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Back to Top Section */
+.footer-top {
+  background-color: #37475a;
+  text-align: center;
+  padding: 15px 0;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.footer-top:hover {
+  background-color: #485769;
+}
+
+.footer-top button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* Main Link Columns */
+.footer-main {
+  background-color: #232f3e;
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  padding: 40px 10%;
+  gap: 30px;
+  border-bottom: 1px solid #3a4553;
+}
+
+.footer-section {
+  display: flex;
+  flex-direction: column;
+  min-width: 160px;
+}
+
+.footer-section h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 15px;
+  color: white;
+}
+
+.footer-section a {
+  color: #dddddd;
+  text-decoration: none;
+  margin-bottom: 10px;
+  font-size: 14px;
+  transition: color 0.15s ease;
+}
+
+.footer-section a:hover {
+  color: white;
+  text-decoration: underline;
+}
+
+/* Bottom Area & Copyright */
+.footer-bottom {
+  background-color: #131a22;
+  color: #cccccc;
+  text-align: center;
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.footer-bottom-logo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 5px;
+}
+
+.footer-logo-img {
+  width: 80px;
+  object-fit: contain;
+}
+
+.footer-bottom-links {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.footer-bottom-links a {
+  color: #ddd;
+  font-size: 12px;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.footer-bottom-links a:hover {
+  color: white;
+  text-decoration: underline;
+}
+
+.footer-bottom p {
+  font-size: 12px;
+  color: #999;
+  margin: 5px 0 0 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .footer-main {
+    padding: 30px 20px;
+    justify-content: flex-start;
+  }
+  
+  .footer-section {
+    width: 45%;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-section {
+    width: 100%;
+  }
+}

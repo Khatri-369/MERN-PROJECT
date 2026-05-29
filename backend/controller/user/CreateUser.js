@@ -7,6 +7,10 @@ export const CreateUser = async (req, res) => {
 
         res.status(201).json(savedUser);
     } catch (error) {
+        if (error.code === 11000) {
+            const key = Object.keys(error.keyValue)[0];
+            return res.status(400).json({ error: `${key} already exists!` });
+        }
         res.status(500).json({
             error: error.message
         });
