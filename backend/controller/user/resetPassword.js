@@ -2,7 +2,7 @@ import User from "../../model/UserModel.js";
 
 export const resetPassword = async (req, res) => {
     try {
-        const {email_id,password} = req.body;
+        const { email_id, password } = req.body;
 
         const user = await User.findOne({
             email_id

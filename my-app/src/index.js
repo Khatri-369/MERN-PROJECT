@@ -75,7 +75,7 @@ import UserLayout from './layouts/Userlayout';
 const route = createBrowserRouter([
   {
     path: "/",
-    element: <UserLayout />,
+    element: <Menu />,
     children: [
 
       // ================= USER ROUTES =================
@@ -161,7 +161,7 @@ const route = createBrowserRouter([
         path: "cartdetail/:id",
         element: <CartDetail />
       },
-       {
+      {
         path: "managecart",
         element: <ManageCart />
       },
@@ -192,8 +192,8 @@ const route = createBrowserRouter([
         element: <SearchVendor />
       },
       {
-        path:"showvendorbyid/:id",
-        element:<ShowVendorById/>
+        path: "showvendorbyid/:id",
+        element: <ShowVendorById />
       },
 
       // ================= ORDER ROUTES =================
@@ -240,7 +240,7 @@ const route = createBrowserRouter([
         element: <SearchCategory />
       },
 
-        // ================= STATUS PAGES =================
+      // ================= STATUS PAGES =================
       {
         path: "statususer",
         element: <StatusUser />
@@ -251,31 +251,31 @@ const route = createBrowserRouter([
       },
     ]
   },
-      // ================= SIGNUP PAGES =================
-      {
-        path: "signupuser",
-        element: <SignUpUser />
-      },
-      {
-        path: "loginuser",
-        element: <UserLogin />
-      },
-      {
-        path: "forgotpassword",
-        element: <ForgotPassword />
-      },
-      {//IMPORT KARVU
-        path: "verifyotp",
-        element: <VerifyOTP />
-      },
-      {
-        path: "forgotpassword",
-        element: <ForgotPassword />
-      },
-      {
-        path: "resetpassword",
-        element: <ResetPassword />
-      },
+  // ================= SIGNUP PAGES =================
+  {
+    path: "signupuser",
+    element: <SignUpUser />
+  },
+  {
+    path: "loginuser",
+    element: <UserLogin />
+  },
+  {
+    path: "forgotpassword",
+    element: <ForgotPassword />
+  },
+  {//IMPORT KARVU
+    path: "verifyotp",
+    element: <VerifyOTP />
+  },
+  {
+    path: "forgotpassword",
+    element: <ForgotPassword />
+  },
+  {
+    path: "resetpassword",
+    element: <ResetPassword />
+  },
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
