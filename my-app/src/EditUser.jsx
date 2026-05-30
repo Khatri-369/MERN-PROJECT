@@ -22,9 +22,10 @@ export default function EditUser() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get(`http://localhost:8000/user/showuser/${id}`)
-      .then((res) => setUser(res.data));
-  }, [id]);
+  axios.get(
+    `http://localhost:8000/user/showuser/${id}`)
+  .then((res) => setUser(res.data));
+}, [id]);
 
   const inputHandler = (e) => {
     const { name, value } = e.target;
@@ -32,12 +33,16 @@ export default function EditUser() {
   };
 
   const submitForm = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    await axios.put(`http://localhost:8000/user/updateuser/${id}`, user);
-    toast.success("Updated");
-    navigate("/manageuser");
-  };
+  await axios.put(
+    `http://localhost:8000/user/updateuser/${id}`,
+    user
+  );
+
+  toast.success("Updated");
+  navigate("/adminpanel/manageuser");
+};
 
   return (
     <form onSubmit={submitForm}>

@@ -3,6 +3,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import "./css/CreateUser.css";
 
+
 export default function CreateUser() {
   const [user, setUser] = useState({
     first_name: "",
@@ -17,6 +18,7 @@ export default function CreateUser() {
     status: 1,
   });
 
+
   const inputHandler = (e) => {
     const { name, value } = e.target;
     setUser({
@@ -25,6 +27,7 @@ export default function CreateUser() {
     });
   };
 
+  
   const submitForm = async (e) => {
     e.preventDefault();
 

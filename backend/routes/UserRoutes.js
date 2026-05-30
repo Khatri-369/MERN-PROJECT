@@ -8,18 +8,35 @@ import { UpdateUser } from "../controller/user/UpdateUser.js";
 import {forgotPassword} from "../controller/user/forgotpassword.js";
 import {verifyOTP} from "../controller/user/VerifyOtp.js";
 import {resetPassword} from "../controller/user/resetPassword.js";
+import { LoginUser } from "../controller/user/LoginUser.js";
+
+import {LogoutUser} from "../controller/user/LogoutUser.js";
+ 
+import{auth} from "../middleware/auth.js";
 
 const route = express.Router();
 
-route.post("/createuser", CreateUser);
-route.get("/showuser", ShowUser);
-route.get("/showuser/:id", showUserId);
-route.put("/updateuser/:id", UpdateUser);
-route.delete("/deleteuser/:id", DeleteUser);
-route.get("/searchuser", showUserSearch);
+route.get("/adminpanel",auth,(req,res)=>{
+    res.json({
+        userId : req.userId
+    });
+});
 
+route.post("/createuser", CreateUser);
+
+route.get("/showuser",auth, ShowUser);
+
+route.post("/logoutuser", LogoutUser);
+
+route.get("/showuser/:id",auth, showUserId);
+route.put("/updateuser/:id",auth, UpdateUser);
+route.delete("/deleteuser/:id",auth, DeleteUser);
+route.get("/searchuser",auth, showUserSearch);
+
+route.post("/loginuser",LoginUser);
 route.post("/forgotpassword",forgotPassword);
 route.post("/verifyotp",verifyOTP);
 route.post("/resetpassword",resetPassword);
+
 
 export default route;

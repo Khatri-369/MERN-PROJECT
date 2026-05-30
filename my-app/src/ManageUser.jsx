@@ -79,12 +79,16 @@ export default function ManageUser() {
                 <td>{new Date(u.cdate).toLocaleDateString()}</td>
 
                 <td className="action-buttons">
-                  <Link to="/showuser">
-                    <button className="view-btn">View</button>
+                  <Link to="/adminpanel/showuser">
+                    <button className="view-btn">
+                      View
+                    </button>
                   </Link>
 
-                  <Link to={`/edituser/${u._id}`}>
-                    <button className="edit-btn">Edit</button>
+                  <Link to={`/adminpanel/edituser/${u._id}`}>
+                    <button className="edit-btn">
+                      Edit
+                    </button>
                   </Link>
 
                   <button
@@ -93,7 +97,8 @@ export default function ManageUser() {
                   >
                     Delete
                   </button>
-                </td>
+              </td>
+
               </tr>
             ))
           ) : (

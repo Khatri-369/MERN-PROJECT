@@ -10,7 +10,9 @@ export default function ShowUser() {
 
   const fetchUser = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/user/showuser");
+      const response = await axios.get("http://localhost:8000/user/showuser",{
+      withCredentials: true
+      });
       setUser(response.data);
     } catch (error) {
       toast.error("Failed to fetch users");
@@ -32,7 +34,7 @@ export default function ShowUser() {
     <div>
         <button
           className="back-btn"
-          onClick={() => navigate("/manageuser")}
+          onClick={() => navigate("/adminpanel/manageuser")}
         >
           Back
         </button>

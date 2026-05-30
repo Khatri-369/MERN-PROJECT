@@ -3,6 +3,8 @@ import "./css/Menu.css";
 import { FaChevronDown } from "react-icons/fa";
 import { Outlet, useNavigate } from "react-router-dom";
 import "./css/Footer.css";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 export default function Menu() {
   const [openMenu, setOpenMenu] = useState("");
@@ -10,6 +12,18 @@ export default function Menu() {
 
   const toggleMenu = (menu) => {
     setOpenMenu(openMenu === menu ? "" : menu);
+  };
+
+  const logoutUser = async () => {
+    try {
+        await axios.post(
+            "http://localhost:8000/user/logoutuser"
+        );
+        toast.success("Logout Successful");
+        navigate("/loginuser");
+    } catch (error) {
+        toast.error("Logout Failed");
+    }
   };
 
   return (
@@ -30,31 +44,31 @@ export default function Menu() {
 
           {openMenu === "create" && (
             <div className="submenu">
-              <button onClick={() => navigate("/createuser")}>
+              <button onClick={() => navigate("/adminpanel/createuser")}>
                 Create User
               </button>
 
-              <button onClick={() => navigate("/createproduct")}>
+              <button onClick={() => navigate("/adminpanel/createproduct")}>
                 Create Product
               </button>
 
-              <button onClick={() => navigate("/createadmin")}>
+              <button onClick={() => navigate("/adminpanel/createadmin")}>
                 Create Admin
               </button>
 
-              <button onClick={() => navigate("/createcart")}>
+              <button onClick={() => navigate("/adminpanel/createcart")}>
                 Create Cart
               </button>
 
-              <button onClick={() => navigate("/createcategory")}>
+              <button onClick={() => navigate("/adminpanel/createcategory")}>
                 Create Category
               </button>
 
-              <button onClick={() => navigate("/createvendor")}>
+              <button onClick={() => navigate("/adminpanel/createvendor")}>
                 Create Vendor
               </button>
 
-              <button onClick={() => navigate("/createorder")}>
+              <button onClick={() => navigate("/adminpanel/createorder")}>
                 Create Order
               </button>
             </div>
@@ -72,31 +86,31 @@ export default function Menu() {
 
           {openMenu === "manage" && (
             <div className="submenu">
-              <button onClick={() => navigate("/manageuser")}>
+              <button onClick={() => navigate("/adminpanel/manageuser")}>
                 Manage Users
               </button>
 
-              <button onClick={() => navigate("/manageproduct")}>
+              <button onClick={() => navigate("/adminpanel/manageproduct")}>
                 Manage Products
               </button>
 
-              <button onClick={() => navigate("/manageadmin")}>
+              <button onClick={() => navigate("/adminpanel/manageadmin")}>
                 Manage Admins
               </button>
 
-              <button onClick={() => navigate("/managecart")}>
+              <button onClick={() => navigate("/adminpanel/managecart")}>
                 Manage Cart
               </button>
 
-              <button onClick={() => navigate("/managecategory")}>
+              <button onClick={() => navigate("/adminpanel/managecategory")}>
                 Manage Categories
               </button>
 
-              <button onClick={() => navigate("/managevendor")}>
+              <button onClick={() => navigate("/adminpanel/managevendor")}>
                 Manage Vendor
               </button>
 
-              <button onClick={() => navigate("/manageorder")}>
+              <button onClick={() => navigate("/adminpanel/manageorder")}>
                 Manage Orders
               </button>
             </div>
@@ -114,31 +128,31 @@ export default function Menu() {
 
           {openMenu === "show" && (
             <div className="submenu">
-              <button onClick={() => navigate("/showuser")}>
+              <button onClick={() => navigate("/adminpanel/showuser")}>
                 Show Users
               </button>
 
-              <button onClick={() => navigate("/showproduct")}>
+              <button onClick={() => navigate("/adminpanel/showproduct")}>
                 Show Products
               </button>
 
-              <button onClick={() => navigate("/showadmin")}>
+              <button onClick={() => navigate("/adminpanel/showadmin")}>
                 Show Admins
               </button>
 
-              <button onClick={() => navigate("/showcart")}>
+              <button onClick={() => navigate("/adminpanel/showcart")}>
                 Show Cart
               </button>
 
-              <button onClick={() => navigate("/showcategory")}>
+              <button onClick={() => navigate("/adminpanel/showcategory")}>
                 Show Categories
               </button>
 
-              <button onClick={() => navigate("/showvendor")}>
+              <button onClick={() => navigate("/adminpanel/showvendor")}>
                 Show Vendors
               </button>
 
-              <button onClick={() => navigate("/showorder")}>
+              <button onClick={() => navigate("/adminpanel/showorder")}>
                 Show Orders
               </button>
             </div>
@@ -156,31 +170,31 @@ export default function Menu() {
 
           {openMenu === "search" && (
             <div className="submenu">
-              <button onClick={() => navigate("/searchuser")}>
+              <button onClick={() => navigate("/adminpanel/searchuser")}>
                 Search User
               </button>
 
-              <button onClick={() => navigate("/searchproduct")}>
+              <button onClick={() => navigate("/adminpanel/searchproduct")}>
                 Search Product
               </button>
 
-              <button onClick={() => navigate("/searchadmin")}>
+              <button onClick={() => navigate("/adminpanel/searchadmin")}>
                 Search Admin
               </button>
 
-              <button onClick={() => navigate("/searchcart")}>
+              <button onClick={() => navigate("/adminpanel/searchcart")}>
                 Search Cart
               </button>
 
-              <button onClick={() => navigate("/searchcategory")}>
+              <button onClick={() => navigate("/adminpanel/searchcategory")}>
                 Search Category
               </button>
 
-              <button onClick={() => navigate("/searchvendor")}>
+              <button onClick={() => navigate("/adminpanel/searchvendor")}>
                 Search Vendor
               </button>
 
-              <button onClick={() => navigate("/searchorder")}>
+              <button onClick={() => navigate("/adminpanel/searchorder")}>
                 Search Order
               </button>
             </div>
@@ -197,16 +211,23 @@ export default function Menu() {
 
           {openMenu === "status" && (
             <div className="submenu">
-              <button onClick={() => navigate("/statususer")}>
+              <button onClick={() => navigate("/adminpanel/statususer")}>
                 User
               </button>
 
-              <button onClick={() => navigate("/statusadmin")}>
+              <button onClick={() => navigate("/adminpanel/statusadmin")}>
                 Admin
               </button>
 
             </div>
           )}
+
+        <button
+            className="logout-btn"
+            onClick={logoutUser}
+          >
+            Logout
+        </button>
           </div>
       </div>
 

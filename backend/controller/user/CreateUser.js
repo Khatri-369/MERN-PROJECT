@@ -1,11 +1,18 @@
 import User from "../../model/UserModel.js";
+import bcrypt from "bcrypt";
 
 export const CreateUser = async (req, res) => {
     try {
-        const user = new User(req.body);
-        const savedUser = await user.save();
+       const user = req.body;
 
-        res.status(201).json(savedUser);
+       const hashpassword = await bcrypt.hash(user.password,10);
+       user.password = hashpassword;
+
+        const usr = new User(user);
+        const ress = await usr.save();
+
+        res.status(200).json(ress);
+
     } catch (error) {
         if (error.code === 11000) {
             const key = Object.keys(error.keyValue)[0];

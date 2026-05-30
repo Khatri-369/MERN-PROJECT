@@ -4,6 +4,7 @@ import "./css/UserLogin.css";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
+
 export default function UserLogin() {
   const navigate = useNavigate();
 
@@ -23,19 +24,19 @@ export default function UserLogin() {
     e.preventDefault();
 
     try {
+
+      //SYNTAX : axios.post(url, data, config)
       const response = await axios.post(
-        "http://localhost:8000/user/login",
-        user
-      );
+      "http://localhost:8000/user/loginuser",
+      user,
+      {
+        withCredentials: true
+      }
+    );
 
       toast.success("Login Successful");
 
-      localStorage.setItem(
-        "user",
-        JSON.stringify(response.data)
-      );
-
-      navigate("/");
+      navigate("/adminpanel");
     } catch (error) {
       toast.error("Invalid Credentials");
     }

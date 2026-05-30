@@ -5,6 +5,9 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { Toaster } from "react-hot-toast";
 import "./css/index.css";
 
+//DEFAULT CREDENTIAL IS TRUE
+import axios from "axios";
+
 import Menu from './Menu';
 
 // USER
@@ -72,9 +75,10 @@ import VerifyOTP from './VerifyOTP';
 //USER PANEL
 import UserLayout from './layouts/Userlayout';
 
+axios.defaults.withCredentials = true;
 const route = createBrowserRouter([
   {
-    path: "/",
+    path: "/adminpanel",
     element: <Menu />,
     children: [
 
