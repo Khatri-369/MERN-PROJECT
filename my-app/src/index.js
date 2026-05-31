@@ -76,6 +76,7 @@ import VerifyOTP from './VerifyOTP';
 import UserLayout from './layouts/Userlayout';
 
 axios.defaults.withCredentials = true;
+
 const route = createBrowserRouter([
   {
     path: "/adminpanel",
