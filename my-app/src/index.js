@@ -107,7 +107,6 @@ const route = createBrowserRouter([
         path: "searchuser",
         element: <SearchUser />
       },
-
       // ================= PRODUCT ROUTES =================
       {
         path: "createproduct",

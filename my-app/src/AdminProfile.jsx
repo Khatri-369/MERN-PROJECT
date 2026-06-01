@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import { 
   FaUserEdit, FaCamera, FaUser, FaHistory, FaUserShield, 
   FaEnvelope, FaPhone, FaCalendarAlt, FaCheckCircle, FaExclamationCircle,
-  FaShoppingBag, FaMapMarkerAlt
+  FaShoppingBag, FaMapMarkerAlt, FaChevronDown, FaChevronUp
 } from "react-icons/fa";
 import "./css/AdminProfile.css";
 
@@ -29,6 +29,11 @@ export default function AdminProfile() {
   // States for past orders
   const [orders, setOrders] = useState([]);
   const [loadingOrders, setLoadingOrders] = useState(false);
+  const [expandedOrderId, setExpandedOrderId] = useState(null);
+
+  const toggleOrderExpand = (orderId) => {
+    setExpandedOrderId(prevId => prevId === orderId ? null : orderId);
+  };
 
   // Fetch admin details
   const fetchAdminDetails = async () => {
@@ -289,6 +294,7 @@ export default function AdminProfile() {
                     Reset
                   </button>
                 </div>
+
               </form>
             </div>
           </div>
@@ -366,6 +372,7 @@ export default function AdminProfile() {
                   Cancel
                 </button>
               </div>
+              
             </form>
           </div>
         )}
@@ -385,54 +392,90 @@ export default function AdminProfile() {
                 <p>Loading past system orders...</p>
               </div>
             ) : orders.length > 0 ? (
-              <div className="orders-timeline-container">
-                {orders.map((order) => (
-                  <div key={order._id} className="order-log-card">
-                    <div className="order-log-header">
-                      <div className="order-id-section">
-                        <span className="lbl-order">ORDER ID</span>
-                        <span className="val-order-id">#{order._id.substring(order._id.length - 8).toUpperCase()}</span>
-                      </div>
-                      <div className="order-date-section">
-                        <FaCalendarAlt className="date-icon" />
-                        <span>{new Date(order.ordereddate).toLocaleDateString()}</span>
-                      </div>
-                      <div className="order-status-section">
-                        <span className={`status-pill ${order.orderstatus.toLowerCase()}`}>
-                          {order.orderstatus}
-                        </span>
-                      </div>
-                    </div>
+              <div className="simple-orders-container">
+                <div className="orders-table-header">
+                  <div className="col-id-date">Order / Date</div>
+                  <div className="col-customer">Customer</div>
+                  <div className="col-products">Products Summary</div>
+                  <div className="col-total">Total</div>
+                  <div className="col-status">Status</div>
+                  <div className="col-action"></div>
+                </div>
 
-                    <div className="order-log-body">
-                      <div className="customer-detail">
-                        <strong>Customer Name:</strong> {order.user}
-                      </div>
-                      
-                      <div className="order-items-list">
-                        <strong>Items Ordered:</strong>
-                        <ul>
-                          {order.items.map((item, idx) => (
-                            <li key={idx} className="item-detail-row">
-                              <span className="item-name">{item.product}</span>
-                              <span className="item-qty">Qty: {item.quantity}</span>
-                              <span className="item-price">${item.price.toFixed(2)}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
+                <div className="orders-rows-list">
+                  {orders.map((order) => {
+                    const isExpanded = expandedOrderId === order._id;
+                    const itemsSummary = order.items.map(i => `${i.product} (x${i.quantity})`).join(', ');
 
-                      <div className="delivery-address">
-                        <span><strong>Shipping Address:</strong> {order.deliveryaddress}</span>
-                      </div>
-                    </div>
+                    return (
+                      <div key={order._id} className={`order-row-item ${isExpanded ? 'is-expanded' : ''}`}>
+                        {/* Main Row summary */}
+                        <div className="order-row-main" onClick={() => toggleOrderExpand(order._id)}>
+                          <div className="col-id-date">
+                            <span className="order-short-id">#{order._id.substring(order._id.length - 8).toUpperCase()}</span>
+                            <span className="order-row-date">{new Date(order.ordereddate).toLocaleDateString()}</span>
+                          </div>
+                          
+                          <div className="col-customer">
+                            <span className="col-lbl-mobile">Customer:</span>
+                            <span className="customer-name-val">{order.user}</span>
+                          </div>
 
-                    <div className="order-log-footer">
-                      <div className="total-label">Total Amount Paid</div>
-                      <div className="total-amount-val">${order.totalprice.toFixed(2)}</div>
-                    </div>
-                  </div>
-                ))}
+                          <div className="col-products" title={itemsSummary}>
+                            <span className="col-lbl-mobile">Products:</span>
+                            <span className="products-summary-val">{itemsSummary}</span>
+                          </div>
+
+                          <div className="col-total">
+                            <span className="col-lbl-mobile">Total:</span>
+                            <span className="total-amount-val">${order.totalprice.toFixed(2)}</span>
+                          </div>
+
+                          <div className="col-status">
+                            <span className={`status-pill ${order.orderstatus.toLowerCase()}`}>
+                              {order.orderstatus}
+                            </span>
+                          </div>
+
+                          <div className="col-action">
+                            <button className="btn-toggle-row" aria-label="Toggle Details">
+                              {isExpanded ? <FaChevronUp className="chevron-icon" /> : <FaChevronDown className="chevron-icon" />}
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Collapsible details for order item */}
+                        {isExpanded && (
+                          <div className="order-row-details fade-in-animation">
+                            <div className="details-inner-grid">
+                              <div className="details-items-section">
+                                <h4>Items Breakdown</h4>
+                                <div className="items-mini-list">
+                                  {order.items.map((item, idx) => (
+                                    <div key={idx} className="item-mini-row">
+                                      <span className="mini-item-name">{item.product}</span>
+                                      <span className="mini-item-qty">Qty: {item.quantity}</span>
+                                      <span className="mini-item-price">${item.price.toFixed(2)}</span>
+                                      <span className="mini-item-subtotal">${(item.price * item.quantity).toFixed(2)}</span>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+
+                              <div className="details-shipping-section">
+                                <h4>Delivery Details</h4>
+                                <div className="shipping-info-box">
+                                  <p><strong>Customer Name:</strong> {order.user}</p>
+                                  <p><strong>Shipping Address:</strong> {order.deliveryaddress}</p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             ) : (
               <div className="no-orders-state">
