@@ -44,7 +44,7 @@ export default function SearchCart() {
 
         <button
           className="back-btn"
-          onClick={() => navigate("/managecart")}
+          onClick={() => navigate("/adminpanel/managecart")}
         >
           Back
         </button>

@@ -60,7 +60,7 @@ export default function ShowVendorById() {
 
         <button
           className="back-btn"
-          onClick={() => navigate("/showvendor")}
+          onClick={() => navigate("/adminpanel/showvendor")}
         >
           Back
         </button>

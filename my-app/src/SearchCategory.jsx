@@ -44,7 +44,7 @@ export default function SearchCategory() {
 
         <button
           className="back-btn"
-          onClick={() => navigate("/managecategory")}
+          onClick={() => navigate("/adminpanel/managecategory")}
         >
           Back
         </button>

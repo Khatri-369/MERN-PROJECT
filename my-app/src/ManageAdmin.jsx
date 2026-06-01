@@ -2,9 +2,12 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./css/ManageAdmin.css";
 import toast from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export default function ManageAdmin() {
+  const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
   const [admins, setAdmins] = useState([]);
 
   const fetchAdmins = async () => {
@@ -12,7 +15,7 @@ export default function ManageAdmin() {
       const response = await axios.get("http://localhost:8000/admin/showadmin");
       setAdmins(response.data);
     } catch (error) {
-      toast.error("Failed to fetch admins");
+      toast.error(t("failedFetchAdmins"));
       console.log(error);
     }
   };
@@ -22,14 +25,14 @@ export default function ManageAdmin() {
   }, []);
 
   const deleteAdmin = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this admin?")) return;     //NEW....!!!
+    if (!window.confirm(t("deleteConfirm"))) return;     //NEW....!!!
 
     try {
       await axios.delete(`http://localhost:8000/admin/deleteadmin/${id}`);
-      toast.success("Admin Deleted Successfully");
+      toast.success(t("adminDeletedSuccess"));
       fetchAdmins();
     } catch (error) {
-      toast.error("Delete Failed");
+      toast.error(t("deleteFailed"));
       console.log(error);
     }
   };
@@ -37,24 +40,35 @@ export default function ManageAdmin() {
   return (
     <div className="manage-admin-container">
       <div className="manage-admin-header">
-        <h2>Manage Admins</h2>
+        <h2>{t("manageAdmins")}</h2>
 
-        <Link to="/createadmin">
-          <button>Add Admin</button>
+        <div className="language-selector-wrapper" style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+          <select
+            value={i18n.language}
+            onChange={(e) => i18n.changeLanguage(e.target.value)}
+            className="premium-lang-select"
+          >
+            <option value="en">{t("english")}</option>
+            <option value="es">{t("spanish")}</option>
+          </select>
+        </div>
+
+        <Link to="/adminpanel/createadmin">
+          <button>{t("addAdmin")}</button>
         </Link>
       </div>
 
       <table className="admin-table">
         <thead>
           <tr>
-            <th>PHOTO</th>
-            <th>FULL NAME</th>
-            <th>USERNAME</th>
-            <th>EMAIL</th>
-            <th>MOBILE</th>
-            <th>STATUS</th>
-            <th>CREATED DATE</th>
-            <th>ACTION</th>
+            <th>{t("photo")}</th>
+            <th>{t("fullName")}</th>
+            <th>{t("username")}</th>
+            <th>{t("email")}</th>
+            <th>{t("mobile")}</th>
+            <th>{t("status")}</th>
+            <th>{t("createdDate")}</th>
+            <th>{t("action")}</th>
           </tr>
         </thead>
 
@@ -79,33 +93,33 @@ export default function ManageAdmin() {
                         : "status-inactive"
                     }
                   >
-                    {admin.status === 1 ? "Active" : "Inactive"}
+                    {admin.status === 1 ? t("active") : t("inactive")}
                   </span>
                 </td>
 
-                <td>{new Date(admin.cdate).toLocaleDateString()}</td> 
+                <td>{new Date(admin.cdate).toLocaleDateString()}</td>
 
                 <td className="action-buttons">
-                  <Link to="/showadmin">
-                    <button className="view-btn">View</button>
+                  <Link to="/adminpanel/showadmin">
+                    <button className="view-btn">{t("view")}</button>
                   </Link>
 
-                  <Link to={`/editadmin/${admin._id}`}>
-                    <button className="edit-btn">Edit</button>
+                  <Link to={`/adminpanel/editadmin/${admin._id}`}>
+                    <button className="edit-btn">{t("edit")}</button>
                   </Link>
 
                   <button
                     className="delete-btn"
                     onClick={() => deleteAdmin(admin._id)}
                   >
-                    Delete
+                    {t("delete")}
                   </button>
                 </td>
               </tr>
             ))
           ) : (
             <tr>
-              <td colSpan="8">No Admin Found</td>
+              <td colSpan="8">{t("noAdminFound")}</td>
             </tr>
           )}
         </tbody>

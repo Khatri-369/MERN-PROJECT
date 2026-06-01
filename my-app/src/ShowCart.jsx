@@ -29,7 +29,7 @@ export default function ShowCart() {
 
         <button
           className="back-btn"
-          onClick={() => navigate("/managecart")}
+          onClick={() => navigate("/adminpanel/managecart")}
         >
           Back
         </button>

@@ -49,7 +49,7 @@ export default function EditAdmin() {
       );
 
       toast.success("Admin Updated Successfully");
-      navigate("/manageadmin");
+      navigate("/adminpanel/manageadmin");
 
     } catch (error) {
       toast.error("Update Failed");

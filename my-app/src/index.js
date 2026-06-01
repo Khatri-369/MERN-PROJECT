@@ -4,6 +4,7 @@ import reportWebVitals from './reportWebVitals';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { Toaster } from "react-hot-toast";
 import "./css/index.css";
+import "./i18n";
 
 import axios from "axios";
 

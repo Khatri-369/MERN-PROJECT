@@ -45,7 +45,7 @@ export default function SearchProduct() {
 
         <button
           className="back-btn"
-          onClick={() => navigate("/manageproduct")}
+          onClick={() => navigate("/adminpanel/manageproduct")}
         >
           Back
         </button>

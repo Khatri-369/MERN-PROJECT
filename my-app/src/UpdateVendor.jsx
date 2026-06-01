@@ -52,7 +52,7 @@ export default function UpdateVendor() {
       );
 
       toast.success("VENDOR UPDATED SUCCESSFULLY");
-      navigate("/managevendor");
+      navigate("/adminpanel/managevendor");
 
     } catch (error) {
       console.log(error);

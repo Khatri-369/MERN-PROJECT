@@ -75,7 +75,7 @@ export default function UpdateOrder() {
       );
 
       toast.success("ORDER UPDATED");
-      navigate("/manageorder");
+      navigate("/adminpanel/manageorder");
 
     } catch (error) {
       console.log(error);

@@ -16,6 +16,7 @@
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
     "express": "^5.2.1",
+    "i18next": "^26.3.0",
     "material": "^1.0.3",
     "mongoose": "^9.6.2",
     "mui": "^0.0.1",
@@ -23,6 +24,7 @@
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "react-hot-toast": "^2.6.0",
+    "react-i18next": "^17.0.8",
     "react-router-dom": "^7.15.1",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"

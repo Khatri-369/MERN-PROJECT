@@ -34,7 +34,7 @@ export default function CreateVendor() {
 
       toast.success("VENDOR CREATED SUCCESSFULLY");
 
-      navigate("/showvendor");
+      navigate("/adminpanel/showvendor");
 
     } catch (error) {
       console.log(error);

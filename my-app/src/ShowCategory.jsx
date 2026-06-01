@@ -32,7 +32,7 @@ export default function ShowCategory() {
 
         <button
           className="back-btn"
-          onClick={() => navigate("/managecategory")}
+          onClick={() => navigate("/adminpanel/managecategory")}
         >
           Back
         </button>

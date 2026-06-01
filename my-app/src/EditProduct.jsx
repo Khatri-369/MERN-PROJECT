@@ -57,7 +57,7 @@ export default function EditProduct() {
       );
 
       toast.success("Product Updated Successfully");
-      navigate("/manageproduct");
+      navigate("/adminpanel/manageproduct");
 
     } catch (error) {
       toast.error("Update Failed");

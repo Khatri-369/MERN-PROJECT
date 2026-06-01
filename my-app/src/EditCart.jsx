@@ -51,7 +51,7 @@ export default function EditCart() {
       );
 
       toast.success("Cart Updated Successfully");
-      navigate("/managecart");
+      navigate("/adminpanel/managecart");
 
     } catch (error) {
       toast.error("Update Failed");

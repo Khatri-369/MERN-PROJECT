@@ -65,7 +65,7 @@ export default function ShowAdmin() {
        <div className="show-admin-header">
         <button
           className="back-btn"
-          onClick={() => navigate("/manageadmin")}
+          onClick={() => navigate("/adminpanel/manageadmin")}
         >
           Back
         </button>

@@ -48,7 +48,7 @@ export default function EditCategory() {
       );
 
       toast.success("Category Updated Successfully");
-      navigate("/managecategory");
+      navigate("/adminpanel/managecategory");
 
     } catch (error) {
       toast.error("Update Failed");
