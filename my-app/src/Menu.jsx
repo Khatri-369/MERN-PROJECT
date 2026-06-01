@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./css/Menu.css";
-import { FaChevronDown } from "react-icons/fa";
+import { FaChevronDown, FaUserEdit, FaCamera, FaHistory } from "react-icons/fa";
 import { Outlet, useNavigate } from "react-router-dom";
 import "./css/Footer.css";
 import axios from "axios";
@@ -11,6 +11,10 @@ export default function Menu() {
   const navigate = useNavigate();
   const [adminId, setAdminId] = useState("");
   const [adminName, setAdminName] = useState("");
+  const[adminphoto,setAdminPhoto]=useState("");
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const [editingPhoto, setEditingPhoto] = useState(false);
+  const [newPhotoUrl, setNewPhotoUrl] = useState("");
 
   const toggleMenu = (menu) => {
     setOpenMenu(openMenu === menu ? "" : menu);
@@ -45,6 +49,7 @@ export default function Menu() {
         );
 
         setAdminName(response.data);
+        setAdminPhoto(response.data.photo);
       } catch (error) {
         console.log(error);
       }
@@ -52,6 +57,23 @@ export default function Menu() {
 
     getUsername();
   }, [adminId]);
+
+  const handleUpdatePhoto = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.put(
+        `http://localhost:8000/admin/updateadmin/${adminId}`,
+        { photo: newPhotoUrl }
+      );
+      setAdminPhoto(response.data.photo);
+      toast.success("Profile photo updated successfully!");
+      setEditingPhoto(false);
+      setShowProfileMenu(false);
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to update profile photo");
+    }
+  };
 
   const logoutAdmin = async () => {
     try {
@@ -70,7 +92,22 @@ export default function Menu() {
       <div className="admin-layout">
         {/* SIDEBAR */}
         <div className="sidebar">
-          <h2 className="logo"><span>Welcome {adminName.fullname}</span></h2>
+          <div className="admin-profile">
+            <div 
+              className="avatar-container" 
+              onClick={() => navigate(`/adminpanel/adminprofile/${adminId}`)} 
+              title="Click to view profile"
+            >
+              {adminphoto ? (
+                <img src={adminphoto} alt="Admin Profile" className="admin-avatar" />
+              ) : (
+                <div className="admin-avatar-fallback">
+                  {adminName.fullname ? adminName.fullname.charAt(0).toUpperCase() : "A"}
+                </div>
+              )}
+            </div>
+            <span className="welcome-text">Welcome, {adminName.fullname || "Admin"}</span>
+          </div>
 
           {/* CREATE */}
           <div className="menu-item">

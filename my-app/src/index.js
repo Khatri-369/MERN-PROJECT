@@ -31,6 +31,7 @@ import ShowAdmin from './ShowAdmin';
 import SearchAdmin from './SearchAdmin';
 import SignUpAdmin from './SignUpAdmin';
 import AdminLogin from './AdminLogin';
+import AdminProfile from './AdminProfile';
 
 // CART
 import CreateCart from './CreateCart';
@@ -149,6 +150,10 @@ const route = createBrowserRouter([
       {
         path: "searchadmin",
         element: <SearchAdmin />
+      },
+      {
+        path: "adminprofile/:id",
+        element: <AdminProfile />
       },
 
       // ================= CART ROUTES =================
