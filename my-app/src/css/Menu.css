@@ -14,11 +14,12 @@ body {
   box-shadow: 4px 0 15px rgba(0, 0, 0, 0.2);
 }
 
+
 .logo {
   text-align: center;
-  margin-bottom: 30px;
-  font-size: 24px;
   color: #38bdf8;
+  white-space: nowrap;
+  margin-bottom: 30px;
 }
 
 .menu-item {
@@ -97,7 +98,7 @@ body {
 }
 
 .sidebar {
-  width: 280px;
+  width: 310px;
   background: linear-gradient(180deg, #1e293b, #0f172a);
   padding: 20px;
   color: white;

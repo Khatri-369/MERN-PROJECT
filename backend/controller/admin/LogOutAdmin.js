@@ -1,4 +1,4 @@
-export const LogoutUser = (req, res) => {
+export const LogoutAdmin = (req, res) => {
 
     res.clearCookie("token"); //IN LOGOUT WE CLEAR THE TOKEN COOKIE
 

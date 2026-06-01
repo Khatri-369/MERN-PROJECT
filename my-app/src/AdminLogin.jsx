@@ -4,30 +4,29 @@ import "./css/UserLogin.css";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
-export default function UserLogin() {
+export default function AdminLogin() {
   const navigate = useNavigate();
 
-  const [user, setUser] = useState({
+  const [admin, setAdmin] = useState({
     email_id: "",
     password: "",
   });
 
   const handleChange = (e) => {
-    setUser({
-      ...user,
+    setAdmin({
+      ...admin,
       [e.target.name]: e.target.value,
     });
   };
 
-  const loginUser = async (e) => {
+  const loginAdmin = async (e) => {
     e.preventDefault();
 
     try {
-
       //SYNTAX : axios.post(url, data, config)
       const response = await axios.post(
-      "http://localhost:8000/user/loginuser",
-      user
+      "http://localhost:8000/admin/loginadmin",
+      admin 
     );
 
       toast.success("Login Successful");
@@ -67,7 +66,7 @@ export default function UserLogin() {
 
         <h2>Sign In</h2>
 
-        <form onSubmit={loginUser}>
+        <form onSubmit={loginAdmin}>
 
           <div className="input-group">
             <label>Email Address</label>
@@ -76,7 +75,7 @@ export default function UserLogin() {
               type="email"
               name="email_id"
               placeholder="Enter your email"
-              value={user.email_id}
+              value={admin.email_id}
               onChange={handleChange}
               required
             />
@@ -89,7 +88,7 @@ export default function UserLogin() {
               type="password"
               name="password"
               placeholder="Enter password"
-              value={user.password}
+              value={admin.password}
               onChange={handleChange}
               required
             />
@@ -105,7 +104,7 @@ export default function UserLogin() {
         <p className="signup-text">
           Don't have an account?
 
-          <span onClick={() => navigate("/signupuser")}>
+          <span onClick={() => navigate("/signupadmin")}>
             Register
           </span>
         </p>

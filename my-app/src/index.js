@@ -5,7 +5,6 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { Toaster } from "react-hot-toast";
 import "./css/index.css";
 
-//DEFAULT CREDENTIAL IS TRUE
 import axios from "axios";
 
 import Menu from './Menu';
@@ -30,6 +29,8 @@ import ManageAdmin from './ManageAdmin';
 import EditAdmin from './EditAdmin';
 import ShowAdmin from './ShowAdmin';
 import SearchAdmin from './SearchAdmin';
+import SignUpAdmin from './SignUpAdmin';
+import AdminLogin from './AdminLogin';
 
 // CART
 import CreateCart from './CreateCart';
@@ -75,6 +76,7 @@ import VerifyOTP from './VerifyOTP';
 //USER PANEL
 import UserLayout from './layouts/Userlayout';
 
+//DEFAULT CREDENTIAL IS TRUE
 axios.defaults.withCredentials = true;
 
 const route = createBrowserRouter([
@@ -258,12 +260,12 @@ const route = createBrowserRouter([
   },
   // ================= SIGNUP PAGES =================
   {
-    path: "signupuser",
-    element: <SignUpUser />
+    path: "signupadmin",
+    element: <SignUpAdmin />
   },
   {
-    path: "loginuser",
-    element: <UserLogin />
+    path: "loginadmin",
+    element: <AdminLogin />
   },
   {
     path: "forgotpassword",

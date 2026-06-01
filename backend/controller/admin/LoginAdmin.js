@@ -1,22 +1,22 @@
-import User from "../../model/UserModel.js";
+import Admin from "../../model/AdminModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-export const LoginUser = async(req,res)=>{
+export const LoginAdmin = async(req,res)=>{
 try{
-    const user = await User.findOne({
-        email_id : req.body.email_id
+    const admin = await Admin.findOne({
+        emailid : req.body.email_id
     });
 
-    if (!user) {
+    if (!admin) {
     return res.status(404).json({
-        message: "USER NOT FOUND"
+        message: "ADMIN NOT FOUND"
     });
     }
 
     //SYNTAX :
     //bcrypt.compare(plainPassword, hashedPassword)
-    const realpassword =  await bcrypt.compare(req.body.password,user.password);
+    const realpassword =  await bcrypt.compare(req.body.password,admin.password);
 
     if(!realpassword){
         return res.status(401).json({
@@ -26,7 +26,7 @@ try{
 
     const token = jwt.sign(
         {
-            userId:user._id
+            userId:admin._id
         },
         process.env.JWT_SECRET,
         {
