@@ -1,0 +1,121 @@
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { 
+  FaCalendarAlt, 
+  FaPalette, 
+  FaWeightHanging, 
+  FaBoxOpen, 
+  FaShieldAlt, 
+  FaTag,
+  FaShoppingCart
+} from "react-icons/fa";
+import "./Body.css";
+
+export default function Body() {
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get("http://localhost:8000/product/showproduct");
+                setData(response.data);
+            } catch (error) {
+                toast.error("Error fetching products. Please make sure the server is running.");
+            }
+        };
+        fetchData();
+    }, []);
+
+    const displayData = data;
+
+    return (
+        <div className="body-container">
+            {/* Header Section */}
+            <div className="body-header">
+                <h1 className="body-title">BUY NOW</h1>
+                <p className="body-subtitle">Discover premium items at unbeatable prices</p>
+            </div>
+
+            {/* Main Content Area */}
+            <div className="product-grid animate-fade-in">
+                {displayData.map((item) => (
+                        <div key={item._id} className="product-card">
+                            {item.categoryname && (
+                                <div className="product-badge">
+                                    {item.categoryname}
+                                </div>
+                            )}
+
+                            <div className="product-image">
+                                <img 
+                                    src={item.productphoto} 
+                                    alt={item.productname} 
+                                />
+                            </div>
+
+                            <div className="product-info">
+                                <div className="brand-label">{item.brandname}</div>
+                                <h2 className="product-name" title={item.productname}>
+                                    {item.productname}
+                                </h2>
+                                
+                                <div className="specs-grid">
+                                    <div className="spec-item">
+                                        <FaTag className="spec-icon" />
+                                        <div className="spec-details">
+                                            <span className="spec-label">Model</span>
+                                            <span className="spec-value" title={item.modelnumber}>{item.modelnumber}</span>
+                                        </div>
+                                    </div>
+                                    <div className="spec-item">
+                                        <FaCalendarAlt className="spec-icon" />
+                                        <div className="spec-details">
+                                            <span className="spec-label">Year</span>
+                                            <span className="spec-value">{item.modelyear}</span>
+                                        </div>
+                                    </div>
+                                    <div className="spec-item">
+                                        <FaPalette className="spec-icon" />
+                                        <div className="spec-details">
+                                            <span className="spec-label">Color</span>
+                                            <span className="spec-value">{item.color}</span>
+                                        </div>
+                                    </div>
+                                    <div className="spec-item">
+                                        <FaWeightHanging className="spec-icon" />
+                                        <div className="spec-details">
+                                            <span className="spec-label">Weight</span>
+                                            <span className="spec-value">{item.weight}</span>
+                                        </div>
+                                    </div>
+                                    <div className="spec-item full-width">
+                                        <FaBoxOpen className="spec-icon" />
+                                        <div className="spec-details">
+                                            <span className="spec-label">Included</span>
+                                            <span className="spec-value" title={item.includedcomponent}>{item.includedcomponent}</span>
+                                        </div>
+                                    </div>
+                                    <div className="spec-item full-width">
+                                        <FaShieldAlt className="spec-icon" />
+                                        <div className="spec-details">
+                                            <span className="spec-label">Warranty</span>
+                                            <span className="spec-value" title={item.warranty}>{item.warranty}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div className="product-actions">
+                                    <button 
+                                        className="add-to-cart-btn" 
+                                    >
+                                        <FaShoppingCart /> Add to Cart
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+            </div>
+        </div>
+    );
+}
