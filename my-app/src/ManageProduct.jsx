@@ -37,7 +37,7 @@ export default function ManageProduct() {
       <div className="manage-product-header">
         <h2>Manage Products</h2>
 
-        <Link to="/createproduct">
+        <Link to="/adminpanel/createproduct">
           <button>Add Product</button>
         </Link>
       </div>
@@ -76,11 +76,11 @@ export default function ManageProduct() {
                 <td>{p.warranty}</td>
 
                 <td className="action-buttons">
-                  <Link to="/showproduct">
+                  <Link to="/adminpanel/showproduct">
                     <button className="view-btn">View</button>
                   </Link>
 
-                  <Link to={`/editproduct/${p._id}`}>
+                  <Link to={`/adminpanel/editproduct/${p._id}`}>
                     <button className="edit-btn">Edit</button>
                   </Link>
 

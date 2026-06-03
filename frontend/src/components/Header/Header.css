@@ -1,4 +1,23 @@
-/* Amazon Header Styling */
+/* Global Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --amazon-navy: #131921;
+  --amazon-orange: #febd69;
+  --amazon-orange-hover: #f3a847;
+  --text-light: #ffffff;
+}
+
+body {
+  background-color: #eaeded;
+  font-family: Arial, sans-serif;
+}
+
+/* Header */
 .header {
   background-color: var(--amazon-navy);
   color: var(--text-light);
@@ -7,14 +26,14 @@
   justify-content: space-between;
   padding: 6px 15px;
   gap: 12px;
+  height: 60px;
+  width: 100%;
   position: sticky;
   top: 0;
   z-index: 1000;
-  height: 60px;
-  font-family: "Amazon Ember", Arial, sans-serif;
 }
 
-/* Base Interactive Items - The Amazon Signature Border Outline */
+/* Common Header Items */
 .header-logo,
 .header-location,
 .header-item {
@@ -27,14 +46,15 @@
   padding: 6px 8px;
   color: white;
   text-decoration: none;
-  transition: border-color 0.15s ease;
+  transition: all 0.15s ease;
   height: 48px;
 }
 
 .header-logo:hover,
 .header-location:hover,
 .header-item:hover {
-  border-color: #ffffff;
+  border-color: white;
+  background-color: rgba(255, 255, 255, 0.03);
 }
 
 /* Logo */
@@ -46,31 +66,25 @@
 }
 
 .logo {
-  width: 95px;
+  width: 105px;
   object-fit: contain;
-  margin-bottom: -4px;
 }
 
 .logo-country {
-  color: #f9f7f7;
+  color: #ffffff;
   font-size: 11px;
   font-weight: bold;
-  align-self: flex-end;
   margin-bottom: 2px;
 }
 
-/* Delivery / Location */
+/* Location */
 .header-location {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  padding: 6px 6px;
+  gap: 6px;
 }
 
 .location-icon {
   font-size: 18px;
   color: white;
-  margin-top: 8px;
 }
 
 .location-text {
@@ -80,52 +94,39 @@
 
 .location-text .line-one {
   font-size: 12px;
-  color: #ccc;
-  line-height: 14px;
+  color: #cccccc;
 }
 
 .location-text .line-two {
   font-size: 14px;
   font-weight: 700;
-  line-height: 15px;
   color: white;
 }
 
-/* Search Container */
+/* Search Bar */
 .header-search {
-  flex: 1;
+  flex: 1.5;
   display: flex;
   align-items: center;
-  height: 40px;
+  height: 42px;
+  background: white;
   border-radius: 4px;
   overflow: hidden;
-  background-color: white;
-  transition: box-shadow 0.15s ease-in-out;
   border: 2px solid transparent;
 }
 
-/* Glow Border on Focus */
 .header-search:focus-within {
-  border-color: #f3a847;
-  box-shadow: 0 0 0 3px rgba(243, 168, 71, 0.5);
+  border-color: var(--amazon-orange);
+  box-shadow: 0 0 0 3px rgba(243, 168, 71, 0.4);
 }
 
 .search-select {
-  background-color: #f3f3f3;
+  background: #f3f3f3;
   border: none;
-  border-right: 1px solid #cdcdcd;
-  padding: 0 12px;
-  outline: none;
-  color: #555;
-  cursor: pointer;
+  border-right: 1px solid #ddd;
   height: 100%;
-  font-size: 13px;
-  font-family: inherit;
-}
-
-.search-select:hover {
-  background-color: #dadada;
-  color: #111;
+  padding: 0 12px;
+  cursor: pointer;
 }
 
 .search-input {
@@ -133,33 +134,25 @@
   border: none;
   outline: none;
   padding: 0 10px;
-  height: 100%;
   font-size: 15px;
-  font-family: inherit;
 }
 
 .search-button {
-  background-color: var(--amazon-orange);
-  border: none;
-  width: 45px;
+  width: 50px;
   height: 100%;
+  border: none;
+  background: var(--amazon-orange);
   cursor: pointer;
   display: flex;
-  align-items: center;
   justify-content: center;
-  font-size: 16px;
-  transition: background-color 0.15s ease;
+  align-items: center;
 }
 
 .search-button:hover {
-  background-color: var(--amazon-orange-hover);
+  background: var(--amazon-orange-hover);
 }
 
-.search-button svg {
-  color: #333;
-}
-
-/* Right Navigation Items */
+/* Right Section */
 .header-right {
   display: flex;
   align-items: center;
@@ -173,85 +166,71 @@
 
 .header-item .line-one {
   font-size: 12px;
-  color: #ccc;
-  font-weight: 400;
-  line-height: 14px;
+  color: #cccccc;
 }
 
 .header-item .line-two {
   font-size: 14px;
   font-weight: 700;
-  line-height: 15px;
   color: white;
   display: flex;
   align-items: center;
-  gap: 2px;
+  gap: 3px;
 }
 
 .caret {
   font-size: 10px;
-  color: #bbb;
-  margin-top: 2px;
+  color: #bbbbbb;
 }
 
-/* Language Select */
+/* Language */
 .language-select {
   flex-direction: row;
   align-items: center;
   gap: 4px;
   font-weight: 700;
-  font-size: 14px;
 }
 
 .flag-emoji {
   font-size: 18px;
-  margin-top: -2px;
 }
 
 .lang-text {
-  font-size: 14px;
   color: white;
 }
 
-/* Cart Container */
+/* Cart */
 .cart-container {
   flex-direction: row;
   align-items: flex-end;
   gap: 4px;
-  padding: 6px 10px;
 }
 
 .cart-icon-wrapper {
   position: relative;
-  display: flex;
-  align-items: flex-end;
 }
 
 .cart-icon {
-  font-size: 26px;
+  font-size: 30px;
   color: white;
 }
 
 .cart-count {
   position: absolute;
   top: -10px;
-  left: 10px;
-  background-color: var(--amazon-navy);
+  left: 12px;
   color: #f08804;
-  font-weight: 800;
   font-size: 16px;
-  padding: 0 4px;
-  border-radius: 10px;
+  font-weight: 800;
 }
 
 .cart-text {
+  color: white;
   font-size: 14px;
   font-weight: 700;
-  color: white;
-  margin-bottom: 2px;
 }
 
-/* Responsive Scaling */
+/* Tablet */
 @media (max-width: 1000px) {
   .header-location,
   .language-select {
@@ -259,34 +238,28 @@
   }
 }
 
+/* Mobile */
 @media (max-width: 768px) {
   .header {
-    height: auto;
     flex-wrap: wrap;
+    height: auto;
     padding: 10px;
-    gap: 8px;
-  }
-
-  .header-logo {
-    height: 40px;
-    order: 1;
-  }
-
-  .header-right {
-    order: 2;
-    margin-left: auto;
   }
 
   .header-search {
-    width: 100%;
     order: 3;
+    width: 100%;
     flex: none;
-    height: 38px;
   }
 
-  .header-logo,
-  .header-item {
-    height: 40px;
-    padding: 4px 6px;
+  .header-right {
+    margin-left: auto;
   }
+}
+
+.profile-img {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  object-fit: cover;
 }

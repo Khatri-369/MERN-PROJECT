@@ -51,7 +51,7 @@ export default function CartDetails() {
           <strong>Total Price:</strong> ₹{cart.totalprice}
         </p>
 
-        <Link to="/showcart">
+        <Link to="/adminpanel/showcart">
           <button>Back to Show Cart</button>
         </Link>
       </div>

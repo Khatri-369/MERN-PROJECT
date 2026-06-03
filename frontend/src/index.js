@@ -1,23 +1,29 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import { Toaster } from "react-hot-toast";
 
-import axios from "axios";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-import HomePage from './HomePage';
+import UserLayout from "./layouts/UserLayout";
+import HomePage from "./HomePage";
+
+const route = createBrowserRouter([
+  {
+    path: "/",
+    element: <UserLayout />,
+    children: [
+      {
+        index: true, //This is the default child route. It will be rendered when the parent route is matched and no other child routes are matched.
+        element: <HomePage />
+      }
+    ]
+  }
+]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <HomePage />
+    <RouterProvider router={route} />
   </React.StrictMode>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();

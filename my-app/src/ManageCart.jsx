@@ -37,7 +37,7 @@ export default function ManageCart() {
       <div className="manage-cart-header">
         <h2>Manage Cart</h2>
 
-        <Link to="/createcart">
+        <Link to="/adminpanel/createcart">
           <button>Add Cart</button>
         </Link>
       </div>
@@ -77,11 +77,11 @@ export default function ManageCart() {
                 <td>{new Date(c.cdate).toLocaleDateString()}</td>
 
                 <td className="action-buttons">
-                  <Link to="/showcart">
+                  <Link to="/adminpanel/showcart">
                     <button className="view-btn">View</button>
                   </Link>
 
-                  <Link to={`/editcart/${c._id}`}>
+                  <Link to={`/adminpanel/editcart/${c._id}`}>
                     <button className="edit-btn">Edit</button>
                   </Link>
 

@@ -25,14 +25,6 @@ function Navbar() {
         <Link to="/showproduct">Customer Service</Link>
         <Link to="/showproduct">Prime</Link>
       </div>
-
-      {/* Right-aligned promo ad banner */}
-      <div className="nav-promo">
-        <Link to="/showproduct" className="promo-text">
-          Shop Great Deals Now | Prime Video: Watch New Releases
-        </Link>
-      </div>
-
     </nav>
   );
 }

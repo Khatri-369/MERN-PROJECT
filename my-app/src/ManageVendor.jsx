@@ -64,7 +64,7 @@ export default function ManageVendor() {
               <td>{vendor.company}</td>
 
               <td>
-                <Link to={`/updatevendor/${vendor._id}`}>
+                <Link to={`/adminpanel/updatevendor/${vendor._id}`}>
                   <button className="edit-btn">Edit</button>
                 </Link>
 

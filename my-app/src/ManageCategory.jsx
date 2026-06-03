@@ -45,7 +45,7 @@ export default function ManageCategory() {
       <div className="manage-category-header">
         <h2>Manage Categories</h2>
 
-        <Link to="/createcategory">
+        <Link to="/adminpanel/createcategory">
           <button>Add Category</button>
         </Link>
       </div>
@@ -67,11 +67,11 @@ export default function ManageCategory() {
                 <td>{new Date(c.cdate).toLocaleDateString()}</td>
 
                 <td className="action-buttons">
-                  <Link to="/showcategory">
+                  <Link to="/adminpanel/showcategory">
                     <button className="view-btn">View</button>
                   </Link>
 
-                  <Link to={`/editcategory/${c._id}`}>
+                  <Link to={`/adminpanel/editcategory/${c._id}`}>
                     <button className="edit-btn">Edit</button>
                   </Link>
 

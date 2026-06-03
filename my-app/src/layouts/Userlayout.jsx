@@ -10,11 +10,9 @@ function UserLayout() {
     <div className="user-layout-container">
       <Header />
       <Navbar />
-
       <main className="amazon-main-content">
         <Outlet />
       </main>
-
     </div>
   );
 }

@@ -1,0 +1,168 @@
+/* ===========================
+   AMAZON SUB NAVBAR
+=========================== */
+
+:root {
+  --amazon-navy: #131921;
+  --amazon-light-navy: #232f3e;
+  --amazon-orange: #febd69;
+  --amazon-orange-hover: #f3a847;
+  --text-light: #ffffff;
+}
+
+/* Main Navbar */
+.navbar {
+  background-color: var(--amazon-light-navy);
+  color: var(--text-light);
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  height: 39px;
+  gap: 15px;
+  width: 100%;
+  font-size: 14px;
+  font-family: "Amazon Ember", Arial, sans-serif;
+  overflow: hidden;
+  box-sizing: border-box;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* ===========================
+   LEFT MENU (☰ All)
+=========================== */
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-weight: 700;
+  padding: 4px 8px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  white-space: nowrap;
+  height: 31px;
+  min-width: fit-content;
+  transition: all 0.15s ease;
+}
+
+.nav-left:hover {
+  border-color: white;
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+.hamburger-icon {
+  font-size: 16px;
+  margin-top: 1px;
+}
+
+/* ===========================
+   CENTER LINKS
+=========================== */
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex: 1;
+  overflow-x: auto;
+  scrollbar-width: none;
+  height: 100%;
+}
+
+.nav-links::-webkit-scrollbar {
+  display: none;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  white-space: nowrap;
+  padding: 4px 8px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  font-weight: 500;
+  height: 31px;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  transition: all 0.15s ease;
+}
+
+.nav-links a:hover {
+  border-color: white;
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+/* ===========================
+   RIGHT PROMOTION SECTION
+=========================== */
+
+.nav-promo {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+  padding: 0 8px;
+}
+
+.promo-text {
+  color: white;
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: none;
+  white-space: nowrap;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  padding: 4px 8px;
+  transition: all 0.15s ease;
+}
+
+.promo-text:hover {
+  border-color: white;
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+
+@media (max-width: 1024px) {
+  .nav-promo {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .navbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (max-width: 500px) {
+  .navbar {
+    height: auto;
+    padding: 5px 10px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .nav-left {
+    height: 28px;
+  }
+
+  .nav-links {
+    width: 100%;
+    margin-top: 2px;
+  }
+
+  .nav-links a {
+    height: 28px;
+    font-size: 13px;
+  }
+}

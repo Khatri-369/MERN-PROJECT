@@ -65,7 +65,7 @@ export default function ManageOrder() {
         <td>{item.orderstatus}</td>
 
         <td>
-          <Link to={`/updateorder/${item._id}`}>
+          <Link to={`/adminpanel/updateorder/${item._id}`}>
             <button className="edit-btn">Edit</button>
           </Link>
 
