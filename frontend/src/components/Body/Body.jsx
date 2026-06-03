@@ -13,8 +13,28 @@ import {
 } from "react-icons/fa";
 import "./Body.css";
 
-export default function Body() {
+export default function Body({ setCartUpdated }) {
+    //ADD TO CART FUNCTIONALITY
+    //USERID WE NEED TO FETCH FROM COOKIE OR LOCAL STORAGES                                       ///IMPORTANT///
+    const HandleAddToCart = async (productId)=>{
+        try{
+            const response = await axios.post("http://localhost:8000/cart/createcart", {
+                product_id: productId,
+                user_id: 123,
+                quantity: 1
+            });
+            toast.success("Product added to cart!");
+            if (typeof setCartUpdated === "function") {
+              setCartUpdated(prev => !prev);
+            }
+        }catch(error){
+            toast.error("BAZAR MATHI LAI LEVU");
+        }
+    }
+
     const [data, setData] = useState([]);
+
+    // Get search query from URL parameters
     const [searchParams] = useSearchParams();
 
     useEffect(() => {
@@ -40,7 +60,7 @@ export default function Body() {
             (item.categoryname && item.categoryname.toLowerCase().includes(query))
         );
     });
-    
+
     return (
         <div className="body-container">
             {/* Header Section */}
@@ -118,12 +138,11 @@ export default function Body() {
                                 </div>
                                 
                                 <div className="product-actions">
-                                    <button 
-                                        className="add-to-cart-btn" 
-                                    >
+                                   <button onClick={() => {HandleAddToCart(item._id)}} className="add-to-cart-btn">
                                         <FaShoppingCart /> Add to Cart
                                     </button>
                                 </div>
+
                             </div>
                         </div>
                     ))}

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import './Header.css';
 import { Link, useSearchParams } from "react-router-dom";
 import { FaSearch, FaShoppingCart, FaMapMarkerAlt, FaCaretDown } from "react-icons/fa";
 
-export default function Header() {
+export default function Header({ cartUpdated }) {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [query, setQuery] = useState();
+  const [query, setQuery] = useState("");
+  const [cartCount, setCartCount] = useState(0);
 
   // Update the input field if the URL query parameter changes (e.g. going back or page refresh)
   useEffect(() => {
@@ -25,6 +27,18 @@ export default function Header() {
       handleSearch();
     }
   };
+
+  useEffect(() => {
+    const fetchCartCount = async () => {
+      try {
+        const response = await axios.get("http://localhost:8000/cart/showcart");
+        setCartCount(response.data.length);
+      } catch (error) {
+          console.error("Error loading cart count:", error);
+      }
+    };
+    fetchCartCount();
+  }, [cartUpdated]);
 
   return (
     <header className="header">
@@ -70,7 +84,7 @@ export default function Header() {
       {/* Cart */}
       <Link to="/showcart" className="header-item cart-container">
         <div className="cart-icon-wrapper">
-          <span className="cart-count">0</span>
+          <span className="cart-count">{cartCount}</span>
           <FaShoppingCart className="cart-icon" />
         </div>
         <span className="cart-text">Cart</span>
