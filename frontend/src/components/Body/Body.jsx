@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useSearchParams } from "react-router-dom";
 import { 
   FaCalendarAlt, 
   FaPalette, 
@@ -14,6 +15,7 @@ import "./Body.css";
 
 export default function Body() {
     const [data, setData] = useState([]);
+    const [searchParams] = useSearchParams();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -27,8 +29,18 @@ export default function Body() {
         fetchData();
     }, []);
 
-    const displayData = data;
+    const searchQuery = searchParams.get("search") || "";
 
+    const displayData = data.filter((item) => {
+        if (!searchQuery.trim()) return true;
+        const query = searchQuery.toLowerCase();
+        return (
+            (item.productname && item.productname.toLowerCase().includes(query)) ||
+            (item.brandname && item.brandname.toLowerCase().includes(query)) ||
+            (item.categoryname && item.categoryname.toLowerCase().includes(query))
+        );
+    });
+    
     return (
         <div className="body-container">
             {/* Header Section */}
