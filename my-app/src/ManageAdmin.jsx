@@ -77,7 +77,10 @@ export default function ManageAdmin() {
             admins.map((admin) => (
               <tr key={admin._id}>
                 <td>
-                  <img src={admin.photo} alt="admin" />
+                  <img 
+                    src={admin.photo ? (admin.photo.startsWith("http") ? admin.photo : `http://localhost:8000/uploads/${admin.photo}`) : ""} 
+                    alt="admin" 
+                  />
                 </td>
 
                 <td>{admin.fullname}</td>

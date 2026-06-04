@@ -25,13 +25,16 @@ export default function ShowAdmin() {
   return (
     <div className="show-admin-container">
       <div>
-         <h2>Show Admins</h2>
+        <h2>Show Admins</h2>
       </div>
       <div className="admin-grid">
         {admins.length > 0 ? (
           admins.map((admin) => (
             <div className="admin-card" key={admin._id}>
-              <img src={admin.photo} alt="admin" />
+              <img
+                src={admin.photo ? `http://localhost:8000/uploads/${admin.photo}` : ""}
+                alt="admin"
+              />
 
               <h3>{admin.fullname}</h3>
 
@@ -62,7 +65,7 @@ export default function ShowAdmin() {
           <p>No Admin Found</p>
         )}
       </div>
-       <div className="show-admin-header">
+      <div className="show-admin-header">
         <button
           className="back-btn"
           onClick={() => navigate("/adminpanel/manageadmin")}

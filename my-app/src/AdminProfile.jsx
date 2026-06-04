@@ -136,7 +136,7 @@ export default function AdminProfile() {
         <div className="profile-banner-info">
           <div className="banner-avatar-wrap">
             <img 
-              src={admin.photo || defaultAvatar} 
+              src={admin.photo ? (admin.photo.startsWith("http") ? admin.photo : `http://localhost:8000/uploads/${admin.photo}`) : defaultAvatar} 
               alt={admin.fullname} 
               className="banner-avatar" 
               onError={(e) => { e.target.src = defaultAvatar; }}
@@ -262,7 +262,7 @@ export default function AdminProfile() {
               <div className="preview-panel">
                 <label>Avatar Live Preview</label>
                 <img 
-                  src={photoUrl || defaultAvatar} 
+                  src={photoUrl ? (photoUrl.startsWith("http") ? photoUrl : `http://localhost:8000/uploads/${photoUrl}`) : defaultAvatar} 
                   alt="Live Preview" 
                   className="live-avatar-preview"
                   onError={(e) => { e.target.src = defaultAvatar; }}

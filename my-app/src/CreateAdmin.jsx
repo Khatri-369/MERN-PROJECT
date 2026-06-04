@@ -10,7 +10,7 @@ export default function CreateAdmin() {
     password: "",
     emailid: "",
     mobileno: "",
-    photo: "",
+    photo: null, // Change default from "" to null
     status: 1
   });
 
@@ -19,11 +19,31 @@ export default function CreateAdmin() {
     setAdmin({ ...admin, [name]: value });
   };
 
+  const fileHandler = (e) => {
+    setAdmin({ ...admin, photo: e.target.files[0] });
+  };
   const submitForm = async (e) => {
     e.preventDefault();
 
+    // new FormData() creates an object that stores form fields and files in the multipart/form-data format.
+    // It is used to send files to the backend server.
+    const formData = new FormData();
+    formData.append("fullname", admin.fullname);
+    formData.append("username", admin.username);
+    formData.append("password", admin.password);
+    formData.append("emailid", admin.emailid);
+    formData.append("mobileno", admin.mobileno);
+    if (admin.photo) {
+      formData.append("photo", admin.photo);
+    }
+    formData.append("status", admin.status);
+
     try {
-      await axios.post("http://localhost:8000/admin/createadmin", admin);
+      await axios.post("http://localhost:8000/admin/createadmin", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      });
 
       toast.success("Admin Created Successfully");
 
@@ -33,9 +53,13 @@ export default function CreateAdmin() {
         password: "",
         emailid: "",
         mobileno: "",
-        photo: "",
+        photo: null,
         status: 1
       });
+
+      // Clear the file input visually
+      const fileInput = document.getElementById("photo-input");
+      if (fileInput) fileInput.value = "";
 
     } catch (error) {
       toast.error("Failed To Create Admin");
@@ -94,11 +118,11 @@ export default function CreateAdmin() {
         />
 
         <input
-          type="text"
+          type="file"
+          id="photo-input"
           name="photo"
-          placeholder="Photo URL"
-          value={admin.photo}
-          onChange={inputHandler}
+          onChange={fileHandler}
+          accept="image/*"
           required
         />
 

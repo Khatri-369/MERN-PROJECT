@@ -99,7 +99,11 @@ export default function Menu() {
               title="Click to view profile"
             >
               {adminphoto ? (
-                <img src={adminphoto} alt="Admin Profile" className="admin-avatar" />
+                <img 
+                  src={adminphoto.startsWith("http") ? adminphoto : `http://localhost:8000/uploads/${adminphoto}`} 
+                  alt="Admin Profile" 
+                  className="admin-avatar" 
+                />
               ) : (
                 <div className="admin-avatar-fallback">
                   {adminName.fullname ? adminName.fullname.charAt(0).toUpperCase() : "A"}

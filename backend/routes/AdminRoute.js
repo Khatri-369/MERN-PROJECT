@@ -7,25 +7,29 @@ import { deleteAdmin } from "../controller/admin/DeleteAdmin.js";
 import { searchAdmin } from "../controller/admin/SearchAdmin.js";
 
 import { LoginAdmin } from "../controller/admin/LoginAdmin.js";
-import {auth} from "../middleware/auth.js";
+import { auth } from "../middleware/auth.js";
 import { LogoutAdmin } from "../controller/admin/LogOutAdmin.js";
+
+import { upload } from "../middleware/multer.js";
 
 const route = express.Router();
 
-route.get("/adminpanel",auth,(req,res)=>{
+route.get("/adminpanel", auth, (req, res) => {
     res.json({
-        adminId : req.userId
+        adminId: req.userId
     });
 });
 
-route.post("/createadmin", createAdmin);
-route.get("/showadmin",auth,showAdmin);
+route.post("/createadmin", upload.single("photo"), createAdmin);
+route.get("/showadmin", auth, showAdmin);
 route.get("/showadmin/:id", auth, showAdminById);
 route.put("/updateadmin/:id", auth, updateAdmin);
 route.delete("/deleteadmin/:id", auth, deleteAdmin);
 route.get("/searchadmin", auth, searchAdmin);
 
-route.post("/loginadmin",LoginAdmin);
-route.post("/logoutadmin",LogoutAdmin);
+route.post("/loginadmin", LoginAdmin);
+route.post("/logoutadmin", LogoutAdmin);
+
+
 
 export default route;

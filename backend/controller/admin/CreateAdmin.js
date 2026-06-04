@@ -5,9 +5,13 @@ export const createAdmin = async (req, res) => {
     try {
         const { password } = req.body;
         const hashedPassword = await bcrypt.hash(password, 10);
+
+        const photoFilename = req.file ? req.file.filename : "";
+
         const admin = new Admin({
             ...req.body,
-            password: hashedPassword
+            password: hashedPassword,
+            photo: photoFilename
         });
         const savedAdmin = await admin.save();
 

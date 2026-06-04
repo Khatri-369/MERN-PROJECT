@@ -53,7 +53,10 @@ export default function SearchAdmin() {
         {admins.length > 0 ? (
           admins.map((admin) => (
             <div className="search-card" key={admin._id}>
-              <img src={admin.photo} alt="admin" />
+              <img 
+                src={admin.photo ? (admin.photo.startsWith("http") ? admin.photo : `http://localhost:8000/uploads/${admin.photo}`) : ""} 
+                alt="admin" 
+              />
 
               <h3>{admin.fullname}</h3>
 
