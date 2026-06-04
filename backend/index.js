@@ -52,7 +52,7 @@ app.use("/vendor", vendorroute);
 app.use("/order", orderroute);
 app.use("/category", categoryroute);
 
-app.use("/uploads", express.static("uploads"));
+app.use("/uploads", express.static("uploads")); 
 
 app.listen(PORT, () => {
     console.log(`SERVER IS RUNNING ON PORT ${PORT}`);

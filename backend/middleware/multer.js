@@ -1,6 +1,7 @@
 import multer from "multer";
 import path from "path"; //The path module is a built-in Node.js module (not an Express module) used to work with file and directory paths safely across different operating systems.
 
+
 //DEFINING WHERE TO STORE FILES AND NAMING OF FILES
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -10,7 +11,6 @@ const storage = multer.diskStorage({
         cb(null, `${Date.now()}-${file.originalname}`);
     }
 });
-
 
 // Filter to accept only image files 
 const fileFilter = (req, file, cb) => {
@@ -30,8 +30,9 @@ const fileFilter = (req, file, cb) => {
 };
 
 //EXPORT THE FILE
+
 export const upload = multer({
     storage: storage,
     fileFilter: fileFilter,
-    limits: { filesize: 5 * 1024 * 1024 } //5MB LIMIT
+    limits: { filesize: 5*1024*1024} //5MB LIMIT
 })

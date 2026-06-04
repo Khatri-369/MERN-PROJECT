@@ -6,7 +6,7 @@ export const createAdmin = async (req, res) => {
         const { password } = req.body;
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const photoFilename = req.file ? req.file.filename : "";
+        const photoFilename = req.file ? req.file.filename : ""
 
         const admin = new Admin({
             ...req.body,

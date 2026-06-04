@@ -20,14 +20,16 @@ export default function CreateAdmin() {
   };
 
   const fileHandler = (e) => {
-    setAdmin({ ...admin, photo: e.target.files[0] });
+    setAdmin({...admin,photo:e.target.files[0]});
   };
+
   const submitForm = async (e) => {
     e.preventDefault();
 
-    // new FormData() creates an object that stores form fields and files in the multipart/form-data format.
+    // new FormData() creates an object that stores form fields and files in the (multipart/form-data) format.
     // It is used to send files to the backend server.
     const formData = new FormData();
+
     formData.append("fullname", admin.fullname);
     formData.append("username", admin.username);
     formData.append("password", admin.password);
@@ -60,7 +62,7 @@ export default function CreateAdmin() {
       // Clear the file input visually
       const fileInput = document.getElementById("photo-input");
       if (fileInput) fileInput.value = "";
-
+      
     } catch (error) {
       toast.error("Failed To Create Admin");
       console.log(error);
