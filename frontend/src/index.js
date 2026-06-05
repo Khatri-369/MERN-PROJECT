@@ -9,15 +9,28 @@ import UserLayout from "./layouts/UserLayout";
 import Body from "./components/Body/Body.jsx";
 import HomePage from "./HomePage";
 
+//SIGN UP AND LOGIN
+import SignUpUser from './SignUpUser.jsx';
+import UserLogin from './UserLogin.jsx';
+
+import axios from "axios";
+axios.defaults.withCredentials = true;
+
 const route = createBrowserRouter([
   {
-    path: "/",
+    path: "/homepage",
     element: <UserLayout />,
     children: [
-      {
-        
-      }
+      
     ]
+  },
+  {
+    path :  "/signupuser",
+    element : <SignUpUser/>
+  },
+  {
+    path :  "/loginuser",
+    element : <UserLogin/>
   }
 ]);
 

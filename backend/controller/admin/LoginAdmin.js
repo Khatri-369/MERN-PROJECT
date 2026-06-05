@@ -38,8 +38,8 @@ try{
     res.cookie("token",token,{
         httpOnly : true, //This prevents JavaScript running in the browser from reading the cookie.
         maxAge : 24*60*60*1000,
-        sameSite: "none",
-        secure: true
+        sameSite: "lax",
+        secure: false
     }
     );
 

@@ -16,7 +16,7 @@ const route = express.Router();
 
 route.get("/adminpanel", auth, (req, res) => {
     res.json({
-        adminId: req.userId
+        user_id: req.userId
     });
 });
 
@@ -29,7 +29,5 @@ route.get("/searchadmin", auth, searchAdmin);
 
 route.post("/loginadmin", LoginAdmin);
 route.post("/logoutadmin", LogoutAdmin);
-
-
 
 export default route;

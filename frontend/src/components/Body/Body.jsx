@@ -20,13 +20,10 @@ export default function Body({ setCartUpdated }) {
         try{
             const response = await axios.post("http://localhost:8000/cart/createcart", {
                 product_id: productId,
-                user_id: 123,
                 quantity: 1
             });
             toast.success("Product added to cart!");
-            if (typeof setCartUpdated === "function") {
               setCartUpdated(prev => !prev);
-            }
         }catch(error){
             toast.error("BAZAR MATHI LAI LEVU");
         }

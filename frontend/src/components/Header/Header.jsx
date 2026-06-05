@@ -31,10 +31,11 @@ export default function Header({ cartUpdated }) {
   useEffect(() => {
     const fetchCartCount = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/cart/showcart");
+        const response = await axios.get("http://localhost:8000/cart/showonecart");
         setCartCount(response.data.length);
       } catch (error) {
-          console.error("Error loading cart count:", error);
+        console.error("Error loading cart count:", error);
+        setCartCount(0);
       }
     };
     fetchCartCount();

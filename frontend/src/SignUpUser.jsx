@@ -1,0 +1,233 @@
+import React, { useState } from "react";
+import axios from "axios";
+import "./css/UserSignUp.css";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+
+export default function SignUpUser() {
+
+  const navigate = useNavigate();
+
+  const [user, setUser] = useState({
+    first_name: "",
+    last_name: "",
+    user_name: "",
+    password: "",
+    email_id: "",
+    mobile_no: "",
+    city: "",
+    state: "",
+    pin_code: "",
+  });
+
+  const handleChange = (e) => {
+    setUser({
+      ...user,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const registerUser = async (e) => {
+    e.preventDefault();
+
+    try {
+
+      await axios.post(
+        "http://localhost:8000/user/createuser",
+        user
+      );
+
+      toast.success("Registration Successful");
+
+      navigate("/loginuser");
+
+    } catch (error) {
+
+      toast.error(error.response?.data?.error || "Registration Failed");
+
+    }
+  };
+
+  return (
+ <div className="signup-container">
+
+  <div className="signup-box">
+
+    <div className="signup-left">
+    <img
+    src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=1974&auto=format&fit=crop"
+    alt="ecommerce"
+    />
+
+      <div className="overlay"></div>
+
+      <div className="left-content">
+        <h1>AMAZON SIGNUP</h1>
+
+        <p>
+          Discover varios household item of top brand
+          delivered fast at your doorstep.
+        </p>
+      </div>
+
+    </div>
+
+    <div className="signup-right">
+
+      <h2>Create Account</h2>
+
+      <form onSubmit={registerUser}>
+
+        <div className="form-row">
+
+          <div className="input-group">
+            <label>First Name</label>
+
+            <input
+              type="text"
+              name="first_name"
+              placeholder="First Name"
+              value={user.first_name}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="input-group">
+            <label>Last Name</label>
+
+            <input
+              type="text"
+              name="last_name"
+              placeholder="Last Name"
+              value={user.last_name}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+        </div>
+
+        <div className="form-row">
+
+          <div className="input-group">
+            <label>Username</label>
+
+            <input
+              type="text"
+              name="user_name"
+              placeholder="Username"
+              value={user.user_name}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="input-group">
+            <label>Email</label>
+
+            <input
+              type="email"
+              name="email_id"
+              placeholder="Email Address"
+              value={user.email_id}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+        </div>
+
+        <div className="form-row">
+
+          <div className="input-group">
+            <label>Password</label>
+
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={user.password}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="input-group">
+            <label>Mobile Number</label>
+
+            <input
+              type="text"
+              name="mobile_no"
+              placeholder="Mobile Number"
+              value={user.mobile_no}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+        </div>
+
+        <div className="form-row">
+
+          <div className="input-group">
+            <label>City</label>
+
+            <input
+              type="text"
+              name="city"
+              placeholder="City"
+              value={user.city}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="input-group">
+            <label>State</label>
+
+            <input
+              type="text"
+              name="state"
+              placeholder="State"
+              value={user.state}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+        </div>
+
+        <div className="input-group">
+          <label>Pin Code</label>
+
+          <input
+            type="text"
+            name="pin_code"
+            placeholder="Pin Code"
+            value={user.pin_code}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <button type="submit" className="signup-btn">
+          Create Account
+        </button>
+
+      </form>
+
+      <p className="login-text">
+        Already have an account?
+        <span onClick={() => navigate("/loginuser")}>
+          Login
+        </span>
+      </p>
+
+    </div>
+
+  </div>
+
+</div>
+);
+}

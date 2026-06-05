@@ -1,0 +1,172 @@
+/* UserLogin.css */
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+.login-container{
+  width: 100%;
+  min-height: 100vh;
+  background: #f4f4f4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+}
+
+.login-box{
+  width: 1000px;
+  height: 650px;
+  background: white;
+  border-radius: 25px;
+  overflow: hidden;
+  display: flex;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+}
+
+.login-left{
+  width: 50%;
+  position: relative;
+}
+
+.login-left img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.overlay{
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+}
+
+.left-content{
+  position: absolute;
+  bottom: 60px;
+  left: 40px;
+  color: white;
+  z-index: 2;
+}
+
+.left-content h1{
+  font-size: 52px;
+  margin-bottom: 15px;
+}
+
+.left-content p{
+  font-size: 18px;
+  line-height: 30px;
+  width: 85%;
+}
+
+.login-right{
+  width: 50%;
+  padding: 70px 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.login-right h2{
+  font-size: 40px;
+  margin-bottom: 35px;
+  color: #222;
+}
+
+.input-group{
+  margin-bottom: 22px;
+}
+
+.input-group label{
+  display: block;
+  margin-bottom: 8px;
+  color: #444;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.input-group input{
+  width: 100%;
+  height: 55px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 0 15px;
+  font-size: 15px;
+  transition: 0.3s;
+}
+
+.input-group input:focus{
+  outline: none;
+  border-color: #ff6b00;
+  box-shadow: 0 0 10px rgba(255,107,0,0.2);
+}
+
+.login-btn{
+  width: 100%;
+  height: 55px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(
+    135deg,
+    #ff6b00,
+    #ff9900
+  );
+  color: white;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: 0.3s;
+}
+
+.login-btn:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(255,107,0,0.25);
+}
+
+.signup-text{
+  text-align: center;
+  margin-top: 25px;
+  color: #555;
+}
+
+.signup-text span{
+  color: #ff6b00;
+  font-weight: 600;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+.signup-text span:hover{
+  text-decoration: underline;
+}
+
+@media(max-width: 950px){
+
+  .login-box{
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+  }
+
+  .login-left,
+  .login-right{
+    width: 100%;
+  }
+
+  .login-left{
+    height: 300px;
+  }
+
+  .left-content h1{
+    font-size: 38px;
+  }
+
+  .login-right{
+    padding: 40px 25px;
+  }
+}
