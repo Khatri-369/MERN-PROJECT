@@ -1,20 +1,14 @@
-import Product from "../../model/ProductModel.js";
-
 export const CreateProduct = async (req, res) => {
     try {
-        if (!req.files || req.files.length === 0) {
-            return res.status(400).json({ error: "At least one product photo is required" });
-        }
-
-        const photoUrls = req.files.map(
-            file => `${req.protocol}://${req.get("host")}/uploads/${file.filename}`
-        );
+        const photos = req.files.map(file => file.filename);
 
         const product = new Product({
             ...req.body,
-            productphoto: photoUrls
+            productphoto: photos
         });
+
         const savedProduct = await product.save();
+
         res.status(201).json(savedProduct);
 
     } catch (error) {
