@@ -39,8 +39,7 @@ export default function ShowProduct() {
         {product.length > 0 ? (
           product.map((p) => (
             <div className="product-card" key={p._id}>
-              <img src={p.productphoto} alt="product" />
-
+              <img src={p.productphoto[0]} alt="product" />
               <h3>{p.productname}</h3>
 
               <p><strong>Model No:</strong> {p.modelnumber}</p>

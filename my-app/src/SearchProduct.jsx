@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./css/SearchProduct.css";
 import toast from "react-hot-toast";
@@ -9,14 +9,14 @@ export default function SearchProduct() {
   const [product, setProduct] = useState([]);
   const navigate = useNavigate();
 
-  
-  useEffect(()=>{
-          const getdata = async()=>{
-              const value = await axios.get("http://localhost:8000/product/showproduct");
-              setProduct(value.data);
-          }
-          getdata();
-    },[]);
+
+  useEffect(() => {
+    const getdata = async () => {
+      const value = await axios.get("http://localhost:8000/product/showproduct");
+      setProduct(value.data);
+    }
+    getdata();
+  }, []);
 
   const searchProduct = async () => {
     if (!search.trim()) {
@@ -66,10 +66,10 @@ export default function SearchProduct() {
         {product.length > 0 ? (
           product.map((p) => (
             <div className="search-card" key={p._id}>
-              <img src={p.productphoto} alt="product" />
+              <img src={p.productphoto[0]} alt="product"
 
+              />
               <h3>{p.productname}</h3>
-
               <p><strong>Model No:</strong> {p.modelnumber}</p>
               <p><strong>Year:</strong> {p.modelyear}</p>
               <p><strong>Brand:</strong> {p.brandname}</p>

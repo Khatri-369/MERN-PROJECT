@@ -63,7 +63,7 @@ export default function ManageProduct() {
             product.map((p) => (
               <tr key={p._id}>
                 <td>
-                  <img src={p.productphoto} alt="product" />
+                  <img src={p.productphoto[0]} alt="product" />
                 </td>
 
                 <td>{p.productname}</td>

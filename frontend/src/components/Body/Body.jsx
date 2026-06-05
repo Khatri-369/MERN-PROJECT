@@ -81,7 +81,7 @@ export default function Body({ setCartUpdated }) {
 
                             <div className="product-image">
                                 <img 
-                                    src={item.productphoto} 
+                                    src={Array.isArray(item.productphoto) ? item.productphoto[0] : item.productphoto} 
                                     alt={item.productname} 
                                 />
                             </div>

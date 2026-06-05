@@ -8,7 +8,6 @@ export default function CreateProduct() {
     productname: "",
     modelnumber: "",
     modelyear: "",
-    productphoto: "",
     brandname: "",
     categoryname: "",
     color: "",
@@ -16,6 +15,7 @@ export default function CreateProduct() {
     includedcomponent: "",
     warranty: ""
   });
+  const [productphotos, setProductphotos] = useState([]);
 
   const inputHandler = (e) => {
     const { name, value } = e.target;
@@ -29,10 +29,35 @@ export default function CreateProduct() {
   const submitForm = async (e) => {
     e.preventDefault();
 
+    if (productphotos.length === 0) {
+      toast.error("Please select at least one product photo");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("productname", product.productname);
+    formData.append("modelnumber", product.modelnumber);
+    formData.append("modelyear", product.modelyear);
+    formData.append("brandname", product.brandname);
+    formData.append("categoryname", product.categoryname);
+    formData.append("color", product.color);
+    formData.append("weight", product.weight);
+    formData.append("includedcomponent", product.includedcomponent);
+    formData.append("warranty", product.warranty);
+
+    productphotos.forEach(file => {
+      formData.append("productphoto", file);
+    });
+
     try {
       await axios.post(
         "http://localhost:8000/product/createproduct",
-        product
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+        }
       );
 
       toast.success("Product Created Successfully");
@@ -41,7 +66,6 @@ export default function CreateProduct() {
         productname: "",
         modelnumber: "",
         modelyear: "",
-        productphoto: "",
         brandname: "",
         categoryname: "",
         color: "",
@@ -49,6 +73,9 @@ export default function CreateProduct() {
         includedcomponent: "",
         warranty: ""
       });
+      setProductphotos([]);
+      // Reset the file input element manually
+      document.getElementById("productphoto-input").value = "";
 
     } catch (error) {
       toast.error("Create Failed");
@@ -88,14 +115,19 @@ export default function CreateProduct() {
           required
         />
 
-        <input
-          type="text"
-          name="productphoto"
-          placeholder="Product Photo URL"
-          value={product.productphoto}
-          onChange={inputHandler}
-          required
-        />
+        <div>
+          <label htmlFor="productphoto">
+            Product Photos
+          </label>
+
+          <input
+            id="productphoto"
+            type="file"
+            accept="image/*"
+            multiple
+            onChange={(e) => setProductphotos([...e.target.files])}
+          />
+        </div>
 
         <input
           type="text"
