@@ -6,6 +6,8 @@ import { Toaster } from "react-hot-toast";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import UserLayout from "./layouts/UserLayout";
+import { ShowCart } from "./layouts/ShowCart.jsx";
+
 import Body from "./components/Body/Body.jsx";
 import HomePage from "./HomePage";
 
@@ -20,9 +22,6 @@ const route = createBrowserRouter([
   {
     path: "/homepage",
     element: <UserLayout />,
-    children: [
-      
-    ]
   },
   {
     path :  "/signupuser",
@@ -31,6 +30,10 @@ const route = createBrowserRouter([
   {
     path :  "/loginuser",
     element : <UserLogin/>
+  },
+  {
+    path: "/showcart",
+    element: <ShowCart />,
   }
 ]);
 

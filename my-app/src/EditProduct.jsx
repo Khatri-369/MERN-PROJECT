@@ -15,7 +15,8 @@ export default function EditProduct() {
     color: "",
     weight: "",
     includedcomponent: "",
-    warranty: ""
+    warranty: "",
+    price: ""
   });
   const [newPhotos, setNewPhotos] = useState([]);
 
@@ -61,6 +62,7 @@ export default function EditProduct() {
     formData.append("weight", product.weight);
     formData.append("includedcomponent", product.includedcomponent);
     formData.append("warranty", product.warranty);
+    formData.append("price", product.price);
     if (newPhotos.length > 0) {
       newPhotos.forEach(file => {
         formData.append("productphoto", file);
@@ -115,6 +117,15 @@ export default function EditProduct() {
           value={product.modelyear}
           onChange={inputHandler}
           placeholder="Model Year"
+          required
+        />
+
+        <input
+          type="number"
+          name="price"
+          value={product.price}
+          onChange={inputHandler}
+          placeholder="Price"
           required
         />
 

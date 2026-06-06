@@ -336,6 +336,26 @@
     height: 50px;
 }
 
+.product-price-container {
+    display: flex;
+    align-items: baseline;
+    gap: 2px;
+    margin-top: 4px;
+    margin-bottom: 12px;
+}
+
+.price-symbol {
+    font-size: 14px;
+    font-weight: 700;
+    color: #b12704;
+}
+
+.price-amount {
+    font-size: 22px;
+    font-weight: 700;
+    color: #b12704;
+}
+
 /* Specifications Grid */
 .specs-grid {
     display: grid;
@@ -656,4 +676,50 @@
     .product-image {
         height: 180px;
     }
+}
+
+/* Quantity Selector Control styling */
+.quantity-control {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f0f2f2;
+    border: 1px solid #d5d9d9;
+    border-radius: 8px;
+    height: 44px;
+    padding: 0;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    flex: 1;
+}
+
+.quantity-btn {
+    background: transparent;
+    border: none;
+    width: 40px;
+    height: 100%;
+    font-size: 18px;
+    font-weight: 700;
+    color: #0f1111;
+    cursor: pointer;
+    transition: background 0.15s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.quantity-btn:hover {
+    background: #e3e6e6;
+}
+
+.quantity-btn:active {
+    background: #d8dbdb;
+}
+
+.quantity-value {
+    font-size: 15px;
+    font-weight: 700;
+    color: #0f1111;
+    min-width: 24px;
+    text-align: center;
 }

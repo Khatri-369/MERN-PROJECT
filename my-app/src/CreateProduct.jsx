@@ -13,7 +13,8 @@ export default function CreateProduct() {
     color: "",
     weight: "",
     includedcomponent: "",
-    warranty: ""
+    warranty: "",
+    price: ""
   });
   const [productphotos, setProductphotos] = useState([]);
 
@@ -44,6 +45,7 @@ export default function CreateProduct() {
     formData.append("weight", product.weight);
     formData.append("includedcomponent", product.includedcomponent);
     formData.append("warranty", product.warranty);
+    formData.append("price", product.price);
 
     productphotos.forEach(file => {
       formData.append("productphoto", file);
@@ -71,7 +73,8 @@ export default function CreateProduct() {
         color: "",
         weight: "",
         includedcomponent: "",
-        warranty: ""
+        warranty: "",
+        price: ""
       });
       setProductphotos([]);
       // Reset the file input element manually
@@ -111,6 +114,15 @@ export default function CreateProduct() {
           name="modelyear"
           placeholder="Model Year"
           value={product.modelyear}
+          onChange={inputHandler}
+          required
+        />
+
+        <input
+          type="number"
+          name="price"
+          placeholder="Price"
+          value={product.price}
           onChange={inputHandler}
           required
         />

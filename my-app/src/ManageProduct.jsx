@@ -54,6 +54,7 @@ export default function ManageProduct() {
             <th>COLOR</th>
             <th>WEIGHT</th>
             <th>WARRANTY</th>
+            <th>PRICE</th>
             <th>ACTION</th>
           </tr>
         </thead>
@@ -74,6 +75,7 @@ export default function ManageProduct() {
                 <td>{p.color}</td>
                 <td>{p.weight}</td>
                 <td>{p.warranty}</td>
+                <td>₹{p.price}</td>
 
                 <td className="action-buttons">
                   <Link to="/adminpanel/showproduct">
@@ -95,7 +97,7 @@ export default function ManageProduct() {
             ))
           ) : (
             <tr>
-              <td colSpan="10">No Products Found</td>
+              <td colSpan="11">No Products Found</td>
             </tr>
           )}
         </tbody>

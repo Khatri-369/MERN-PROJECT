@@ -78,6 +78,7 @@ export default function SearchProduct() {
               <p><strong>Weight:</strong> {p.weight}</p>
               <p><strong>Included:</strong> {p.includedcomponent}</p>
               <p><strong>Warranty:</strong> {p.warranty}</p>
+              <p><strong>Price:</strong> ₹{p.price}</p>
             </div>
           ))
         ) : (

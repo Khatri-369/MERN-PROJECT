@@ -1,3 +1,5 @@
+import Product from "../../model/ProductModel.js";
+
 export const CreateProduct = async (req, res) => {
     try {
         const photos = req.files.map(file => file.filename);

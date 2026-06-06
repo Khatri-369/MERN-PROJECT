@@ -58,6 +58,11 @@ const productschema = new mongoose.Schema({
         type: String,
         required: true,
         maxlength: 50
+    },
+
+    price: {
+        type: Number,
+        required: true
     }
 });
 

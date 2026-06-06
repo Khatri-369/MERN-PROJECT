@@ -24,6 +24,7 @@ async function run() {
         formData.append("weight", "250g");
         formData.append("includedcomponent", "User Manual");
         formData.append("warranty", "2 Years");
+        formData.append("price", "999");
 
         // Read files and append to formData
         const blob1 = new Blob([fs.readFileSync(img1Path)], { type: "image/png" });
