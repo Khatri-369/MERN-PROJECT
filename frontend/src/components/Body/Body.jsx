@@ -30,7 +30,10 @@ export default function Body({ cartUpdated, setCartUpdated }) {
     }, [cartUpdated]);
 
     const getCartItem = (productId) => {
-        return cartItems.find(item => item.product_id === productId);
+        return cartItems.find(item => {
+            const itemProdId = item.product_id?._id || item.product_id;
+            return itemProdId === productId;
+        });
     };
 
     //ADD TO CART FUNCTIONALITY

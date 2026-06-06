@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 const productschema = new mongoose.Schema({
+    //PRODUCT ID IS IN MONGODB ID
     productname: {
         type: String,
         required: true,

@@ -2,19 +2,26 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useSearchParams } from "react-router-dom";
-import { 
-  FaCalendarAlt, 
-  FaPalette, 
-  FaWeightHanging, 
-  FaBoxOpen, 
-  FaShieldAlt, 
-  FaTag,
-  FaShoppingCart
+import {
+    FaCalendarAlt,
+    FaPalette,
+    FaWeightHanging,
+    FaBoxOpen,
+    FaShieldAlt,
+    FaTag,
+    FaShoppingCart
 } from "react-icons/fa";
 import "./Cart.css";
 
-export default function Cart({ cartUpdated, setCartUpdated }){
-      const [cartItems, setCartItems] = useState([]);
+export default function Cart({ cartUpdated, setCartUpdated }) {
+    const [cartItems, setCartItems] = useState([]);
+
+    // Calculate total price dynamically from cartItems
+    const totalPrice = cartItems.reduce((acc, item) => {
+        const price = item.product_id.price;
+        const qty = Number(item.quantity);
+        return acc + (price * qty);
+    }, 0);
 
     const fetchCartItems = async () => {
         try {
@@ -30,7 +37,10 @@ export default function Cart({ cartUpdated, setCartUpdated }){
     }, [cartUpdated]);
 
     const getCartItem = (productId) => {
-        return cartItems.find(item => item.product_id === productId);
+        return cartItems.find(item => {
+            const itemProdId = item.product_id?._id || item.product_id;
+            return itemProdId === productId;
+        });
     };
 
     const handleIncrement = async (cartItem) => {
@@ -63,97 +73,53 @@ export default function Cart({ cartUpdated, setCartUpdated }){
     };
 
     return (
-            <div className="body-container">
-                {/* Header Section */}
-                <div className="body-header">
-                    <h1 className="body-title">YOUR CART</h1>
+        <div className="cart-page-container">
+            <div className="cart-main">
+                <div className="cart-main-header">
+                    <h1 className="cart-title">YOUR CART</h1>
                 </div>
-    
-                {/* Main Content Area */}
-                <div className="product-grid animate-fade-in">
-                    {cartItems.map((item) => (
-                            <div key={item._id} className="product-card">
-                                <div className="product-image">
-                                    <img 
-                                        src={Array.isArray(item.productphoto) ? item.productphoto[0] : item.productphoto} 
-                                        alt={item.productname} 
-                                    />
+
+                {cartItems.length > 0 ? (
+                    <div className="cart-items-list">
+                        {cartItems.map((item) => (
+                            <div className="cart-item-card" key={item._id}>
+                                <div className="cart-item-image">
+                                    {item.product_id?.productphoto?.[0] && (
+                                        <img
+                                            src={item.product_id.productphoto[0].startsWith("http")
+                                                ? item.product_id.productphoto[0]
+                                                : `http://localhost:8000/uploads/${item.product_id.productphoto[0]}`}
+                                            alt={item.product_id.productname || "Product"}
+                                        />
+                                    )}
                                 </div>
-    
-                                <div className="product-info">
-                                    <div className="brand-label">{item.brandname}</div>
-                                     <h2 className="product-name" title={item.productname}>
-                                         {item.productname}
-                                     </h2>
-                                     
-                                     <div className="product-price-container">
-                                         <span className="price-symbol">₹</span>
-                                         <span className="price-amount">{item.price}</span>
-                                     </div>
-                                     
-                                     <div className="specs-grid">
-                                        <div className="spec-item">
-                                            <FaTag className="spec-icon" />
-                                            <div className="spec-details">
-                                                <span className="spec-label">Model</span>
-                                                <span className="spec-value" title={item.modelnumber}>{item.modelnumber}</span>
-                                            </div>
-                                        </div>
-                                        <div className="spec-item">
-                                            <FaCalendarAlt className="spec-icon" />
-                                            <div className="spec-details">
-                                                <span className="spec-label">Year</span>
-                                                <span className="spec-value">{item.modelyear}</span>
-                                            </div>
-                                        </div>
-                                        <div className="spec-item">
-                                            <FaPalette className="spec-icon" />
-                                            <div className="spec-details">
-                                                <span className="spec-label">Color</span>
-                                                <span className="spec-value">{item.color}</span>
-                                            </div>
-                                        </div>
-                                        <div className="spec-item">
-                                            <FaWeightHanging className="spec-icon" />
-                                            <div className="spec-details">
-                                                <span className="spec-label">Weight</span>
-                                                <span className="spec-value">{item.weight}</span>
-                                            </div>
-                                        </div>
-                                        <div className="spec-item full-width">
-                                            <FaBoxOpen className="spec-icon" />
-                                            <div className="spec-details">
-                                                <span className="spec-label">Included</span>
-                                                <span className="spec-value" title={item.includedcomponent}>{item.includedcomponent}</span>
-                                            </div>
-                                        </div>
-                                        <div className="spec-item full-width">
-                                            <FaShieldAlt className="spec-icon" />
-                                            <div className="spec-details">
-                                                <span className="spec-label">Warranty</span>
-                                                <span className="spec-value" title={item.warranty}>{item.warranty}</span>
-                                            </div>
-                                        </div>
+                                <div className="cart-item-details">
+                                    <h3 className="cart-item-name">{item.product_id?.productname || "Unknown Product"}</h3>
+                                    <p className="cart-item-brand">Brand: {item.product_id?.brandname || "N/A"}</p>
+                                </div>
+                                <div className="cart-item-price-col">
+                                    <span className="cart-item-unit-price">
+                                        Price: ₹{item.product_id?.price ?? 0}
+                                    </span>
+                                    <div className="quantity-control-cart" style={{ marginTop: "12px", alignSelf: "flex-end" }}>
+                                        <button onClick={() => handleDecrement(item)} className="quantity-btn-cart">-</button>
+                                        <span className="quantity-value-cart">{item.quantity}</span>
+                                        <button onClick={() => handleIncrement(item)} className="quantity-btn-cart">+</button>
                                     </div>
-                                    
-                                    <div className="product-actions">
-                                        {getCartItem(item._id) ? (
-                                            <div className="quantity-control">
-                                                <button onClick={() => handleDecrement(getCartItem(item._id))} className="quantity-btn">-</button>
-                                                <span className="quantity-value">{getCartItem(item._id).quantity}</span>
-                                                <button onClick={() => handleIncrement(getCartItem(item._id))} className="quantity-btn">+</button>
-                                            </div>
-                                        ) : (
-                                            <button className="add-to-cart-btn">
-                                                <FaShoppingCart /> Add to Cart
-                                            </button>
-                                        )}
-                                    </div>
-    
                                 </div>
                             </div>
                         ))}
+                    </div>
+                ) : (
+                    <div className="cart-empty-state">
+                        <h2>Your Cart is empty.</h2>
+                    </div>
+                )}
+
+                <div className="cart-subtotal-bottom">
+                    Subtotal ({cartItems.length} items): <strong>₹{totalPrice}</strong>
                 </div>
             </div>
-        );
+        </div>
+    );
 }
