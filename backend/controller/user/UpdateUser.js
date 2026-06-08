@@ -2,9 +2,14 @@ import User from "../../model/UserModel.js";
 
 export const UpdateUser = async (req, res) => {
     try {
+        const updateData = { ...req.body };
+        if (req.file) {
+            updateData.photo = req.file.filename;
+        }
+
         const user = await User.findByIdAndUpdate(
             req.params.id,
-            req.body,
+            updateData,
             { new: true }
         );
 

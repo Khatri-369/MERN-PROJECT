@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import {
     FaUser,
@@ -14,15 +14,27 @@ import {
     FaMapMarkerAlt,
     FaCity,
     FaAddressCard,
-    FaInfoCircle
+    FaInfoCircle,
+    FaCamera,
+    FaUpload
 } from "react-icons/fa";
 import Header from "../Header/Header";
 import './UserProfile.css';
 
 export default function UserProfile() {
+
+    const Navigate = useNavigate();
+
     const [userData, setUserData] = useState("");
     const [editData, setEditData] = useState("");
     const [buttonselect, setbuttonselect] = useState("profile");
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [previewUrl, setPreviewUrl] = useState("");
+
+    useEffect(() => {
+        setSelectedFile(null);
+        setPreviewUrl("");
+    }, [buttonselect]);
 
     useEffect(() => {
         const UserData = async () => {
@@ -42,8 +54,9 @@ export default function UserProfile() {
             const ConfirmLogout = window.confirm("Are You Sure Want To Logout?");
 
             if (ConfirmLogout) {
-                const dataa = await axios.get("http://localhost:8000/user/logoutuser");
-                toast.success(dataa.data.message);
+                const dataa = await axios.post("http://localhost:8000/user/logoutuser");
+                toast.success("LOGOUT SUCCESSFULLY");
+                Navigate("/loginuser");
             }
         } catch (error) {
             console.log("Error in logout:", error);
@@ -70,6 +83,58 @@ export default function UserProfile() {
             [e.target.name]: e.target.value
         });
     };
+
+    //Handle File Change
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setSelectedFile(file);
+            setPreviewUrl(URL.createObjectURL(file));
+        }
+    };
+
+    //Handle Upload
+    const handleupload = async () => {
+        if (!selectedFile) {
+            toast.error("Please choose a file first!");
+            return;
+        }
+        try {
+            const formData = new FormData(); //FormData is used for sending files to the server
+            formData.append('photo', selectedFile);
+            const dataa = await axios.put(`http://localhost:8000/user/updateuser/${userData._id}`, formData);
+            toast.success("Profile photo updated successfully!");
+            setUserData(dataa.data);
+            setSelectedFile(null);
+            setPreviewUrl("");
+            setbuttonselect("profile");
+        }
+        catch (error) {
+            console.log("Error in updating profile photo:", error);
+            toast.error("Failed to update profile photo. Please try again.");
+        }
+    };
+
+    //HANDLE CHANGE PASSWORD
+    const ChangePassword = async (e) => {
+        try {
+            e.preventDefault();
+            const oldpassword = document.getElementById("oldpassword").value;
+            const newpassword = document.getElementById("newpassword").value;
+            const confirmnewpassword = document.getElementById("confirmnewpassword").value;
+            const dataa = await axios.put("http://localhost:8000/user/changepassword", {
+                oldpassword,
+                newpassword,
+                confirmnewpassword
+            });
+            toast.success(dataa.data.message);
+            setbuttonselect("profile");
+        }
+        catch (error) {
+            console.log("Error in changing password:", error);
+            toast.error(error.response?.data?.message || "Failed to change password. Please try again.");
+        }
+    }
 
     return (
         <>
@@ -198,42 +263,69 @@ export default function UserProfile() {
                             {buttonselect === "updateprofile" && (
                                 <>
                                     <h2 className="panel-title"><FaUserEdit /> Update Profile</h2>
-                                    <div className="mock-form">
-                                        <div className="form-row">
-                                            <div className="form-group">
-                                                <label>First Name</label>
-                                                <input type="text" value={editData.first_name || ""} onChange={handlechange} name="first_name" />
-                                            </div>
-                                            <div className="form-group">
-                                                <label>Last Name</label>
-                                                <input type="text" value={editData.last_name || ""} onChange={handlechange} name="last_name" />
+                                    <div className="update-profile-layout">
+                                        <div className="leftside">
+                                            <div className="mock-form">
+                                                <div className="form-row">
+                                                    <div className="form-group">
+                                                        <label>First Name</label>
+                                                        <input type="text" value={editData.first_name || ""} onChange={handlechange} name="first_name" placeholder="John" />
+                                                    </div>
+                                                    <div className="form-group">
+                                                        <label>Last Name</label>
+                                                        <input type="text" value={editData.last_name || ""} onChange={handlechange} name="last_name" placeholder="Doe" />
+                                                    </div>
+                                                </div>
+                                                <div className="form-group">
+                                                    <label>Email Address</label>
+                                                    <input type="email" value={editData.email_id || ""} onChange={handlechange} name="email_id" placeholder="john.doe@example.com" />
+                                                </div>
+                                                <div className="form-row">
+                                                    <div className="form-group">
+                                                        <label>Mobile Number</label>
+                                                        <input type="text" value={editData.mobile_no || ""} onChange={handlechange} name="mobile_no" placeholder="1234567890" />
+                                                    </div>
+                                                    <div className="form-group">
+                                                        <label>Pin Code</label>
+                                                        <input type="text" value={editData.pin_code || ""} onChange={handlechange} name="pin_code" placeholder="123456" />
+                                                    </div>
+                                                </div>
+                                                <div className="form-row">
+                                                    <div className="form-group">
+                                                        <label>City</label>
+                                                        <input type="text" value={editData.city || ""} onChange={handlechange} name="city" placeholder="City" />
+                                                    </div>
+                                                    <div className="form-group">
+                                                        <label>State</label>
+                                                        <input type="text" value={editData.state || ""} onChange={handlechange} name="state" placeholder="State" />
+                                                    </div>
+                                                </div>
+                                                <button className="btn-primary-mock" onClick={handleUpdateProfile}>Save Changes</button>
                                             </div>
                                         </div>
-                                        <div className="form-group">
-                                            <label>Email Address</label>
-                                            <input type="email" value={editData.email_id || ""} onChange={handlechange} name="email_id" />
+                                        <div className="rightside">
+                                            <h3>Profile Picture</h3>
+                                            <div className="update-photo-container">
+                                                <img
+                                                    src={previewUrl || (userData.photo ? `http://localhost:8000/uploads/${userData.photo}` : "https://cdn-icons-png.flaticon.com/512/3135/3135715.png")}
+                                                    alt="Profile Preview"
+                                                />
+                                                <label htmlFor="file-upload" className="photo-upload-overlay">
+                                                    <FaCamera />
+                                                    <span>Change Photo</span>
+                                                </label>
+                                            </div>
+                                            <div className="file-upload-wrapper">
+                                                <input id="file-upload" type="file" className="file-upload-input" onChange={handleFileChange} />
+                                                <label htmlFor="file-upload" className="file-upload-label">
+                                                    <FaUpload /> Choose Image File
+                                                </label>
+                                                {selectedFile && <span className="selected-file-name">{selectedFile.name}</span>}
+                                                <div className="photo-upload-actions">
+                                                    <button className="btn-upload-submit" onClick={handleupload}>Upload</button>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div className="form-row">
-                                            <div className="form-group">
-                                                <label>Mobile Number</label>
-                                                <input type="text" value={editData.mobile_no || ""} onChange={handlechange} name="mobile_no" />
-                                            </div>
-                                            <div className="form-group">
-                                                <label>Pin Code</label>
-                                                <input type="text" value={editData.pin_code || ""} onChange={handlechange} name="pin_code" />
-                                            </div>
-                                        </div>
-                                        <div className="form-row">
-                                            <div className="form-group">
-                                                <label>City</label>
-                                                <input type="text" value={editData.city || ""} onChange={handlechange} name="city" />
-                                            </div>
-                                            <div className="form-group">
-                                                <label>State</label>
-                                                <input type="text" value={editData.state || ""} onChange={handlechange} name="state" />
-                                            </div>
-                                        </div>
-                                        <button className="btn-primary-mock" onClick={handleUpdateProfile}>Save Changes</button>
                                     </div>
                                 </>
                             )}
@@ -257,23 +349,20 @@ export default function UserProfile() {
                             {buttonselect === "changepassword" && (
                                 <>
                                     <h2 className="panel-title"><FaLock /> Change Password</h2>
-                                    <div className="form-notice">
-                                        <FaInfoCircle /> Password change operations are disabled.
-                                    </div>
                                     <div className="mock-form">
                                         <div className="form-group">
                                             <label>Current Password</label>
-                                            <input type="password" placeholder="••••••••" disabled />
+                                            <input type="password" name="oldpassword" id="oldpassword" />
                                         </div>
                                         <div className="form-group">
                                             <label>New Password</label>
-                                            <input type="password" placeholder="••••••••" disabled />
+                                            <input type="password" name="newpassword" id="newpassword" />
                                         </div>
                                         <div className="form-group">
                                             <label>Confirm New Password</label>
-                                            <input type="password" placeholder="••••••••" disabled />
+                                            <input type="password" name="confirmnewpassword" id="confirmnewpassword" />
                                         </div>
-                                        <button className="btn-primary-mock" disabled style={{ opacity: 0.7, cursor: "not-allowed" }}>Update Password</button>
+                                        <button className="btn-primary-mock" onClick={ChangePassword}>Update Password</button>
                                     </div>
                                 </>
                             )}

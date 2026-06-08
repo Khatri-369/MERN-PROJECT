@@ -9,3 +9,6 @@ CURRENT PROFILE
 UPDATE PROFILE
 ORDERS,ADDRESS,CART
 LOGOUT,PASSWORD CHANGE
+
+onClick={handleupload}  --> this button works when click on it and execute function
+onClick={handleupload()}  --> this button doesn't works because it calls the function directly it execute at the time of rendering so when page load then it execute once.
