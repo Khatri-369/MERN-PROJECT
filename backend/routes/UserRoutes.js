@@ -9,10 +9,11 @@ import {forgotPassword} from "../controller/user/forgotpassword.js";
 import {verifyOTP} from "../controller/user/VerifyOtp.js";
 import {resetPassword} from "../controller/user/resetPassword.js";
 import { LoginUser } from "../controller/user/LoginUser.js";
-
+import { ShowOneUser } from "../controller/user/ShowOneUser.js";
 import {LogoutUser} from "../controller/user/LogoutUser.js";
  
 import{auth} from "../middleware/auth.js";
+import { upload } from "../middleware/multer.js";
 
 const route = express.Router();
 
@@ -22,7 +23,7 @@ route.get("/adminpanel",auth,(req,res)=>{
     });
 });
 
-route.post("/createuser", CreateUser);
+route.post("/createuser", upload.single("photo"), CreateUser);
 
 route.get("/showuser",auth, ShowUser);
 
@@ -32,6 +33,8 @@ route.get("/showuser/:id",auth, showUserId);
 route.put("/updateuser/:id",auth, UpdateUser);
 route.delete("/deleteuser/:id",auth, DeleteUser);
 route.get("/searchuser",auth, showUserSearch);
+
+route.get("/showoneuser",auth,ShowOneUser);
 
 route.post("/loginuser",LoginUser);
 route.post("/forgotpassword",forgotPassword);

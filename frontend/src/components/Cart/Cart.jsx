@@ -15,13 +15,12 @@ import "./Cart.css";
 
 export default function Cart({ cartUpdated, setCartUpdated }) {
     const [cartItems, setCartItems] = useState([]);
+    let total = 0;
 
     // Calculate total price dynamically from cartItems
-    const totalPrice = cartItems.reduce((acc, item) => {
-        const price = item.product_id.price;
-        const qty = Number(item.quantity);
-        return acc + (price * qty);
-    }, 0);
+    for(const item of cartItems){
+        total += item.product_id.price * Number(item.quantity);
+    }
 
     const fetchCartItems = async () => {
         try {
@@ -117,7 +116,7 @@ export default function Cart({ cartUpdated, setCartUpdated }) {
                 )}
 
                 <div className="cart-subtotal-bottom">
-                    Subtotal ({cartItems.length} items): <strong>₹{totalPrice}</strong>
+                    Subtotal ({cartItems.length} items): <strong>₹{total}</strong>
                 </div>
             </div>
         </div>

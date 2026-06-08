@@ -15,6 +15,7 @@ export default function CreateUser() {
     city: "",
     state: "",
     pin_code: "",
+    photo: null,
     status: 1,
   });
 
@@ -27,12 +28,38 @@ export default function CreateUser() {
     });
   };
 
+  const fileHandler = (e) => {
+    setUser({
+      ...user,
+      photo: e.target.files[0]
+    });
+  };
+
   
   const submitForm = async (e) => {
     e.preventDefault();
 
+    const formData = new FormData();
+    formData.append("first_name", user.first_name);
+    formData.append("last_name", user.last_name);
+    formData.append("user_name", user.user_name);
+    formData.append("password", user.password);
+    formData.append("email_id", user.email_id);
+    formData.append("mobile_no", user.mobile_no);
+    formData.append("city", user.city);
+    formData.append("state", user.state);
+    formData.append("pin_code", user.pin_code);
+    if (user.photo) {
+      formData.append("photo", user.photo);
+    }
+    formData.append("status", user.status);
+
     try {
-      await axios.post("http://localhost:8000/user/createuser", user);
+      await axios.post("http://localhost:8000/user/createuser", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      });
 
       toast.success("User Created Successfully");
 
@@ -46,8 +73,12 @@ export default function CreateUser() {
         city: "",
         state: "",
         pin_code: "",
+        photo: null,
         status: 1
       });
+
+      const fileInput = document.getElementById("photo-input");
+      if (fileInput) fileInput.value = "";
 
     } catch (error) {
       toast.error(error.response?.data?.error || "Failed To Create User");
@@ -140,6 +171,18 @@ export default function CreateUser() {
           onChange={inputHandler}
           required
         />
+
+        <div className="file-input-group">
+          <label htmlFor="photo-input">Profile Photo</label>
+          <input
+            type="file"
+            id="photo-input"
+            name="photo"
+            onChange={fileHandler}
+            accept="image/*"
+            required
+          />
+        </div>
 
         <select
           name="status"

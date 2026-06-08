@@ -18,6 +18,7 @@ export default function SignUpUser() {
     city: "",
     state: "",
     pin_code: "",
+    photo: null,
   });
 
   const handleChange = (e) => {
@@ -27,24 +28,46 @@ export default function SignUpUser() {
     });
   };
 
+  const fileHandler = (e) => {
+    setUser({
+      ...user,
+      photo: e.target.files[0]
+    });
+  };
+
   const registerUser = async (e) => {
     e.preventDefault();
 
-    try {
+    const formData = new FormData();
+    formData.append("first_name", user.first_name);
+    formData.append("last_name", user.last_name);
+    formData.append("user_name", user.user_name);
+    formData.append("password", user.password);
+    formData.append("email_id", user.email_id);
+    formData.append("mobile_no", user.mobile_no);
+    formData.append("city", user.city);
+    formData.append("state", user.state);
+    formData.append("pin_code", user.pin_code);
+    if (user.photo) {
+      formData.append("photo", user.photo);
+    }
 
+    try {
       await axios.post(
         "http://localhost:8000/user/createuser",
-        user
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+        }
       );
 
       toast.success("Registration Successful");
-
       navigate("/loginuser");
 
     } catch (error) {
-
       toast.error(error.response?.data?.error || "Registration Failed");
-
     }
   };
 
@@ -207,6 +230,18 @@ export default function SignUpUser() {
             placeholder="Pin Code"
             value={user.pin_code}
             onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div className="input-group">
+          <label>Profile Photo</label>
+
+          <input
+            type="file"
+            name="photo"
+            onChange={fileHandler}
+            accept="image/*"
             required
           />
         </div>

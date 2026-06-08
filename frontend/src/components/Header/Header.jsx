@@ -8,6 +8,7 @@ export default function Header({ cartUpdated }) {
   const [searchParams, setSearchParams] = useSearchParams();
   const [query, setQuery] = useState("");
   const [cartCount, setCartCount] = useState(0);
+  const[profileimage,setprofileimage] = useState("");
 
   // Update the input field if the URL query parameter changes (e.g. going back or page refresh)
   useEffect(() => {
@@ -40,6 +41,20 @@ export default function Header({ cartUpdated }) {
     };
     fetchCartCount();
   }, [cartUpdated]);
+
+  useEffect(() => {
+    const fetchphotoUrl = async () => {
+      try {
+        const response = await axios.get("http://localhost:8000/user/showoneuser");
+        if (response.data && response.data.photo) {
+          setprofileimage(response.data.photo);
+        }
+      } catch (error) {
+        console.log("Error Loading profile image:", error);
+      }
+    };
+    fetchphotoUrl();
+  }, []);
 
   return (
     <header className="header">
@@ -96,9 +111,9 @@ export default function Header({ cartUpdated }) {
         {/* Account Info */}
         <Link to="/profile" className="header-item account-info">
           <img
-            src="https://i.imgur.com/HeIi0wU.png"
-            alt="Profile"
-            className="profile-img"
+          src={profileimage ? `http://localhost:8000/uploads/${profileimage}` : "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"}
+          alt="Profile"
+          className="profile-img"
           />
         </Link>
       </div>

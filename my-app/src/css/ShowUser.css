@@ -39,11 +39,21 @@ body {
   border-radius: 18px;
   padding: 25px;
   box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  text-align: center;
   transition: 0.3s;
 }
 
 .user-card:hover {
   transform: translateY(-5px);
+}
+
+.user-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 15px;
+  border: 4px solid #2563eb;
 }
 
 .user-card h3 {

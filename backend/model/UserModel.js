@@ -61,6 +61,11 @@ const userschema = new mongoose.Schema({
     type: Date
     },
 
+    photo: {
+        type: String,
+        required: true
+    },
+
     status: {
         type: Number,
         default: 1

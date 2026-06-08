@@ -15,6 +15,7 @@ export default function EditUser() {
     city: "",
     state: "",
     pin_code: "",
+    photo: "",
     status: 1
   });
 
@@ -55,6 +56,7 @@ export default function EditUser() {
       <input name="city" value={user.city} onChange={inputHandler} />
       <input name="state" value={user.state} onChange={inputHandler} />
       <input name="pin_code" value={user.pin_code} onChange={inputHandler} />
+      <input name="photo" value={user.photo || ""} onChange={inputHandler} placeholder="Photo URL" required />
 
       <select name="status" value={user.status} onChange={inputHandler}>
         <option value={1}>Active</option>

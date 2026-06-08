@@ -44,6 +44,12 @@ export default function ShowUser() {
         {user.length > 0 ? (
           user.map((u) => (
             <div className="user-card" key={u._id}>
+              <img
+                src={u.photo ? `http://localhost:8000/uploads/${u.photo}` : ""}
+                alt="user"
+                className="user-avatar"
+              />
+
               <h3>
                 {u.first_name} {u.last_name}
               </h3>

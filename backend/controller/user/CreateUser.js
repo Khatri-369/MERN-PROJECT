@@ -3,13 +3,16 @@ import bcrypt from "bcrypt"; //WE ONLY USE BCRYPT IN BACKEND NOT FRONTEND
 
 export const CreateUser = async (req, res) => {
     try {
-       const user = req.body;
+        const { password } = req.body;
+        const hashpassword = await bcrypt.hash(password, 10);
 
-       //BCRYPT SYNTAX : bcrypt.hash(plainPassword, saltRounds)
-       const hashpassword = await bcrypt.hash(user.password,10);
-       user.password = hashpassword;
+        const photoFilename = req.file ? req.file.filename : "";
 
-        const usr = new User(user); //MAKE NEW MONGOOSE DOCUMENT USING MODEL
+        const usr = new User({
+            ...req.body,
+            password: hashpassword,
+            photo: photoFilename
+        });
         const ress = await usr.save();
 
         res.status(200).json(ress);
