@@ -8,12 +8,12 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import UserLayout from "./layouts/UserLayout";
 import { ShowCart } from "./layouts/ShowCart.jsx";
 
-import Body from "./components/Body/Body.jsx";
-import HomePage from "./HomePage";
-
 //SIGN UP AND LOGIN
 import SignUpUser from './SignUpUser.jsx';
 import UserLogin from './UserLogin.jsx';
+
+//PROFILE PAGE
+import UserProfile from './components/profile/UserProfile.jsx';
 
 import axios from "axios";
 axios.defaults.withCredentials = true;
@@ -24,16 +24,20 @@ const route = createBrowserRouter([
     element: <UserLayout />,
   },
   {
-    path :  "/signupuser",
-    element : <SignUpUser/>
+    path: "/signupuser",
+    element: <SignUpUser />
   },
   {
-    path :  "/loginuser",
-    element : <UserLogin/>
+    path: "/loginuser",
+    element: <UserLogin />
   },
   {
     path: "/showcart",
     element: <ShowCart />,
+  },
+  {
+    path: "/profile",
+    element: <UserProfile />,
   }
 ]);
 
