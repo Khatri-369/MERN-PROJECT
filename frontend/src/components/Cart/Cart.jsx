@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useSearchParams } from "react-router-dom";
@@ -9,9 +9,20 @@ import {
     FaBoxOpen,
     FaShieldAlt,
     FaTag,
-    FaShoppingCart
+    FaShoppingCart,
+    FaMapMarkerAlt
 } from "react-icons/fa";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
 import "./Cart.css";
+
+// Fix default marker icon issue with Leaflet in React
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+    iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
+    iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+    shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+});
 
 const loadRazorpayScript = () => {
     return new Promise((resolve) => {
@@ -34,6 +45,138 @@ export default function Cart({ cartUpdated, setCartUpdated }) {
     const [cartItems, setCartItems] = useState([]);
     const [loading, setLoading] = useState(false);
     let total = 0;
+
+    // Location Order Map states & refs
+    const [latitude, setLatitude] = useState(22.3072);
+    const [longitude, setLongitude] = useState(73.1812);
+    const [customAddress, setCustomAddress] = useState("");
+    const [userProfile, setUserProfile] = useState(null);
+    const [searchQuery, setSearchQuery] = useState("");
+
+    const mapContainerRef = useRef(null);
+    const mapInstanceRef = useRef(null);
+    const markerInstanceRef = useRef(null);
+
+    // Initial load: Fetch profile and set initial map center
+    useEffect(() => {
+        const fetchProfile = async () => {
+            try {
+                const userRes = await axios.get("http://localhost:8000/user/showoneuser");
+                setUserProfile(userRes.data);
+                
+                const addr = `${userRes.data.first_name} ${userRes.data.last_name || ""}, ${userRes.data.city || ""}, ${userRes.data.state || ""} - ${userRes.data.pin_code || ""}, Mobile: ${userRes.data.mobile_no || ""}`;
+                setCustomAddress(addr);
+
+                const searchStr = `${userRes.data.city || ""}, ${userRes.data.state || ""}, India`;
+                try {
+                    const geoRes = await axios.get(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchStr)}`);
+                    if (geoRes.data && geoRes.data.length > 0) {
+                        const { lat, lon } = geoRes.data[0];
+                        const latNum = Number(lat);
+                        const lonNum = Number(lon);
+                        setLatitude(latNum);
+                        setLongitude(lonNum);
+                        
+                        if (mapInstanceRef.current) {
+                            mapInstanceRef.current.setView([latNum, lonNum], 13);
+                            if (markerInstanceRef.current) {
+                                markerInstanceRef.current.setLatLng([latNum, lonNum]);
+                            }
+                        }
+                    }
+                } catch (geoErr) {
+                    console.error("Geocoding profile address failed:", geoErr);
+                }
+            } catch (err) {
+                console.error("Error fetching user profile:", err);
+            }
+        };
+        fetchProfile();
+    }, []);
+
+    // Create Map Instance once container is ready
+    useEffect(() => {
+        if (!mapContainerRef.current || mapInstanceRef.current) return;
+
+        const map = L.map(mapContainerRef.current).setView([latitude, longitude], 13);
+        mapInstanceRef.current = map;
+
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        const marker = L.marker([latitude, longitude], { draggable: true }).addTo(map);
+        markerInstanceRef.current = marker;
+
+        const updateLocation = async (lat, lng) => {
+            setLatitude(lat);
+            setLongitude(lng);
+            try {
+                const res = await axios.get(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`);
+                if (res.data && res.data.display_name) {
+                    let formatted = res.data.display_name;
+                    if (userProfile) {
+                        formatted = `${userProfile.first_name} ${userProfile.last_name || ""}, ${res.data.display_name}, Mobile: ${userProfile.mobile_no || ""}`;
+                    }
+                    setCustomAddress(formatted);
+                }
+            } catch (err) {
+                console.error("Error reverse geocoding:", err);
+            }
+        };
+
+        marker.on("dragend", async (e) => {
+            const { lat, lng } = e.target.getLatLng();
+            await updateLocation(lat, lng);
+        });
+
+        map.on("click", async (e) => {
+            const { lat, lng } = e.latlng;
+            marker.setLatLng([lat, lng]);
+            await updateLocation(lat, lng);
+        });
+
+        return () => {
+            if (mapInstanceRef.current) {
+                mapInstanceRef.current.remove();
+                mapInstanceRef.current = null;
+                markerInstanceRef.current = null;
+            }
+        };
+    }, [userProfile]);
+
+    const handleMapSearch = async (e) => {
+        e.preventDefault();
+        if (!searchQuery.trim()) return;
+        try {
+            const geoRes = await axios.get(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery)}`);
+            if (geoRes.data && geoRes.data.length > 0) {
+                const { lat, lon, display_name } = geoRes.data[0];
+                const latNum = Number(lat);
+                const lonNum = Number(lon);
+                setLatitude(latNum);
+                setLongitude(lonNum);
+
+                if (mapInstanceRef.current) {
+                    mapInstanceRef.current.setView([latNum, lonNum], 14);
+                    if (markerInstanceRef.current) {
+                        markerInstanceRef.current.setLatLng([latNum, lonNum]);
+                    }
+                }
+                
+                let formatted = display_name;
+                if (userProfile) {
+                    formatted = `${userProfile.first_name} ${userProfile.last_name || ""}, ${display_name}, Mobile: ${userProfile.mobile_no || ""}`;
+                }
+                setCustomAddress(formatted);
+            } else {
+                toast.error("Location not found");
+            }
+        } catch (err) {
+            console.error("Search error:", err);
+            toast.error("Failed to search location");
+        }
+    };
 
     // Calculate total price dynamically from cartItems
     for (const item of cartItems) {
@@ -132,7 +275,10 @@ export default function Cart({ cartUpdated, setCartUpdated }) {
                         const verifyRes = await axios.post("http://localhost:8000/payment/verify", {
                             razorpay_payment_id: response.razorpay_payment_id,
                             razorpay_order_id: response.razorpay_order_id,
-                            razorpay_signature: response.razorpay_signature
+                            razorpay_signature: response.razorpay_signature,
+                            latitude,
+                            longitude,
+                            customAddress
                         });
 
                         setCartItems([]);
@@ -210,6 +356,46 @@ export default function Cart({ cartUpdated, setCartUpdated }) {
                     ) : (
                         <div className="cart-empty-state">
                             <h2>Your Cart is empty.</h2>
+                        </div>
+                    )}
+
+                    {cartItems.length > 0 && (
+                        <div className="checkout-map-container">
+                            <h3 className="checkout-section-title">
+                                <FaMapMarkerAlt /> Confirm Delivery Location
+                            </h3>
+                            <p className="checkout-section-desc">
+                                Pinpoint your exact location on the map. Drag the marker or click on the map to set the coordinates.
+                            </p>
+                            
+                            <form onSubmit={handleMapSearch} className="map-search-form">
+                                <input
+                                    type="text"
+                                    placeholder="Search street, area, city..."
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    className="map-search-input"
+                                />
+                                <button type="submit" className="map-search-btn">Search Location</button>
+                            </form>
+
+                            <div ref={mapContainerRef} className="checkout-leaflet-map" style={{ height: "300px", borderRadius: "8px", margin: "12px 0", zIndex: 10 }}></div>
+
+                            <div className="coordinates-info">
+                                <span className="coords-badge">Latitude: {latitude.toFixed(6)}</span>
+                                <span className="coords-badge">Longitude: {longitude.toFixed(6)}</span>
+                            </div>
+
+                            <div className="delivery-address-field">
+                                <label className="address-label">Delivery Address Details</label>
+                                <textarea
+                                    className="address-textarea"
+                                    value={customAddress}
+                                    onChange={(e) => setCustomAddress(e.target.value)}
+                                    rows="3"
+                                    placeholder="Verify or type detailed address (house/flat number, landmarks etc.)"
+                                />
+                            </div>
                         </div>
                     )}
 

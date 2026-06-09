@@ -529,3 +529,114 @@
         margin-top: 8px;
     }
 }
+
+/* Location Order Map Styles */
+.checkout-map-container {
+    margin-top: 30px;
+    padding: 20px;
+    background: #fdfdfd;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.checkout-section-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #0f1111;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.checkout-section-desc {
+    font-size: 13px;
+    color: #565959;
+    margin-bottom: 16px;
+}
+
+.map-search-form {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.map-search-input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #a6a9a9;
+    border-radius: 6px;
+    font-size: 14px;
+    outline: none;
+    transition: border 0.15s ease;
+}
+
+.map-search-input:focus {
+    border-color: #e47911;
+    box-shadow: 0 0 3px rgba(228, 121, 17, 0.5);
+}
+
+.map-search-btn {
+    background: #e7e9ec;
+    border: 1px solid #adb1b8;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.map-search-btn:hover {
+    background: #e0e3e9;
+}
+
+.checkout-leaflet-map {
+    border: 1px solid #ccc;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.coordinates-info {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.coords-badge {
+    background: #f0f2f2;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #565959;
+    border: 1px solid #d5d9d9;
+}
+
+.delivery-address-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.address-label {
+    font-size: 14px;
+    font-weight: 700;
+    color: #0f1111;
+}
+
+.address-textarea {
+    padding: 10px;
+    border: 1px solid #a6a9a9;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 1.4;
+    resize: vertical;
+    outline: none;
+    transition: border 0.15s ease;
+}
+
+.address-textarea:focus {
+    border-color: #e47911;
+    box-shadow: 0 0 3px rgba(228, 121, 17, 0.5);
+}

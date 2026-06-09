@@ -64,7 +64,7 @@ router.post("/createorder", auth, async (req, res) => {
 router.post("/verify", auth, async (req, res) => {
     try {
         const userId = req.userId;
-        const { razorpay_payment_id, razorpay_order_id, razorpay_signature } = req.body;
+        const { razorpay_payment_id, razorpay_order_id, razorpay_signature, latitude, longitude, customAddress } = req.body;
 
         if (!razorpay_payment_id || !razorpay_order_id || !razorpay_signature) {
             return res.status(400).json({ message: "Missing payment credentials" });
@@ -107,7 +107,7 @@ router.post("/verify", auth, async (req, res) => {
         const totalprice = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
         // 5. Construct delivery address
-        const deliveryaddress = `${user.first_name} ${user.last_name}, ${user.city}, ${user.state} - ${user.pin_code}, Mobile: ${user.mobile_no}`;
+        const deliveryaddress = customAddress || `${user.first_name} ${user.last_name}, ${user.city}, ${user.state} - ${user.pin_code}, Mobile: ${user.mobile_no}`;
 
         // 6. Create and save order
         const order = new Order({
@@ -115,6 +115,8 @@ router.post("/verify", auth, async (req, res) => {
             items,
             totalprice,
             deliveryaddress,
+            latitude: latitude ? Number(latitude) : undefined,
+            longitude: longitude ? Number(longitude) : undefined,
             orderstatus: "Pending" // Match standard DB flow
         });
         await order.save();

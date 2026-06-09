@@ -40,6 +40,14 @@ const orderSchema = new mongoose.Schema({
     default: "Delivered"
   },
 
+  latitude: {
+    type: Number
+  },
+
+  longitude: {
+    type: Number
+  },
+
   ordereddate: {
     type: Date,
     default: Date.now

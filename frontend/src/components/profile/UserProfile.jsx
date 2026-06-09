@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
@@ -19,7 +19,65 @@ import {
     FaUpload
 } from "react-icons/fa";
 import Header from "../Header/Header";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
 import './UserProfile.css';
+
+// Fix default marker icon issue with Leaflet in React
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+    iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
+    iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+    shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+});
+
+function OrderDeliveryMap({ latitude, longitude, address }) {
+    const mapRef = useRef(null);
+    const mapInstance = useRef(null);
+
+    useEffect(() => {
+        if (!mapRef.current) return;
+        
+        const map = L.map(mapRef.current, {
+            zoomControl: true,
+            attributionControl: false
+        }).setView([latitude, longitude], 14);
+        mapInstance.current = map;
+
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map);
+
+        L.marker([latitude, longitude]).addTo(map);
+
+        return () => {
+            if (mapInstance.current) {
+                mapInstance.current.remove();
+                mapInstance.current = null;
+            }
+        };
+    }, [latitude, longitude]);
+
+    return (
+        <div className="order-map-wrapper" style={{ marginTop: '10px' }}>
+            <div ref={mapRef} className="order-mini-map" style={{ height: "200px", borderRadius: "8px", border: "1px solid #ccc", zIndex: 10 }}></div>
+            <div className="order-map-actions" style={{ marginTop: '6px' }}>
+                <a 
+                    href={`https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="google-maps-link"
+                    style={{
+                        fontSize: '12px',
+                        color: '#007185',
+                        textDecoration: 'none',
+                        fontWeight: '600'
+                    }}
+                >
+                    Open in Google Maps
+                </a>
+            </div>
+        </div>
+    );
+}
 
 export default function UserProfile() {
 
@@ -32,6 +90,14 @@ export default function UserProfile() {
     const [previewUrl, setPreviewUrl] = useState("");
     const [orders, setOrders] = useState([]);
     const [ordersLoading, setOrdersLoading] = useState(false);
+    const [visibleMaps, setVisibleMaps] = useState({});
+
+    const toggleMap = (orderId) => {
+        setVisibleMaps(prev => ({
+            ...prev,
+            [orderId]: !prev[orderId]
+        }));
+    };
 
     useEffect(() => {
         setSelectedFile(null);
@@ -398,6 +464,38 @@ export default function UserProfile() {
                                                         <div className="order-delivery-address">
                                                             <span className="order-header-label" style={{ display: 'block', marginBottom: '6px' }}>Delivery Address</span>
                                                             <p>{order.deliveryaddress}</p>
+                                                            {order.latitude && order.longitude && (
+                                                                <div className="order-map-section" style={{ marginTop: '12px' }}>
+                                                                    <button 
+                                                                        className="btn-map-toggle"
+                                                                        onClick={() => toggleMap(order._id)}
+                                                                        style={{
+                                                                            background: '#f0f2f2',
+                                                                            border: '1px solid #d5d9d9',
+                                                                            borderRadius: '8px',
+                                                                            padding: '6px 12px',
+                                                                            fontSize: '12px',
+                                                                            fontWeight: '500',
+                                                                            cursor: 'pointer',
+                                                                            display: 'inline-flex',
+                                                                            alignItems: 'center',
+                                                                            gap: '4px',
+                                                                            color: '#0f1111'
+                                                                        }}
+                                                                    >
+                                                                        <FaMapMarkerAlt style={{ color: '#e47911' }} /> 
+                                                                        {visibleMaps[order._id] ? "Hide Delivery Map" : "Show Delivery Map"}
+                                                                    </button>
+                                                                    
+                                                                    {visibleMaps[order._id] && (
+                                                                        <OrderDeliveryMap 
+                                                                            latitude={order.latitude} 
+                                                                            longitude={order.longitude} 
+                                                                            address={order.deliveryaddress} 
+                                                                        />
+                                                                    )}
+                                                                </div>
+                                                            )}
                                                         </div>
                                                     </div>
                                                 </div>

@@ -38,7 +38,8 @@ export const createOrder = async (req, res) => {
     const totalprice = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
     // 5. Construct delivery address
-    const deliveryaddress = `${user.first_name} ${user.last_name}, ${user.city}, ${user.state} - ${user.pin_code}, Mobile: ${user.mobile_no}`;
+    const { latitude, longitude, customAddress } = req.body;
+    const deliveryaddress = customAddress || `${user.first_name} ${user.last_name}, ${user.city}, ${user.state} - ${user.pin_code}, Mobile: ${user.mobile_no}`;
 
     // 6. Create and save order
     const order = new Order({
@@ -46,6 +47,8 @@ export const createOrder = async (req, res) => {
       items,
       totalprice,
       deliveryaddress,
+      latitude: latitude ? Number(latitude) : undefined,
+      longitude: longitude ? Number(longitude) : undefined,
       orderstatus: "Pending"
     });
     await order.save();
