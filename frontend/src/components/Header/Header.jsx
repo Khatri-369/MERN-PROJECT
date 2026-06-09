@@ -8,7 +8,7 @@ export default function Header({ cartUpdated }) {
   const [searchParams, setSearchParams] = useSearchParams();
   const [query, setQuery] = useState("");
   const [cartCount, setCartCount] = useState(0);
-  const[profileimage,setprofileimage] = useState("");
+  const [profileimage, setprofileimage] = useState("");
 
   // Update the input field if the URL query parameter changes (e.g. going back or page refresh)
   useEffect(() => {
@@ -47,7 +47,7 @@ export default function Header({ cartUpdated }) {
       try {
         const response = await axios.get("http://localhost:8000/user/showoneuser");
         if (response.data && response.data.photo) {
-          setprofileimage(response.data.photo);
+          setprofileimage(response.data.photos);
         }
       } catch (error) {
         console.log("Error Loading profile image:", error);
@@ -59,7 +59,7 @@ export default function Header({ cartUpdated }) {
   return (
     <header className="header">
       {/* LOGO */}
-      <Link to="/" className="header-logo">
+      <Link to="/homepage" className="header-logo">
         <img src="https://pngimg.com/uploads/amazon/amazon_PNG11.png" alt="Amazon Logo" className="logo" />
         <span className="logo-text">.in</span>
       </Link>
@@ -111,9 +111,9 @@ export default function Header({ cartUpdated }) {
         {/* Account Info */}
         <Link to="/profile" className="header-item account-info">
           <img
-          src={profileimage ? `http://localhost:8000/uploads/${profileimage}` : "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"}
-          alt="Profile"
-          className="profile-img"
+            src={profileimage ? `http://localhost:8000/uploads/${profileimage}` : "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"}
+            alt="Profile"
+            className="profile-img"
           />
         </Link>
       </div>

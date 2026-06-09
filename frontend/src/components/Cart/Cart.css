@@ -180,7 +180,7 @@
     border-radius: 8px;
     height: 32px;
     overflow: hidden;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .quantity-btn-cart {
@@ -380,8 +380,13 @@
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 /* Responsive Rules */
@@ -390,9 +395,11 @@
         flex-direction: column;
         align-items: stretch;
     }
+
     .cart-summary-box {
         position: static;
-        order: -1; /* Place summary on top for mobile screens */
+        order: -1;
+        /* Place summary on top for mobile screens */
     }
 }
 
@@ -400,24 +407,123 @@
     .cart-page-container {
         padding: 15px 10px;
     }
+
     .cart-main {
         padding: 16px;
     }
+
     .cart-title {
         font-size: 22px;
     }
+
     .price-header-label {
         display: none;
     }
+
     .cart-item-card {
         flex-direction: column;
         align-items: stretch;
         position: relative;
     }
+
     .cart-item-image {
         width: 100%;
         height: 160px;
     }
+
+    .cart-item-price-col {
+        text-align: left;
+        margin-top: 8px;
+    }
+}
+
+.ORDER-BUTTON {
+    position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px auto;
+    width: fit-content;
+}
+
+.ORDER-BUTTON button {
+    height: 40px;
+    width: 100%;
+    max-width: 300px;
+    padding: 0 20px;
+    border: 1px solid #fcd200;
+    background: #ffd814;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(213, 178, 0, 0.15);
+    transition: all 0.2s ease;
+}
+
+.ORDER-BUTTON button:hover {
+    background: #f7ca00;
+    border-color: #f2c200;
+    box-shadow: 0 4px 10px rgba(213, 178, 0, 0.25);
+}
+
+.ORDER-BUTTON button:active {
+    transform: translateY(1px);
+    box-shadow: none;
+}
+
+/* Responsive Rules */
+@media (max-width: 992px) {
+    .cart-page-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .cart-summary-box {
+        position: static;
+        order: -1;
+        /* Place summary on top for mobile screens */
+    }
+
+    .ORDER-BUTTON {
+        width: 100%;
+        max-width: none;
+        padding: 10px;
+    }
+
+    .ORDER-BUTTON button {
+        max-width: none;
+        width: 100%;
+    }
+}
+
+@media (max-width: 576px) {
+    .cart-page-container {
+        padding: 15px 10px;
+    }
+
+    .cart-main {
+        padding: 16px;
+    }
+
+    .cart-title {
+        font-size: 22px;
+    }
+
+    .price-header-label {
+        display: none;
+    }
+
+    .cart-item-card {
+        flex-direction: column;
+        align-items: stretch;
+        position: relative;
+    }
+
+    .cart-item-image {
+        width: 100%;
+        height: 160px;
+    }
+
     .cart-item-price-col {
         text-align: left;
         margin-top: 8px;

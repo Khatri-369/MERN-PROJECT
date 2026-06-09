@@ -11,6 +11,7 @@ import vendorroute from "./routes/VendorRoute.js";
 import orderroute from "./routes/OrderRoute.js";
 import categoryroute from "./routes/CategoryRoute.js";
 import cookieParser from "cookie-parser";
+import paymentroute from "./routes/payment.js";
 
 import { auth } from "./middleware/auth.js";
 
@@ -56,8 +57,9 @@ app.use("/admin", adminroute);
 app.use("/vendor", vendorroute);
 app.use("/order", orderroute);
 app.use("/category", categoryroute);
+app.use("/payment", paymentroute);
 
-app.use("/uploads", express.static("uploads")); 
+app.use("/uploads", express.static("uploads"));
 
 app.listen(PORT, () => {
     console.log(`SERVER IS RUNNING ON PORT ${PORT}`);

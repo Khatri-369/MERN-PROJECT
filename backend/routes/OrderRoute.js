@@ -7,18 +7,20 @@ import { updateOrder } from "../controller/order/UpdateOrder.js";
 import { deleteOrder } from "../controller/order/DeleteOrder.js";
 import { searchOrder } from "../controller/order/SearchOrder.js";
 
+import { auth } from "../middleware/auth.js";
+
 const route = express.Router();
 
-route.post("/createorder", createOrder);
+route.post("/createorder", auth, createOrder);
 
-route.get("/showorder", showOrder);
+route.get("/showorder", auth, showOrder);
 
-route.get("/showorderbyid/:id", showOrderById);
+route.get("/showorderbyid/:id", auth, showOrderById);
 
-route.put("/updateorder/:id", updateOrder);
+route.put("/updateorder/:id", auth, updateOrder);
 
-route.delete("/deleteorder/:id", deleteOrder);
+route.delete("/deleteorder/:id", auth, deleteOrder);
 
-route.get("/searchorder", searchOrder);
+route.get("/searchorder", auth, searchOrder);
 
 export default route;

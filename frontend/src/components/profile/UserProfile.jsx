@@ -30,10 +30,30 @@ export default function UserProfile() {
     const [buttonselect, setbuttonselect] = useState("profile");
     const [selectedFile, setSelectedFile] = useState(null);
     const [previewUrl, setPreviewUrl] = useState("");
+    const [orders, setOrders] = useState([]);
+    const [ordersLoading, setOrdersLoading] = useState(false);
 
     useEffect(() => {
         setSelectedFile(null);
         setPreviewUrl("");
+    }, [buttonselect]);
+
+    useEffect(() => {
+        if (buttonselect === "pastorder") {
+            const fetchOrders = async () => {
+                setOrdersLoading(true);
+                try {
+                    const response = await axios.get("http://localhost:8000/order/showorder");
+                    setOrders(response.data);
+                } catch (error) {
+                    console.log("Error fetching orders:", error);
+                    toast.error("Failed to load orders");
+                } finally {
+                    setOrdersLoading(false);
+                }
+            };
+            fetchOrders();
+        }
     }, [buttonselect]);
 
     useEffect(() => {
@@ -333,16 +353,64 @@ export default function UserProfile() {
                             {buttonselect === "pastorder" && (
                                 <>
                                     <h2 className="panel-title"><FaShoppingBag /> Your Orders</h2>
-                                    <div className="orders-search-bar">
-                                        <input type="text" placeholder="Search all orders..." disabled />
-                                        <button disabled>Search</button>
-                                    </div>
-                                    <div className="empty-state">
-                                        <div className="empty-state-icon"><FaShoppingBag /></div>
-                                        <h3>No Orders Placed</h3>
-                                        <p>You haven't placed any orders in the past 6 months. Go back to browse and find something you like!</p>
-                                        <Link to="/homepage" className="btn-primary-mock" style={{ textDecoration: 'none', color: '#111', display: 'inline-block' }}>Go Shopping</Link>
-                                    </div>
+                                    {ordersLoading ? (
+                                        <div className="orders-loading">Loading your orders...</div>
+                                    ) : orders.length > 0 ? (
+                                        <div className="orders-list">
+                                            {orders.map((order) => (
+                                                <div className="order-card" key={order._id}>
+                                                    <div className="order-card-header">
+                                                        <div className="order-header-info">
+                                                            <div>
+                                                                <span className="order-header-label">Order Placed</span>
+                                                                <span className="order-header-value">
+                                                                    {new Date(order.ordereddate).toLocaleDateString("en-IN", {
+                                                                        year: 'numeric',
+                                                                        month: 'long',
+                                                                        day: 'numeric'
+                                                                    })}
+                                                                </span>
+                                                            </div>
+                                                            <div>
+                                                                <span className="order-header-label">Total Price</span>
+                                                                <span className="order-header-value">₹{order.totalprice}</span>
+                                                            </div>
+                                                            <div>
+                                                                <span className="order-header-label">Status</span>
+                                                                <span className={`order-status-badge ${order.orderstatus?.toLowerCase() === 'delivered' ? 'status-delivered' : 'status-pending'}`}>
+                                                                    {order.orderstatus || 'Pending'}
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="order-card-body">
+                                                        <div className="order-items-container">
+                                                            {order.items?.map((item, index) => (
+                                                                <div className="order-item-row" key={index}>
+                                                                    <div>
+                                                                        <span className="order-item-name">{item.product}</span>
+                                                                        <span className="order-item-qty">x {item.quantity}</span>
+                                                                    </div>
+                                                                    <span className="order-item-price">₹{item.price * item.quantity}</span>
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                        <div className="order-delivery-address">
+                                                            <span className="order-header-label" style={{ display: 'block', marginBottom: '6px' }}>Delivery Address</span>
+                                                            <p>{order.deliveryaddress}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <div className="empty-state">
+                                            <div className="empty-state-icon"><FaShoppingBag /></div>
+                                            <h3>No Orders Placed</h3>
+                                            <p>You haven't placed any orders yet. Go back to browse and find something you like!</p>
+                                            <Link to="/homepage" className="btn-primary-mock" style={{ textDecoration: 'none', color: '#111', display: 'inline-block' }}>Go Shopping</Link>
+                                        </div>
+                                    )}
                                 </>
                             )}
 

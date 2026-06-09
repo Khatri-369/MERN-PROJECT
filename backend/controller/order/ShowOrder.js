@@ -2,7 +2,12 @@ import Order from "../../model/OrderModel.js";
 
 export const showOrder = async (req, res) => {
   try {
-    const orders = await Order.find();
+    const userId = req.userId;
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const orders = await Order.find({ user: userId }).sort({ ordereddate: -1 });
 
     res.status(200).json(orders);
 
