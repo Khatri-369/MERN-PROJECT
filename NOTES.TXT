@@ -1,6 +1,6 @@
-OTP IN ADMIN PANEL
 CONTEXT API IN REACT
-SecurePass123
 
 onClick={handleupload}  --> this button works when click on it and execute function
 onClick={handleupload()}  --> this button doesn't works because it calls the function directly it execute at the time of rendering so when page load then it execute once.
+
+MULTER REVISION,JWT REVISION,HOW TO IMPLEMENT MAPS,CHAT BOT.

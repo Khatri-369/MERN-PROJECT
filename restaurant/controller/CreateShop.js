@@ -1,5 +1,6 @@
 import Shop from "../model/shopmodel.js";
 import bcrypt from "bcrypt";
+import bcrypt from "bcrypt";
 
 const CreateShop = async (req, res) => {
     try {

@@ -4,10 +4,9 @@ import { LoginShop, getShopProfile, logoutShop } from "../controller/LoginShop.j
 import { shopauth } from "../middleware/shopauth.js";
 
 const route = express.Router();
-
-route.post("/createshop", CreateShop);
-route.post("/login", LoginShop);
-route.post("/logout", logoutShop);
+route.post("/signup", CreateShop);
+route.post("/signin", LoginShop);
+route.post("/signout", logoutShop);
 route.get("/me", shopauth, getShopProfile);
 
 export default route;
