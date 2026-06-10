@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useSearchParams } from "react-router-dom";
+import Chatbot from "../Chatbot/Chatbot.jsx";
 import { 
   FaCalendarAlt, 
   FaPalette, 
@@ -15,6 +16,33 @@ import "./Body.css";
 
 export default function Body({ cartUpdated, setCartUpdated }) {
     const [cartItems, setCartItems] = useState([]);
+    const [selectedProduct, setSelectedProduct] = useState(null);
+    const [activeImgIdx, setActiveImgIdx] = useState(0);
+    const [zoomStyle, setZoomStyle] = useState({ display: "none" });
+
+    const getResolvedPhotoUrl = (photo) => {
+        if (!photo) return "";
+        if (photo.startsWith("http")) {
+            return photo.replace("localhost:8001", "localhost:8000");
+        }
+        return `http://localhost:8000/uploads/${photo}`;
+    };
+
+    const handleMouseMove = (e, imageUrl) => {
+        const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
+        const x = ((e.clientX - left) / width) * 100;
+        const y = ((e.clientY - top) / height) * 100;
+        setZoomStyle({
+            display: "block",
+            backgroundImage: `url(${imageUrl})`,
+            backgroundPosition: `${x}% ${y}%`,
+            backgroundSize: "220%"
+        });
+    };
+
+    const handleMouseLeave = () => {
+        setZoomStyle({ display: "none" });
+    };
 
     const fetchCartItems = async () => {
         try {
@@ -84,7 +112,7 @@ export default function Body({ cartUpdated, setCartUpdated }) {
     const [data, setData] = useState([]);
 
     // Get search query from URL parameters
-    const [searchParams] = useSearchParams();
+    const [searchParams, setSearchParams] = useSearchParams();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -128,13 +156,11 @@ export default function Body({ cartUpdated, setCartUpdated }) {
                                 </div>
                             )}
 
-                             <div className="product-image">
+                             <div className="product-image" onClick={() => { setSelectedProduct(item); setActiveImgIdx(0); }} style={{ cursor: "pointer" }}>
                                  <img 
                                      src={
                                          item.productphoto && item.productphoto.length > 0
-                                             ? (Array.isArray(item.productphoto) ? item.productphoto[0] : item.productphoto).startsWith("http")
-                                                 ? (Array.isArray(item.productphoto) ? item.productphoto[0] : item.productphoto).replace("localhost:8001", "localhost:8000")
-                                                 : `http://localhost:8000/uploads/${Array.isArray(item.productphoto) ? item.productphoto[0] : item.productphoto}`
+                                             ? getResolvedPhotoUrl(Array.isArray(item.productphoto) ? item.productphoto[0] : item.productphoto)
                                              : ""
                                      } 
                                      alt={item.productname} 
@@ -143,7 +169,7 @@ export default function Body({ cartUpdated, setCartUpdated }) {
 
                             <div className="product-info">
                                 <div className="brand-label">{item.brandname}</div>
-                                 <h2 className="product-name" title={item.productname}>
+                                 <h2 className="product-name" title={item.productname} onClick={() => { setSelectedProduct(item); setActiveImgIdx(0); }} style={{ cursor: "pointer" }}>
                                      {item.productname}
                                  </h2>
                                  
@@ -215,6 +241,115 @@ export default function Body({ cartUpdated, setCartUpdated }) {
                         </div>
                     ))}
             </div>
+
+            {/* Detailed Product Quick View Modal with Zoom & Gallery */}
+            {selectedProduct && (
+                <div className="body-modal-overlay" onClick={() => setSelectedProduct(null)}>
+                    <div className="body-modal-card animate-scale-up" onClick={(e) => e.stopPropagation()}>
+                        <button className="body-modal-close" onClick={() => setSelectedProduct(null)}>&times;</button>
+                        
+                        <div className="body-modal-content">
+                            {/* Left Column: Image Gallery */}
+                            <div className="modal-gallery-column">
+                                <div 
+                                    className="modal-main-image-container"
+                                    onMouseMove={(e) => {
+                                        const photos = Array.isArray(selectedProduct.productphoto) ? selectedProduct.productphoto : [selectedProduct.productphoto];
+                                        const currentPhoto = photos[activeImgIdx];
+                                        handleMouseMove(e, getResolvedPhotoUrl(currentPhoto));
+                                    }}
+                                    onMouseLeave={handleMouseLeave}
+                                >
+                                    <img 
+                                        src={
+                                            selectedProduct.productphoto && selectedProduct.productphoto.length > 0
+                                                ? getResolvedPhotoUrl(Array.isArray(selectedProduct.productphoto) ? selectedProduct.productphoto[activeImgIdx] : selectedProduct.productphoto)
+                                                : ""
+                                        } 
+                                        alt={selectedProduct.productname} 
+                                        className="modal-main-image"
+                                    />
+                                    {/* Hover Zoom Overlay Panel */}
+                                    <div className="zoom-lens-viewer" style={zoomStyle}></div>
+                                </div>
+
+                                {/* Thumbnail Gallery strip */}
+                                {Array.isArray(selectedProduct.productphoto) && selectedProduct.productphoto.length > 1 && (
+                                    <div className="modal-thumb-strip">
+                                        {selectedProduct.productphoto.map((photo, idx) => (
+                                            <div 
+                                                key={idx} 
+                                                className={`modal-thumb-item ${idx === activeImgIdx ? 'active' : ''}`}
+                                                onClick={() => { setActiveImgIdx(idx); setZoomStyle({ display: "none" }); }}
+                                            >
+                                                <img src={getResolvedPhotoUrl(photo)} alt={`Thumbnail ${idx}`} />
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Right Column: Detailed Product Specs & Checkout */}
+                            <div className="modal-info-column">
+                                <span className="modal-brand-label">{selectedProduct.brandname}</span>
+                                <h1 className="modal-product-name">{selectedProduct.productname}</h1>
+                                
+                                <div className="modal-price-container">
+                                    <span className="modal-price-symbol">₹</span>
+                                    <span className="modal-price-amount">{selectedProduct.price.toLocaleString()}</span>
+                                </div>
+
+                                <div className="modal-specs-section">
+                                    <h3>Product Specifications</h3>
+                                    <div className="modal-specs-list">
+                                        <div className="modal-spec-row">
+                                            <strong>Model Number:</strong> <span>{selectedProduct.modelnumber}</span>
+                                        </div>
+                                        <div className="modal-spec-row">
+                                            <strong>Model Year:</strong> <span>{selectedProduct.modelyear}</span>
+                                        </div>
+                                        <div className="modal-spec-row">
+                                            <strong>Color Option:</strong> <span>{selectedProduct.color}</span>
+                                        </div>
+                                        <div className="modal-spec-row">
+                                            <strong>Item Weight:</strong> <span>{selectedProduct.weight}</span>
+                                        </div>
+                                        <div className="modal-spec-row">
+                                            <strong>Included Accessories:</strong> <span>{selectedProduct.includedcomponent}</span>
+                                        </div>
+                                        <div className="modal-spec-row">
+                                            <strong>Warranty Period:</strong> <span>{selectedProduct.warranty}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="modal-actions-section">
+                                    {getCartItem(selectedProduct._id) ? (
+                                        <div className="modal-quantity-control">
+                                            <button onClick={() => handleDecrement(getCartItem(selectedProduct._id))} className="quantity-btn">-</button>
+                                            <span className="quantity-value">{getCartItem(selectedProduct._id).quantity}</span>
+                                            <button onClick={() => handleIncrement(getCartItem(selectedProduct._id))} className="quantity-btn">+</button>
+                                        </div>
+                                    ) : (
+                                        <button onClick={() => HandleAddToCart(selectedProduct._id)} className="modal-add-to-cart-btn">
+                                            <FaShoppingCart /> Add to Cart
+                                        </button>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Chatbot Assistant */}
+            <Chatbot 
+                products={data}
+                onAddToCart={HandleAddToCart}
+                cartItems={cartItems}
+                setCartUpdated={setCartUpdated}
+                setSearchParams={setSearchParams}
+            />
         </div>
     );
 }   
