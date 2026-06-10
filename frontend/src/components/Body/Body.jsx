@@ -128,12 +128,18 @@ export default function Body({ cartUpdated, setCartUpdated }) {
                                 </div>
                             )}
 
-                            <div className="product-image">
-                                <img 
-                                    src={Array.isArray(item.productphoto) ? item.productphoto[0] : item.productphoto} 
-                                    alt={item.productname} 
-                                />
-                            </div>
+                             <div className="product-image">
+                                 <img 
+                                     src={
+                                         item.productphoto && item.productphoto.length > 0
+                                             ? (Array.isArray(item.productphoto) ? item.productphoto[0] : item.productphoto).startsWith("http")
+                                                 ? (Array.isArray(item.productphoto) ? item.productphoto[0] : item.productphoto).replace("localhost:8001", "localhost:8000")
+                                                 : `http://localhost:8000/uploads/${Array.isArray(item.productphoto) ? item.productphoto[0] : item.productphoto}`
+                                             : ""
+                                     } 
+                                     alt={item.productname} 
+                                 />
+                             </div>
 
                             <div className="product-info">
                                 <div className="brand-label">{item.brandname}</div>

@@ -2,6 +2,8 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url";
 
 import userroute from "./routes/UserRoutes.js";
 import productroute from "./routes/ProductRoutes.js";
@@ -59,7 +61,9 @@ app.use("/order", orderroute);
 app.use("/category", categoryroute);
 app.use("/payment", paymentroute);
 
-app.use("/uploads", express.static("uploads"));
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.listen(PORT, () => {
     console.log(`SERVER IS RUNNING ON PORT ${PORT}`);

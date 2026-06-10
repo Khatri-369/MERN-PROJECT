@@ -30,7 +30,8 @@ export const createOrder = async (req, res) => {
       return {
         product: item.product_id.productname,
         quantity: Number(item.quantity),
-        price: Number(item.product_id.price)
+        price: Number(item.product_id.price),
+        shopId: item.product_id.shopId
       };
     });
 

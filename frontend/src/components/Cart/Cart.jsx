@@ -330,7 +330,7 @@ export default function Cart({ cartUpdated, setCartUpdated }) {
                                         {item.product_id?.productphoto?.[0] && (
                                             <img
                                                 src={item.product_id.productphoto[0].startsWith("http")
-                                                    ? item.product_id.productphoto[0]
+                                                    ? item.product_id.productphoto[0].replace("localhost:8001", "localhost:8000")
                                                     : `http://localhost:8000/uploads/${item.product_id.productphoto[0]}`}
                                                 alt={item.product_id.productname || "Product"}
                                             />
