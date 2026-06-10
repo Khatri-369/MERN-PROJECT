@@ -3,14 +3,14 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useSearchParams } from "react-router-dom";
 import Chatbot from "../Chatbot/Chatbot.jsx";
-import { 
-  FaCalendarAlt, 
-  FaPalette, 
-  FaWeightHanging, 
-  FaBoxOpen, 
-  FaShieldAlt, 
-  FaTag,
-  FaShoppingCart
+import {
+    FaCalendarAlt,
+    FaPalette,
+    FaWeightHanging,
+    FaBoxOpen,
+    FaShieldAlt,
+    FaTag,
+    FaShoppingCart
 } from "react-icons/fa";
 import "./Body.css";
 
@@ -66,15 +66,15 @@ export default function Body({ cartUpdated, setCartUpdated }) {
 
     //ADD TO CART FUNCTIONALITY
     //USERID WE NEED TO FETCH FROM COOKIE OR LOCAL STORAGES                                       ///IMPORTANT///
-    const HandleAddToCart = async (productId)=>{
-        try{
+    const HandleAddToCart = async (productId) => {
+        try {
             const response = await axios.post("http://localhost:8000/cart/createcart", {
                 product_id: productId,
                 quantity: "1"
             });
             toast.success("Product added to cart!");
             setCartUpdated(prev => !prev);
-        }catch(error){
+        } catch (error) {
             toast.error("BAZAR MATHI LAI LEVU");
         }
     }
@@ -107,7 +107,7 @@ export default function Body({ cartUpdated, setCartUpdated }) {
             toast.error("Failed to update quantity");
         }
     };
-    
+
 
     const [data, setData] = useState([]);
 
@@ -149,97 +149,97 @@ export default function Body({ cartUpdated, setCartUpdated }) {
             {/* Main Content Area */}
             <div className="product-grid animate-fade-in">
                 {displayData.map((item) => (
-                        <div key={item._id} className="product-card">
-                            {item.categoryname && (
-                                <div className="product-badge">
-                                    {item.categoryname}
-                                </div>
-                            )}
-
-                             <div className="product-image" onClick={() => { setSelectedProduct(item); setActiveImgIdx(0); }} style={{ cursor: "pointer" }}>
-                                 <img 
-                                     src={
-                                         item.productphoto && item.productphoto.length > 0
-                                             ? getResolvedPhotoUrl(Array.isArray(item.productphoto) ? item.productphoto[0] : item.productphoto)
-                                             : ""
-                                     } 
-                                     alt={item.productname} 
-                                 />
-                             </div>
-
-                            <div className="product-info">
-                                <div className="brand-label">{item.brandname}</div>
-                                 <h2 className="product-name" title={item.productname} onClick={() => { setSelectedProduct(item); setActiveImgIdx(0); }} style={{ cursor: "pointer" }}>
-                                     {item.productname}
-                                 </h2>
-                                 
-                                 <div className="product-price-container">
-                                     <span className="price-symbol">₹</span>
-                                     <span className="price-amount">{item.price}</span>
-                                 </div>
-                                 
-                                 <div className="specs-grid">
-                                    <div className="spec-item">
-                                        <FaTag className="spec-icon" />
-                                        <div className="spec-details">
-                                            <span className="spec-label">Model</span>
-                                            <span className="spec-value" title={item.modelnumber}>{item.modelnumber}</span>
-                                        </div>
-                                    </div>
-                                    <div className="spec-item">
-                                        <FaCalendarAlt className="spec-icon" />
-                                        <div className="spec-details">
-                                            <span className="spec-label">Year</span>
-                                            <span className="spec-value">{item.modelyear}</span>
-                                        </div>
-                                    </div>
-                                    <div className="spec-item">
-                                        <FaPalette className="spec-icon" />
-                                        <div className="spec-details">
-                                            <span className="spec-label">Color</span>
-                                            <span className="spec-value">{item.color}</span>
-                                        </div>
-                                    </div>
-                                    <div className="spec-item">
-                                        <FaWeightHanging className="spec-icon" />
-                                        <div className="spec-details">
-                                            <span className="spec-label">Weight</span>
-                                            <span className="spec-value">{item.weight}</span>
-                                        </div>
-                                    </div>
-                                    <div className="spec-item full-width">
-                                        <FaBoxOpen className="spec-icon" />
-                                        <div className="spec-details">
-                                            <span className="spec-label">Included</span>
-                                            <span className="spec-value" title={item.includedcomponent}>{item.includedcomponent}</span>
-                                        </div>
-                                    </div>
-                                    <div className="spec-item full-width">
-                                        <FaShieldAlt className="spec-icon" />
-                                        <div className="spec-details">
-                                            <span className="spec-label">Warranty</span>
-                                            <span className="spec-value" title={item.warranty}>{item.warranty}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div className="product-actions">
-                                    {getCartItem(item._id) ? (
-                                        <div className="quantity-control">
-                                            <button onClick={() => handleDecrement(getCartItem(item._id))} className="quantity-btn">-</button>
-                                            <span className="quantity-value">{getCartItem(item._id).quantity}</span>
-                                            <button onClick={() => handleIncrement(getCartItem(item._id))} className="quantity-btn">+</button>
-                                        </div>
-                                    ) : (
-                                        <button onClick={() => {HandleAddToCart(item._id)}} className="add-to-cart-btn">
-                                            <FaShoppingCart /> Add to Cart
-                                        </button>
-                                    )}
-                                </div>
-
+                    <div key={item._id} className="product-card">
+                        {item.categoryname && (
+                            <div className="product-badge">
+                                {item.categoryname}
                             </div>
+                        )}
+
+                        <div className="product-image" onClick={() => { setSelectedProduct(item); setActiveImgIdx(0); }} style={{ cursor: "pointer" }}>
+                            <img
+                                src={
+                                    item.productphoto && item.productphoto.length > 0
+                                        ? getResolvedPhotoUrl(Array.isArray(item.productphoto) ? item.productphoto[0] : item.productphoto)
+                                        : ""
+                                }
+                                alt={item.productname}
+                            />
                         </div>
-                    ))}
+
+                        <div className="product-info">
+                            <div className="brand-label">{item.brandname}</div>
+                            <h2 className="product-name" title={item.productname} onClick={() => { setSelectedProduct(item); setActiveImgIdx(0); }} style={{ cursor: "pointer" }}>
+                                {item.productname}
+                            </h2>
+
+                            <div className="product-price-container">
+                                <span className="price-symbol">₹</span>
+                                <span className="price-amount">{item.price}</span>
+                            </div>
+
+                            <div className="specs-grid">
+                                <div className="spec-item">
+                                    <FaTag className="spec-icon" />
+                                    <div className="spec-details">
+                                        <span className="spec-label">Model</span>
+                                        <span className="spec-value" title={item.modelnumber}>{item.modelnumber}</span>
+                                    </div>
+                                </div>
+                                <div className="spec-item">
+                                    <FaCalendarAlt className="spec-icon" />
+                                    <div className="spec-details">
+                                        <span className="spec-label">Year</span>
+                                        <span className="spec-value">{item.modelyear}</span>
+                                    </div>
+                                </div>
+                                <div className="spec-item">
+                                    <FaPalette className="spec-icon" />
+                                    <div className="spec-details">
+                                        <span className="spec-label">Color</span>
+                                        <span className="spec-value">{item.color}</span>
+                                    </div>
+                                </div>
+                                <div className="spec-item">
+                                    <FaWeightHanging className="spec-icon" />
+                                    <div className="spec-details">
+                                        <span className="spec-label">Weight</span>
+                                        <span className="spec-value">{item.weight}</span>
+                                    </div>
+                                </div>
+                                <div className="spec-item full-width">
+                                    <FaBoxOpen className="spec-icon" />
+                                    <div className="spec-details">
+                                        <span className="spec-label">Included</span>
+                                        <span className="spec-value" title={item.includedcomponent}>{item.includedcomponent}</span>
+                                    </div>
+                                </div>
+                                <div className="spec-item full-width">
+                                    <FaShieldAlt className="spec-icon" />
+                                    <div className="spec-details">
+                                        <span className="spec-label">Warranty</span>
+                                        <span className="spec-value" title={item.warranty}>{item.warranty}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="product-actions">
+                                {getCartItem(item._id) ? (
+                                    <div className="quantity-control">
+                                        <button onClick={() => handleDecrement(getCartItem(item._id))} className="quantity-btn">-</button>
+                                        <span className="quantity-value">{getCartItem(item._id).quantity}</span>
+                                        <button onClick={() => handleIncrement(getCartItem(item._id))} className="quantity-btn">+</button>
+                                    </div>
+                                ) : (
+                                    <button onClick={() => { HandleAddToCart(item._id) }} className="add-to-cart-btn">
+                                        <FaShoppingCart /> Add to Cart
+                                    </button>
+                                )}
+                            </div>
+
+                        </div>
+                    </div>
+                ))}
             </div>
 
             {/* Detailed Product Quick View Modal with Zoom & Gallery */}
@@ -247,11 +247,11 @@ export default function Body({ cartUpdated, setCartUpdated }) {
                 <div className="body-modal-overlay" onClick={() => setSelectedProduct(null)}>
                     <div className="body-modal-card animate-scale-up" onClick={(e) => e.stopPropagation()}>
                         <button className="body-modal-close" onClick={() => setSelectedProduct(null)}>&times;</button>
-                        
+
                         <div className="body-modal-content">
                             {/* Left Column: Image Gallery */}
                             <div className="modal-gallery-column">
-                                <div 
+                                <div
                                     className="modal-main-image-container"
                                     onMouseMove={(e) => {
                                         const photos = Array.isArray(selectedProduct.productphoto) ? selectedProduct.productphoto : [selectedProduct.productphoto];
@@ -260,13 +260,13 @@ export default function Body({ cartUpdated, setCartUpdated }) {
                                     }}
                                     onMouseLeave={handleMouseLeave}
                                 >
-                                    <img 
+                                    <img
                                         src={
                                             selectedProduct.productphoto && selectedProduct.productphoto.length > 0
                                                 ? getResolvedPhotoUrl(Array.isArray(selectedProduct.productphoto) ? selectedProduct.productphoto[activeImgIdx] : selectedProduct.productphoto)
                                                 : ""
-                                        } 
-                                        alt={selectedProduct.productname} 
+                                        }
+                                        alt={selectedProduct.productname}
                                         className="modal-main-image"
                                     />
                                     {/* Hover Zoom Overlay Panel */}
@@ -277,8 +277,8 @@ export default function Body({ cartUpdated, setCartUpdated }) {
                                 {Array.isArray(selectedProduct.productphoto) && selectedProduct.productphoto.length > 1 && (
                                     <div className="modal-thumb-strip">
                                         {selectedProduct.productphoto.map((photo, idx) => (
-                                            <div 
-                                                key={idx} 
+                                            <div
+                                                key={idx}
                                                 className={`modal-thumb-item ${idx === activeImgIdx ? 'active' : ''}`}
                                                 onClick={() => { setActiveImgIdx(idx); setZoomStyle({ display: "none" }); }}
                                             >
@@ -293,7 +293,7 @@ export default function Body({ cartUpdated, setCartUpdated }) {
                             <div className="modal-info-column">
                                 <span className="modal-brand-label">{selectedProduct.brandname}</span>
                                 <h1 className="modal-product-name">{selectedProduct.productname}</h1>
-                                
+
                                 <div className="modal-price-container">
                                     <span className="modal-price-symbol">₹</span>
                                     <span className="modal-price-amount">{selectedProduct.price.toLocaleString()}</span>
@@ -343,7 +343,7 @@ export default function Body({ cartUpdated, setCartUpdated }) {
             )}
 
             {/* Chatbot Assistant */}
-            <Chatbot 
+            <Chatbot
                 products={data}
                 onAddToCart={HandleAddToCart}
                 cartItems={cartItems}

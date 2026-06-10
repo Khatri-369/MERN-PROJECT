@@ -88,7 +88,7 @@ export default function Chatbot({ products, onAddToCart, cartItems, setCartUpdat
         // Add to cart intent
         const addRegex = /(?:add|put|get)\s+(?:a\s+|an\s+)?(.*?)(?:\s+to\s+cart|\s+for\s+me|\s+in\s+my\s+cart|$)/i;
         const addMatch = lowerText.match(addRegex);
-        
+
         if (addMatch && addMatch[1] && !lowerText.includes("search") && !lowerText.includes("show") && !lowerText.includes("find")) {
             const productKeyword = addMatch[1].trim();
             const matchedProduct = findBestMatch(productKeyword);
@@ -131,7 +131,7 @@ export default function Chatbot({ products, onAddToCart, cartItems, setCartUpdat
 
     const findBestMatch = (keyword) => {
         if (!products || products.length === 0) return null;
-        
+
         // 1. Check exact match
         const exact = products.find(p => p.productname.toLowerCase() === keyword);
         if (exact) return exact;

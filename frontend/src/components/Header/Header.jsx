@@ -15,9 +15,9 @@ export default function Header({ cartUpdated }) {
     setQuery(searchParams.get("search") || "");
   }, [searchParams]);
 
-  const handleSearch = () => {
-    if (query.trim()) {
-      setSearchParams({ search: query.trim() });
+  const handleSearch = (searchValue = query) => { //IF WE DONT PASS ANY PARAMETER IT TAKES QUERY AS DEFAULT
+    if (searchValue.trim()) {
+      setSearchParams({ search: searchValue.trim() });
     } else {
       setSearchParams({});
     }
@@ -75,12 +75,12 @@ export default function Header({ cartUpdated }) {
 
       {/* Search Bar */}
       <div className="header-search">
-        <select className="search-select">
+        <select className="search-select" onChange={(e) => { const value = e.target.value === "All Categories" ? "" : e.target.value; setQuery(value); handleSearch(value); }}>
           <option>All Categories</option>
           <option>Electronics</option>
           <option>Fashion</option>
           <option>Home & Kitchen</option>
-          <option>Mobiles</option>
+          <option>phone</option>
           <option>Books</option>
           <option>Beauty</option>
         </select>
