@@ -83,6 +83,10 @@ axios.defaults.withCredentials = true;
 
 const route = createBrowserRouter([
   {
+    path: "/",
+    element: <AdminLogin />
+  },
+  {
     path: "/adminpanel",
     element: <Menu />,
     children: [
