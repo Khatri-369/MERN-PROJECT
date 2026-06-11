@@ -63,7 +63,7 @@ export default function Cart({ cartUpdated, setCartUpdated }) {
             try {
                 const userRes = await axios.get("http://localhost:8000/user/showoneuser");
                 setUserProfile(userRes.data);
-                
+
                 const addr = `${userRes.data.first_name} ${userRes.data.last_name || ""}, ${userRes.data.city || ""}, ${userRes.data.state || ""} - ${userRes.data.pin_code || ""}, Mobile: ${userRes.data.mobile_no || ""}`;
                 setCustomAddress(addr);
 
@@ -76,7 +76,7 @@ export default function Cart({ cartUpdated, setCartUpdated }) {
                         const lonNum = Number(lon);
                         setLatitude(latNum);
                         setLongitude(lonNum);
-                        
+
                         if (mapInstanceRef.current) {
                             mapInstanceRef.current.setView([latNum, lonNum], 13);
                             if (markerInstanceRef.current) {
@@ -163,7 +163,7 @@ export default function Cart({ cartUpdated, setCartUpdated }) {
                         markerInstanceRef.current.setLatLng([latNum, lonNum]);
                     }
                 }
-                
+
                 let formatted = display_name;
                 if (userProfile) {
                     formatted = `${userProfile.first_name} ${userProfile.last_name || ""}, ${display_name}, Mobile: ${userProfile.mobile_no || ""}`;
@@ -367,7 +367,7 @@ export default function Cart({ cartUpdated, setCartUpdated }) {
                             <p className="checkout-section-desc">
                                 Pinpoint your exact location on the map. Drag the marker or click on the map to set the coordinates.
                             </p>
-                            
+
                             <form onSubmit={handleMapSearch} className="map-search-form">
                                 <input
                                     type="text"
