@@ -47,7 +47,7 @@ export default function Header({ cartUpdated }) {
       try {
         const response = await axios.get("http://localhost:8000/user/showoneuser");
         if (response.data && response.data.photo) {
-          setprofileimage(response.data.photos);
+          setprofileimage(response.data.photo);
         }
       } catch (error) {
         console.log("Error Loading profile image:", error);
