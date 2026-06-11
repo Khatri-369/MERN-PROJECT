@@ -85,26 +85,72 @@ export default function Chatbot({ products, onAddToCart, cartItems, setCartUpdat
             return;
         }
 
-        // Add to cart intent
-        const addRegex = /(?:add|put|get)\s+(?:a\s+|an\s+)?(.*?)(?:\s+to\s+cart|\s+for\s+me|\s+in\s+my\s+cart|$)/i;
-        const addMatch = lowerText.match(addRegex);
+        // Add to cart intent (handles multiple items)
+        if (
+            (lowerText.includes("add") || lowerText.includes("put") || lowerText.includes("get")) &&
+            !lowerText.includes("search") && !lowerText.includes("show") && !lowerText.includes("find")
+        ) {
+            const addRegex = /(?:add|put|get)\s+(.*)/i;
+            const match = lowerText.match(addRegex);
+            if (match && match[1]) {
+                let cleanText = match[1].trim();
+                // Strip trailing common phrases
+                cleanText = cleanText.replace(/(?:\s+to\s+cart|\s+for\s+me|\s+in\s+my\s+cart)$/i, "").trim();
 
-        if (addMatch && addMatch[1] && !lowerText.includes("search") && !lowerText.includes("show") && !lowerText.includes("find")) {
-            const productKeyword = addMatch[1].trim();
-            const matchedProduct = findBestMatch(productKeyword);
+                // Split items by commas and "and"
+                const rawItems = cleanText.split(/,\s*|\s+and\s+/i);
+                
+                // Clean individual items (e.g. remove leading "a", "an", "some", "and")
+                const itemsToFind = rawItems
+                    .map(item => item.trim().replace(/^(?:a\s+|an\s+|some\s+|and\s+)/i, "").trim())
+                    .filter(Boolean);
 
-            if (matchedProduct) {
-                addBotMessage(`Adding "${matchedProduct.productname}" to your cart...`);
-                try {
-                    await onAddToCart(matchedProduct._id);
-                    addBotMessage(`Added "${matchedProduct.productname}" to your cart successfully!`);
-                } catch (err) {
-                    addBotMessage(`Failed to add product to cart.`);
+                if (itemsToFind.length > 0) {
+                    addBotMessage(`Processing request to add ${itemsToFind.length} item(s)...`);
+                    
+                    let addedCount = 0;
+                    let failedCount = 0;
+                    let notFoundItems = [];
+                    let foundItems = [];
+
+                    for (const itemKeyword of itemsToFind) {
+                        const matchedProduct = findBestMatch(itemKeyword);
+                        if (matchedProduct) {
+                            foundItems.push({ keyword: itemKeyword, product: matchedProduct });
+                        } else {
+                            notFoundItems.push(itemKeyword);
+                        }
+                    }
+
+                    if (foundItems.length > 0) {
+                        for (const { product } of foundItems) {
+                            try {
+                                await onAddToCart(product._id);
+                                addBotMessage(`Added "${product.productname}" to your cart successfully!`);
+                                addedCount++;
+                            } catch (err) {
+                                addBotMessage(`Failed to add "${product.productname}" to cart.`);
+                                failedCount++;
+                            }
+                        }
+                    }
+
+                    // Send summary bot message
+                    if (addedCount > 0 && notFoundItems.length === 0 && failedCount === 0) {
+                        addBotMessage(`Done! All requested items have been added to your cart.`);
+                    } else {
+                        let summaryMsg = `Summary:\n`;
+                        if (addedCount > 0) summaryMsg += `• Added ${addedCount} item(s) successfully.\n`;
+                        if (failedCount > 0) summaryMsg += `• Failed to add ${failedCount} item(s).\n`;
+                        if (notFoundItems.length > 0) {
+                            summaryMsg += `• Couldn't find matching products for: ${notFoundItems.map(item => `"${item}"`).join(", ")}.\n`;
+                            summaryMsg += `Try using more specific names from the catalog!`;
+                        }
+                        addBotMessage(summaryMsg);
+                    }
+                    return;
                 }
-            } else {
-                addBotMessage(`I couldn't find any product matching "${productKeyword}". Try searching for 'Kindle', 'Sony WH-1000XM5', or 'Air Fryer'!`);
             }
-            return;
         }
 
         // Search intent
@@ -214,7 +260,7 @@ export default function Chatbot({ products, onAddToCart, cartItems, setCartUpdat
                     {/* Quick suggestion chips */}
                     <div className="chatbot-suggestions">
                         <button onClick={() => handleSuggestionClick("search keyboard")}>🔍 Search Keyboard</button>
-                        <button onClick={() => handleSuggestionClick("add sunglasses to cart")}>➕ Add Sunglasses</button>
+                        <button onClick={() => handleSuggestionClick("add honey, sunglasses, bananas for me")}>⚡ Quick Add Items</button>
                         <button onClick={() => handleSuggestionClick("clear cart")}>🗑️ Clear Cart</button>
                         <button onClick={() => handleSuggestionClick("checkout")}>🛒 Checkout</button>
                     </div>

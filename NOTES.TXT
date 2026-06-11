@@ -1,6 +1,19 @@
 CONTEXT API IN REACT
-
 onClick={handleupload}  --> this button works when click on it and execute function
 onClick={handleupload()}  --> this button doesn't works because it calls the function directly it execute at the time of rendering so when page load then it execute once.
 
-MULTER REVISION,JWT REVISION,HOW TO IMPLEMENT MAPS,CHAT BOT.
+CONTEXT VS PROPS DRILLING:-
+when data goes more than 2-3 levels then it is called props drilling.
+
+TYPES OF REDUCER:-
+1. NORMAL REDUCER
+2. ASYNC REDUCER
+
+SYNTAX:-
+const initialstate = {}
+
+function reducer(state, action){
+    return state;
+}
+
+return useReducer(reducer, initialstate);
