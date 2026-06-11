@@ -11,7 +11,7 @@ export default function Menu() {
   const navigate = useNavigate();
   const [adminId, setAdminId] = useState("");
   const [adminName, setAdminName] = useState("");
-  const[adminphoto,setAdminPhoto]=useState("");
+  const [adminphoto, setAdminPhoto] = useState("");
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [editingPhoto, setEditingPhoto] = useState(false);
   const [newPhotoUrl, setNewPhotoUrl] = useState("");
@@ -93,16 +93,16 @@ export default function Menu() {
         {/* SIDEBAR */}
         <div className="sidebar">
           <div className="admin-profile">
-            <div 
-              className="avatar-container" 
-              onClick={() => navigate(`/adminpanel/adminprofile/${adminId}`)} 
+            <div
+              className="avatar-container"
+              onClick={() => navigate(`/adminpanel/adminprofile/${adminId}`)}
               title="Click to view profile"
             >
               {adminphoto ? (
-                <img 
-                  src={adminphoto.startsWith("http") ? adminphoto : `http://localhost:8000/uploads/${adminphoto}`} 
-                  alt="Admin Profile" 
-                  className="admin-avatar" 
+                <img
+                  src={adminphoto.startsWith("http") ? adminphoto : `http://localhost:8000/uploads/${adminphoto}`}
+                  alt="Admin Profile"
+                  className="admin-avatar"
                 />
               ) : (
                 <div className="admin-avatar-fallback">
