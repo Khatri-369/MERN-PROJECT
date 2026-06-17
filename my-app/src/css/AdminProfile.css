@@ -518,22 +518,47 @@
   text-align: center;
 }
 
-.status-pill.delivered {
-  background: #ecfdf5;
-  color: #065f46;
-  border: 1px solid #a7f3d0;
-}
-
+.status-pill.order-placed,
 .status-pill.pending {
   background: #fffbeb;
   color: #92400e;
   border: 1px solid #fde68a;
 }
 
+.status-pill.order-confirmed {
+  background: #f0fdf4;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+}
+
+.status-pill.processing-packed {
+  background: #faf5ff;
+  color: #701a75;
+  border: 1px solid #f5d0fe;
+}
+
 .status-pill.shipped {
   background: #eff6ff;
   color: #1e40af;
   border: 1px solid #bfdbfe;
+}
+
+.status-pill.in-transit {
+  background: #f0fdfa;
+  color: #0f766e;
+  border: 1px solid #99f6e4;
+}
+
+.status-pill.out-for-delivery {
+  background: #fff7ed;
+  color: #c2410c;
+  border: 1px solid #ffedd5;
+}
+
+.status-pill.delivered {
+  background: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
 }
 
 .col-action {

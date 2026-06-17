@@ -50,7 +50,7 @@ export const createOrder = async (req, res) => {
       deliveryaddress,
       latitude: latitude ? Number(latitude) : undefined,
       longitude: longitude ? Number(longitude) : undefined,
-      orderstatus: "Pending"
+      orderstatus: "Order Placed"
     });
     await order.save();
 

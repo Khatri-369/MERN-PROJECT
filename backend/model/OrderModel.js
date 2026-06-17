@@ -41,7 +41,7 @@ const orderSchema = new mongoose.Schema({
 
   orderstatus: {
     type: String,
-    default: "Delivered"
+    default: "Order Placed"
   },
 
   latitude: {

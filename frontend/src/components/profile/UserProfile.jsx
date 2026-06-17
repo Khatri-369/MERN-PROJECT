@@ -31,6 +31,21 @@ L.Icon.Default.mergeOptions({
     shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
 });
 
+const STATUS_STEPS = [
+  { name: "Order Placed", label: "Order Placed 🛒", desc: "Your order has been placed successfully." },
+  { name: "Order Confirmed", label: "Order Confirmed ✅", desc: "The seller confirms that the order has been received." },
+  { name: "Processing / Packed", label: "Processing / Packed 📦", desc: "The warehouse picks the item and packs it." },
+  { name: "Shipped", label: "Shipped 🚚", desc: "The package is handed over to the courier service." },
+  { name: "In Transit", label: "In Transit 🚛", desc: "The courier is transporting the package between facilities." },
+  { name: "Out for Delivery", label: "Out for Delivery 🏠", desc: "The package is with the delivery agent and will likely arrive today." },
+  { name: "Delivered", label: "Delivered 🎉", desc: "The package has been successfully delivered." }
+];
+
+const getStatusClass = (status) => {
+  if (!status || status === "Pending") return 'order-placed';
+  return status.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+};
+
 function OrderDeliveryMap({ latitude, longitude, address }) {
     const mapRef = useRef(null);
     const mapInstance = useRef(null);
@@ -91,9 +106,17 @@ export default function UserProfile() {
     const [orders, setOrders] = useState([]);
     const [ordersLoading, setOrdersLoading] = useState(false);
     const [visibleMaps, setVisibleMaps] = useState({});
+    const [visibleTrackers, setVisibleTrackers] = useState({});
 
     const toggleMap = (orderId) => {
         setVisibleMaps(prev => ({
+            ...prev,
+            [orderId]: !prev[orderId]
+        }));
+    };
+
+    const toggleTracker = (orderId) => {
+        setVisibleTrackers(prev => ({
             ...prev,
             [orderId]: !prev[orderId]
         }));
@@ -443,8 +466,8 @@ export default function UserProfile() {
                                                             </div>
                                                             <div>
                                                                 <span className="order-header-label">Status</span>
-                                                                <span className={`order-status-badge ${order.orderstatus?.toLowerCase() === 'delivered' ? 'status-delivered' : 'status-pending'}`}>
-                                                                    {order.orderstatus || 'Pending'}
+                                                                <span className={`order-status-badge ${getStatusClass(order.orderstatus)}`}>
+                                                                    {order.orderstatus || 'Order Placed'}
                                                                 </span>
                                                             </div>
                                                         </div>
@@ -464,39 +487,90 @@ export default function UserProfile() {
                                                         <div className="order-delivery-address">
                                                             <span className="order-header-label" style={{ display: 'block', marginBottom: '6px' }}>Delivery Address</span>
                                                             <p>{order.deliveryaddress}</p>
+                                                        </div>
+                                                        
+                                                        <div className="order-actions-section" style={{ marginTop: '12px', display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                                                            <button 
+                                                                className="btn-track-toggle"
+                                                                onClick={() => toggleTracker(order._id)}
+                                                                style={{
+                                                                    background: '#f0f2f2',
+                                                                    border: '1px solid #d5d9d9',
+                                                                    borderRadius: '8px',
+                                                                    padding: '6px 12px',
+                                                                    fontSize: '12px',
+                                                                    fontWeight: '500',
+                                                                    cursor: 'pointer',
+                                                                    display: 'inline-flex',
+                                                                    alignItems: 'center',
+                                                                    gap: '4px',
+                                                                    color: '#0f1111'
+                                                                }}
+                                                            >
+                                                                <FaShoppingBag style={{ color: '#e47911' }} /> 
+                                                                {visibleTrackers[order._id] ? "Hide Tracker" : "Track Package 📦"}
+                                                            </button>
+
                                                             {order.latitude && order.longitude && (
-                                                                <div className="order-map-section" style={{ marginTop: '12px' }}>
-                                                                    <button 
-                                                                        className="btn-map-toggle"
-                                                                        onClick={() => toggleMap(order._id)}
-                                                                        style={{
-                                                                            background: '#f0f2f2',
-                                                                            border: '1px solid #d5d9d9',
-                                                                            borderRadius: '8px',
-                                                                            padding: '6px 12px',
-                                                                            fontSize: '12px',
-                                                                            fontWeight: '500',
-                                                                            cursor: 'pointer',
-                                                                            display: 'inline-flex',
-                                                                            alignItems: 'center',
-                                                                            gap: '4px',
-                                                                            color: '#0f1111'
-                                                                        }}
-                                                                    >
-                                                                        <FaMapMarkerAlt style={{ color: '#e47911' }} /> 
-                                                                        {visibleMaps[order._id] ? "Hide Delivery Map" : "Show Delivery Map"}
-                                                                    </button>
-                                                                    
-                                                                    {visibleMaps[order._id] && (
-                                                                        <OrderDeliveryMap 
-                                                                            latitude={order.latitude} 
-                                                                            longitude={order.longitude} 
-                                                                            address={order.deliveryaddress} 
-                                                                        />
-                                                                    )}
-                                                                </div>
+                                                                <button 
+                                                                    className="btn-map-toggle"
+                                                                    onClick={() => toggleMap(order._id)}
+                                                                    style={{
+                                                                        background: '#f0f2f2',
+                                                                        border: '1px solid #d5d9d9',
+                                                                        borderRadius: '8px',
+                                                                        padding: '6px 12px',
+                                                                        fontSize: '12px',
+                                                                        fontWeight: '500',
+                                                                        cursor: 'pointer',
+                                                                        display: 'inline-flex',
+                                                                        alignItems: 'center',
+                                                                        gap: '4px',
+                                                                        color: '#0f1111'
+                                                                    }}
+                                                                >
+                                                                    <FaMapMarkerAlt style={{ color: '#e47911' }} /> 
+                                                                    {visibleMaps[order._id] ? "Hide Delivery Map" : "Show Delivery Map"}
+                                                                </button>
                                                             )}
                                                         </div>
+
+                                                        {visibleTrackers[order._id] && (
+                                                            <div className="order-tracker-section fade-in-animation">
+                                                                <div className="order-tracker-timeline">
+                                                                    {STATUS_STEPS.map((step, idx) => {
+                                                                        const normalizedStatus = order.orderstatus === "Pending" ? "Order Placed" : (order.orderstatus || "Order Placed");
+                                                                        const orderStatusSteps = STATUS_STEPS.map(s => s.name);
+                                                                        const currentStepIndex = orderStatusSteps.indexOf(normalizedStatus) !== -1 ? orderStatusSteps.indexOf(normalizedStatus) : 0;
+                                                                        
+                                                                        const isCompleted = idx < currentStepIndex;
+                                                                        const isActive = idx === currentStepIndex;
+                                                                        const isPending = idx > currentStepIndex;
+
+                                                                        return (
+                                                                            <div key={idx} className={`tracker-step ${isCompleted ? 'completed' : ''} ${isActive ? 'active' : ''} ${isPending ? 'pending' : ''}`}>
+                                                                                <div className="tracker-icon-container">
+                                                                                    <span className="tracker-dot"></span>
+                                                                                    {idx < 7 - 1 && <div className="tracker-line"></div>}
+                                                                                </div>
+                                                                                <div className="tracker-content">
+                                                                                    <div className="tracker-title">{step.label}</div>
+                                                                                    <div className="tracker-desc">{step.desc}</div>
+                                                                                </div>
+                                                                            </div>
+                                                                        );
+                                                                    })}
+                                                                </div>
+                                                            </div>
+                                                        )}
+
+                                                        {visibleMaps[order._id] && order.latitude && order.longitude && (
+                                                            <OrderDeliveryMap 
+                                                                latitude={order.latitude} 
+                                                                longitude={order.longitude} 
+                                                                address={order.deliveryaddress} 
+                                                            />
+                                                        )}
                                                     </div>
                                                 </div>
                                             ))}

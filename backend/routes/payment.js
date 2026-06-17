@@ -118,7 +118,7 @@ router.post("/verify", auth, async (req, res) => {
             deliveryaddress,
             latitude: latitude ? Number(latitude) : undefined,
             longitude: longitude ? Number(longitude) : undefined,
-            orderstatus: "Pending" // Match standard DB flow
+            orderstatus: "Order Placed"
         });
         await order.save();
 

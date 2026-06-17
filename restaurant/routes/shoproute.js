@@ -5,7 +5,9 @@ import { shopauth } from "../middleware/shopauth.js";
 
 const route = express.Router();
 route.post("/signup", CreateShop);
+route.post("/createshop", CreateShop);
 route.post("/signin", LoginShop);
+route.post("/login", LoginShop);
 route.post("/signout", logoutShop);
 route.get("/me", shopauth, getShopProfile);
 

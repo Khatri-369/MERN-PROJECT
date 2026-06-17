@@ -27,17 +27,20 @@ body {
 }
 
 .order-form input,
-.order-form textarea {
+.order-form textarea,
+.order-form select {
   padding: 14px;
   border: 1px solid #d1d5db;
   border-radius: 12px;
   font-size: 15px;
   outline: none;
+  background-color: white;
   transition: 0.3s;
 }
 
 .order-form input:focus,
-.order-form textarea:focus {
+.order-form textarea:focus,
+.order-form select:focus {
   border-color: #2563eb;
   box-shadow: 0 0 8px rgba(37, 99, 235, 0.2);
 }

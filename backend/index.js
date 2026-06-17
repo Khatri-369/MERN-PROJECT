@@ -23,7 +23,13 @@ const PORT = process.env.PORT || 8000;
 const app = express();
 
 app.use(cors({
-    origin: "http://localhost:3000", // React URL
+    origin: function(origin, callback) {
+        if (!origin) return callback(null, true);
+        if (/^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) {
+            return callback(null, true);
+        }
+        return callback(new Error("Not allowed by CORS"), false);
+    },
     credentials: true
 }));
 app.use(express.json());

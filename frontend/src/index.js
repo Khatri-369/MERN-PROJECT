@@ -11,6 +11,9 @@ import { ShowCart } from "./layouts/ShowCart.jsx";
 //SIGN UP AND LOGIN
 import SignUpUser from './SignUpUser.jsx';
 import UserLogin from './UserLogin.jsx';
+import ForgotPassword from './ForgotPassword.jsx';
+import VerifyOTP from './VerifyOTP.jsx';
+import ResetPassword from './ResetPassword.jsx';
 
 //PROFILE PAGE
 import UserProfile from './components/profile/UserProfile.jsx';
@@ -42,6 +45,18 @@ const route = createBrowserRouter([
   {
     path: "/profile",
     element: <UserProfile />,
+  },
+  {
+    path: "/forgotpassword",
+    element: <ForgotPassword />
+  },
+  {
+    path: "/verifyotp",
+    element: <VerifyOTP />
+  },
+  {
+    path: "/resetpassword",
+    element: <ResetPassword />
   }
 ]);
 

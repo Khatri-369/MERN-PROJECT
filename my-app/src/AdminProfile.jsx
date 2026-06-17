@@ -406,6 +406,7 @@ export default function AdminProfile() {
                   {orders.map((order) => {
                     const isExpanded = expandedOrderId === order._id;
                     const itemsSummary = order.items.map(i => `${i.product} (x${i.quantity})`).join(', ');
+                    const statusClass = order.orderstatus ? order.orderstatus.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') : 'pending';
 
                     return (
                       <div key={order._id} className={`order-row-item ${isExpanded ? 'is-expanded' : ''}`}>
@@ -432,7 +433,7 @@ export default function AdminProfile() {
                           </div>
 
                           <div className="col-status">
-                            <span className={`status-pill ${order.orderstatus.toLowerCase()}`}>
+                            <span className={`status-pill ${statusClass}`}>
                               {order.orderstatus}
                             </span>
                           </div>

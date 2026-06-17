@@ -17,7 +17,13 @@ dotenv.config();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({
-    origin: "http://localhost:3000",
+    origin: function(origin, callback) {
+        if (!origin) return callback(null, true);
+        if (/^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) {
+            return callback(null, true);
+        }
+        return callback(new Error("Not allowed by CORS"), false);
+    },
     credentials: true
 }));
 app.use(cookieParser());

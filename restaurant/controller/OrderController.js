@@ -77,7 +77,15 @@ export const simulateOrder = async (req, res) => {
             });
         }
 
-        const statuses = ["Pending", "Preparing", "Delivered"];
+        const statuses = [
+            "Order Placed",
+            "Order Confirmed",
+            "Processing / Packed",
+            "Shipped",
+            "In Transit",
+            "Out for Delivery",
+            "Delivered"
+        ];
         const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
 
         const newOrder = new Order({

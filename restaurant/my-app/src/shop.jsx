@@ -193,6 +193,28 @@ const ShopDashboard = () => {
         }
     };
 
+    const getStatusColor = (status) => {
+        switch (status) {
+            case "Order Placed":
+            case "Pending":
+                return { color: "#fbbf24", border: "#f59e0b" };
+            case "Order Confirmed":
+                return { color: "#34d399", border: "#10b981" };
+            case "Processing / Packed":
+                return { color: "#c084fc", border: "#a855f7" };
+            case "Shipped":
+                return { color: "#60a5fa", border: "#3b82f6" };
+            case "In Transit":
+                return { color: "#2dd4bf", border: "#0d9488" };
+            case "Out for Delivery":
+                return { color: "#fb923c", border: "#ea580c" };
+            case "Delivered":
+                return { color: "#34d399", border: "#059669" };
+            default:
+                return { color: "#f87171", border: "#ef4444" };
+        }
+    };
+
     // Helper to resolve product image from the shared folder
     const getProductImage = (photoArray) => {
         if (!photoArray || photoArray.length === 0) return "";
@@ -606,24 +628,23 @@ const ShopDashboard = () => {
                                                         }
                                                     </td>
                                                     <td style={styles.td}>
-                                                        <select
-                                                            value={order.orderstatus}
-                                                            onChange={(e) => handleUpdateStatus(order._id, e.target.value)}
-                                                            style={{
-                                                                ...styles.statusDropdown,
-                                                                color: order.orderstatus === "Delivered" ? "#34d399" : 
-                                                                       order.orderstatus === "Cancelled" ? "#f87171" : 
-                                                                       order.orderstatus === "Preparing" ? "#60a5fa" : "#fbbf24",
-                                                                borderColor: order.orderstatus === "Delivered" ? "#10b981" : 
-                                                                             order.orderstatus === "Cancelled" ? "#ef4444" : 
-                                                                             order.orderstatus === "Preparing" ? "#3b82f6" : "#f59e0b"
-                                                            }}
-                                                        >
-                                                            <option value="Pending">🟡 Pending</option>
-                                                            <option value="Preparing">🔵 Preparing</option>
-                                                            <option value="Delivered">🟢 Delivered</option>
-                                                            <option value="Cancelled">🔴 Cancelled</option>
-                                                        </select>
+                                                         <select
+                                                             value={order.orderstatus}
+                                                             onChange={(e) => handleUpdateStatus(order._id, e.target.value)}
+                                                             style={{
+                                                                 ...styles.statusDropdown,
+                                                                 color: getStatusColor(order.orderstatus).color,
+                                                                 borderColor: getStatusColor(order.orderstatus).border
+                                                             }}
+                                                         >
+                                                             <option value="Order Placed">🛒 Order Placed</option>
+                                                             <option value="Order Confirmed">✅ Order Confirmed</option>
+                                                             <option value="Processing / Packed">📦 Processing / Packed</option>
+                                                             <option value="Shipped">🚚 Shipped</option>
+                                                             <option value="In Transit">🚛 In Transit</option>
+                                                             <option value="Out for Delivery">🏠 Out for Delivery</option>
+                                                             <option value="Delivered">🎉 Delivered</option>
+                                                         </select>
                                                     </td>
                                                     <td style={styles.td}>{new Date(order.ordereddate).toLocaleDateString()}</td>
                                                 </tr>

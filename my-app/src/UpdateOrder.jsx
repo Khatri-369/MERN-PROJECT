@@ -38,7 +38,7 @@ export default function UpdateOrder() {
         price: res.data.items[0].price,
         totalprice: res.data.totalprice,
         deliveryaddress: res.data.deliveryaddress,
-        orderstatus: res.data.orderstatus
+        orderstatus: res.data.orderstatus === "Pending" ? "Order Placed" : (res.data.orderstatus || "Order Placed")
       });
 
     } catch (error) {
@@ -135,13 +135,21 @@ export default function UpdateOrder() {
           required
         ></textarea>
 
-        <input
-          type="text"
+        <select
           name="orderstatus"
           value={order.orderstatus}
           onChange={inputHandler}
           required
-        />
+          className="order-status-select"
+        >
+          <option value="Order Placed">Order Placed 🛒</option>
+          <option value="Order Confirmed">Order Confirmed ✅</option>
+          <option value="Processing / Packed">Processing / Packed 📦</option>
+          <option value="Shipped">Shipped 🚚</option>
+          <option value="In Transit">In Transit 🚛</option>
+          <option value="Out for Delivery">Out for Delivery 🏠</option>
+          <option value="Delivered">Delivered 🎉</option>
+        </select>
 
         <button type="submit">Update Order</button>
       </form>
