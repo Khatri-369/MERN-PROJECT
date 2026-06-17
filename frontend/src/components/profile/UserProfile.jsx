@@ -46,22 +46,197 @@ const getStatusClass = (status) => {
   return status.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 };
 
-function OrderDeliveryMap({ latitude, longitude, address }) {
+function OrderDeliveryMap({ latitude, longitude, address, items, orderstatus }) {
     const mapRef = useRef(null);
     const mapInstance = useRef(null);
+    const [shopCoords, setShopCoords] = useState(null);
+    const [shopInfo, setShopInfo] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (!mapRef.current) return;
+        let isMounted = true;
+        const locateShop = async () => {
+            const shop = items?.find(item => item.shopId && typeof item.shopId === 'object')?.shopId;
+            
+            if (!shop) {
+                if (isMounted) {
+                    setShopInfo({ name: "Partner Shop", address: "Standard Shop Location" });
+                    setShopCoords({ lat: latitude + 0.006, lon: longitude - 0.008 });
+                    setLoading(false);
+                }
+                return;
+            }
+
+            setShopInfo(shop);
+            
+            const searchStr = `${shop.name || ""}, ${shop.address || ""}, ${shop.city || ""}, ${shop.pincode || ""}`;
+            try {
+                const res = await axios.get(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchStr)}`);
+                if (res.data && res.data.length > 0 && isMounted) {
+                    setShopCoords({
+                        lat: Number(res.data[0].lat),
+                        lon: Number(res.data[0].lon)
+                    });
+                    setLoading(false);
+                    return;
+                }
+            } catch (err) {
+                console.error("Shop geocoding failed, trying fallback search", err);
+            }
+
+            // Try fallback search with just city and pincode
+            const fallbackStr = `${shop.city || ""}, ${shop.pincode || ""}`;
+            try {
+                const res = await axios.get(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(fallbackStr)}`);
+                if (res.data && res.data.length > 0 && isMounted) {
+                    setShopCoords({
+                        lat: Number(res.data[0].lat),
+                        lon: Number(res.data[0].lon)
+                    });
+                    setLoading(false);
+                    return;
+                }
+            } catch (err) {
+                console.error("Shop fallback geocoding failed", err);
+            }
+
+            // Absolute fallback
+            if (isMounted) {
+                setShopCoords({ lat: latitude + 0.006, lon: longitude - 0.008 });
+                setLoading(false);
+            }
+        };
+
+        locateShop();
+        return () => {
+            isMounted = false;
+        };
+    }, [items, latitude, longitude]);
+
+    useEffect(() => {
+        if (!mapRef.current || !shopCoords) return;
+        
+        const shopLat = shopCoords.lat;
+        const shopLng = shopCoords.lon;
+        const customerLat = latitude;
+        const customerLng = longitude;
+        
+        let t = 0;
+        switch (orderstatus) {
+            case "Order Placed": t = 0.02; break;
+            case "Order Confirmed": t = 0.12; break;
+            case "Processing / Packed": t = 0.25; break;
+            case "Shipped": t = 0.5; break;
+            case "In Transit": t = 0.7; break;
+            case "Out for Delivery": t = 0.88; break;
+            case "Delivered": t = 1.0; break;
+            default: t = 0.02;
+        }
+        
+        const riderLat = shopLat + (customerLat - shopLat) * t;
+        const riderLng = shopLng + (customerLng - shopLng) * t;
         
         const map = L.map(mapRef.current, {
             zoomControl: true,
             attributionControl: false
-        }).setView([latitude, longitude], 14);
+        });
         mapInstance.current = map;
 
         L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map);
 
-        L.marker([latitude, longitude]).addTo(map);
+        const shopIconHtml = `
+            <div class="map-marker-pin shop-pin">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <path d="M16 10a4 4 0 0 1-8 0"></path>
+                </svg>
+            </div>
+        `;
+        
+        const riderIconHtml = `
+            <div class="map-marker-pin rider-pin">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="1" y="3" width="15" height="13"></rect>
+                    <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                    <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                    <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                </svg>
+            </div>
+        `;
+        
+        const customerIconHtml = `
+            <div class="map-marker-pin customer-pin">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+            </div>
+        `;
+
+        const shopIcon = L.divIcon({
+            html: shopIconHtml,
+            className: 'custom-map-marker',
+            iconSize: [30, 30],
+            iconAnchor: [15, 15]
+        });
+
+        const riderIcon = L.divIcon({
+            html: riderIconHtml,
+            className: 'custom-map-marker',
+            iconSize: [30, 30],
+            iconAnchor: [15, 15]
+        });
+
+        const customerIcon = L.divIcon({
+            html: customerIconHtml,
+            className: 'custom-map-marker',
+            iconSize: [30, 30],
+            iconAnchor: [15, 15]
+        });
+
+        // Add Shop Marker
+        const shopMarker = L.marker([shopLat, shopLng], { icon: shopIcon }).addTo(map);
+        shopMarker.bindPopup(`<strong>Shop:</strong> ${shopInfo?.name || "Merchant Store"}<br/>${shopInfo?.address || ""}`);
+
+        // Add Customer Marker
+        const customerMarker = L.marker([customerLat, customerLng], { icon: customerIcon }).addTo(map);
+        customerMarker.bindPopup(`<strong>Delivery Address:</strong><br/>${address}`);
+
+        // Add Rider Marker if order not fully delivered
+        let riderMarker = null;
+        if (t > 0 && t < 1) {
+            riderMarker = L.marker([riderLat, riderLng], { icon: riderIcon }).addTo(map);
+            riderMarker.bindPopup(`<strong>Delivery Partner</strong><br/>Status: ${orderstatus}`);
+        }
+
+        // Draw Polylines
+        // Faint background line showing full route
+        L.polyline([[shopLat, shopLng], [customerLat, customerLng]], {
+            color: '#cbd5e1',
+            weight: 3,
+            opacity: 0.6,
+            dashArray: '5, 5'
+        }).addTo(map);
+
+        // Shop to Rider line (Leg 1)
+        L.polyline([[shopLat, shopLng], [riderLat, riderLng]], {
+            color: '#e47911', // Amazon Dark Orange
+            weight: 4,
+            opacity: 0.85
+        }).addTo(map);
+
+        // Rider to Customer line (Leg 2)
+        L.polyline([[riderLat, riderLng], [customerLat, customerLng]], {
+            color: '#007185', // Amazon Blue
+            weight: 4,
+            opacity: 0.85,
+            dashArray: '4, 6'
+        }).addTo(map);
+
+        // Fit bounds
+        const bounds = L.latLngBounds([[customerLat, customerLng], [shopLat, shopLng]]);
+        map.fitBounds(bounds, { padding: [40, 40] });
 
         return () => {
             if (mapInstance.current) {
@@ -69,14 +244,20 @@ function OrderDeliveryMap({ latitude, longitude, address }) {
                 mapInstance.current = null;
             }
         };
-    }, [latitude, longitude]);
+    }, [latitude, longitude, shopCoords, orderstatus, address, shopInfo]);
 
     return (
         <div className="order-map-wrapper" style={{ marginTop: '10px' }}>
-            <div ref={mapRef} className="order-mini-map" style={{ height: "200px", borderRadius: "8px", border: "1px solid #ccc", zIndex: 10 }}></div>
+            {loading ? (
+                <div style={{ height: "200px", display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: "#f3f4f6", borderRadius: "8px", border: "1px solid #ccc", fontSize: "13px", color: "#666" }}>
+                    Locating delivery routes...
+                </div>
+            ) : (
+                <div ref={mapRef} className="order-mini-map" style={{ height: "200px", borderRadius: "8px", border: "1px solid #ccc", zIndex: 10 }}></div>
+            )}
             <div className="order-map-actions" style={{ marginTop: '6px' }}>
                 <a 
-                    href={`https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`} 
+                    href={`https://www.google.com/maps/dir/?api=1&origin=${shopCoords ? `${shopCoords.lat},${shopCoords.lon}` : ""}&destination=${latitude},${longitude}`} 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="google-maps-link"
@@ -87,7 +268,7 @@ function OrderDeliveryMap({ latitude, longitude, address }) {
                         fontWeight: '600'
                     }}
                 >
-                    Open in Google Maps
+                    Directions on Google Maps
                 </a>
             </div>
         </div>
@@ -569,6 +750,8 @@ export default function UserProfile() {
                                                                 latitude={order.latitude} 
                                                                 longitude={order.longitude} 
                                                                 address={order.deliveryaddress} 
+                                                                items={order.items}
+                                                                orderstatus={order.orderstatus}
                                                             />
                                                         )}
                                                     </div>

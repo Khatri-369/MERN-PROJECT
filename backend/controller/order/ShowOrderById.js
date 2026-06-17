@@ -1,8 +1,9 @@
 import Order from "../../model/OrderModel.js";
+import Shop from "../../model/ShopModel.js";
 
 export const showOrderById = async (req, res) => {
   try {
-    const order = await Order.findById(req.params.id);
+    const order = await Order.findById(req.params.id).populate("items.shopId");
 
     if (!order) {
       return res.status(404).json({

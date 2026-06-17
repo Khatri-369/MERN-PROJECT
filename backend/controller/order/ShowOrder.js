@@ -1,4 +1,5 @@
 import Order from "../../model/OrderModel.js";
+import Shop from "../../model/ShopModel.js";
 
 export const showOrder = async (req, res) => {
   try {
@@ -7,7 +8,7 @@ export const showOrder = async (req, res) => {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
-    const orders = await Order.find({ user: userId }).sort({ ordereddate: -1 });
+    const orders = await Order.find({ user: userId }).populate("items.shopId").sort({ ordereddate: -1 });
 
     res.status(200).json(orders);
 

@@ -1041,3 +1041,44 @@
 .tracker-step.pending .tracker-desc {
   color: #d1d5db;
 }
+
+/* Custom map marker styles */
+.map-marker-pin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  color: white;
+  border: 2px solid white;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  transition: transform 0.2s ease;
+}
+
+.map-marker-pin:hover {
+  transform: scale(1.15);
+}
+
+.shop-pin {
+  background-color: #ef4444; /* Red */
+}
+
+.rider-pin {
+  background-color: #f97316; /* Orange */
+  animation: bounce-marker 1s infinite alternate;
+}
+
+.customer-pin {
+  background-color: #3b82f6; /* Blue */
+}
+
+@keyframes bounce-marker {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-4px); }
+}
+
+.custom-map-marker {
+  background: none;
+  border: none;
+}
