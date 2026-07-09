@@ -84,7 +84,51 @@ axios.defaults.withCredentials = true;
 const route = createBrowserRouter([
   {
     path: "/",
-    element: <AdminLogin />
+    element: <UserLayout />,
+    children: [
+      {
+        path: "",
+        element: <ShowProduct />
+      },
+      {
+        path: "showproduct",
+        element: <ShowProduct />
+      },
+      {
+        path: "showcart",
+        element: <ShowCart />
+      },
+      {
+        path: "cartdetail/:id",
+        element: <CartDetail />
+      },
+      {
+        path: "showorder",
+        element: <ShowOrder />
+      },
+      {
+        path: "showuser",
+        element: <ShowUser />
+      },
+    ]
+  },
+  {
+    path: "/userpanel",
+    element: <UserLayout />,
+    children: [
+      {
+        path: "",
+        element: <ShowProduct />
+      }
+    ]
+  },
+  {
+    path: "/loginuser",
+    element: <UserLogin />
+  },
+  {
+    path: "/signupuser",
+    element: <SignUpUser />
   },
   {
     path: "/adminpanel",

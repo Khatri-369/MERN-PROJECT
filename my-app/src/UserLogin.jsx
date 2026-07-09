@@ -32,7 +32,7 @@ export default function UserLogin() {
 
       toast.success("Login Successful");
 
-      navigate("/adminpanel");
+      navigate("/userpanel");
     } catch (error) {
       toast.error("Invalid Credentials");
     }
