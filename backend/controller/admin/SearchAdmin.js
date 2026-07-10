@@ -7,7 +7,7 @@ export const searchAdmin = async (req, res) => {
         const admins = await Admin.find({
             fullname: new RegExp(text, "i")
         });
-
+        //sa
         if (!admins.length) {
             return res.status(404).json({
                 message: "ADMIN NOT FOUND"
